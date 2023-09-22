@@ -1,0 +1,41 @@
+
+#contenedorPadre {
+  background-image: url('src\assets\uady.png');
+  background-size: cover;
+  min-height: 100vh;
+  
+  
+  }
+  #contenedorHijo {
+    padding-top: 5%;
+   margin: auto;
+   width: 25%;
+  
+  }
+  .contenedorForm{
+    background-color: white;
+    padding: 2% 2% 2% 2%;
+    border-radius: 15px;
+  }
+  .title{
+    text-align: center;
+    padding: 2%
+  }
+  .btn-login{
+    background-color: black;
+    color: white;
+  }
+  .contenedorBtnSubmit{
+    padding-top: 5%;
+  }
+  .contenedorPreguntaRegistro{
+    padding-top: 5%;
+  }
+ 
+  .imgLogo{
+    padding-bottom: 10%;
+    text-align: center;
+  }
+  .imgLogo img{
+    width:70%
+  }
