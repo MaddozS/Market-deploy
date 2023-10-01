@@ -1,1 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+:root {
+  --amarillo: #f2ac29;
+  --azul-marino: #112540;
+  --azul-claro: #0176fe;
+  --azul-cielo: #88c1f2;
+  --negro: #0d0d0d;
+}
+.form-check-input:checked {
+    background-color: black;
+    border-color: black;
+}

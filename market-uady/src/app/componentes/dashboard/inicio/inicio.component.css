@@ -1,0 +1,104 @@
+.header {
+  height: 10vh;
+  border: yellow 5px solid;
+}
+
+/*Sección de fondo de edifio central*/
+.fondo {
+  height: 30vh;
+  background-image: url("src/assets/uady.png");
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.anuncio {
+  background-color: white;
+  width: 25%;
+  height: 75%;
+  text-align: center;
+  margin-right: 4%;
+  border-radius: 1rem;
+}
+
+.pregunta,
+.texto,
+.buttonEmpezar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pregunta {
+  height: 25%;
+  font-weight: bold;
+}
+.text {
+  height: 30%;
+  font-size: small;
+}
+
+.buttonEmpezar {
+  height: 45%;
+}
+
+.buttonEmpezar button {
+  background-color: var(--amarillo);
+  font-weight: bold;
+}
+
+/*Contenedor principal*/
+.contenedor {
+  display: flex;
+}
+/* Sección de filtros*/
+.filtros {
+  width: 30%;
+}
+.filtros h4, h5 {
+  padding-top: 0.5rem;
+}
+.scrollFiltro {
+  width: 100%;
+  min-height: 19vh;
+  font-size: small;
+}
+
+/*Sección de lista de articulos*/
+.scroll {
+  width: 70%;
+  min-height: 60vh;
+}
+.lista-articulos {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 1rem;
+  padding: 2%;
+}
+
+.item {
+  height: 200px;
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+}
+
+.imagen {
+  height: 70%;
+}
+
+.imagen img {
+  height: 100%;
+  width: 100%;
+}
+
+.nombreArticulo, .precioArticulo{
+    height: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.precioArticulo{
+    font-weight: bold;
+}
