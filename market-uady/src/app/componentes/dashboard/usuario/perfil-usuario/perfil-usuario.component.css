@@ -1,0 +1,167 @@
+.header {
+    height: 10vh;
+    border: yellow 5px solid;
+  }
+  
+  /*Sección de fondo de edifio central*/
+  .fondo {
+    height: 30vh;
+    background-color: white;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .imagenPerfil {
+    height: 90%;
+    margin: 40px;
+  }
+  
+  .imagenPerfil img {
+    height: 100%;
+    width: 100%;
+    border-radius: 100px;
+  }
+  .imagenEscuela {
+    height: 10%;
+    display: flex;
+    align-items: center;
+  }
+  
+  .imagenEscuela img {
+    height:3%;
+    width: 3%;
+    margin-right: 10px;
+  }
+  
+  .anuncio {
+    background-color: white;
+    width: 25%;
+    height: 75%;
+    text-align: center;
+    margin-right: 4%;
+    border-radius: 1rem;
+  }
+  .nombreUsuario {
+    background-color: white;
+    width: 75%;
+    height: 75%;
+    text-align: left;
+    border-radius: 1rem;
+    font-size: 50px;
+  }
+  .productosTitulo {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+    border-radius: 1rem;
+    font-size: 40px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-left: 80px;
+    padding-right: 0px;
+  }
+  
+  .datosUsuario {
+    font-size: 25px;
+  }
+  
+  .pregunta,
+  .texto,
+  .buttonEmpezar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .pregunta {
+    height: 25%;
+    font-weight: bold;
+  }
+  .text {
+    height: 30%;
+    font-size: small;
+  }
+  
+  .buttonEmpezar {
+    height: 30%;
+  }
+  
+  .buttonEmpezar button {
+    background-color: var(--amarillo);
+    font-weight: bold;
+    margin-left: 590px;
+  }
+  .btn{
+    width: 200px;
+  }
+  
+  /*Contenedor principal*/
+  .contenedor {
+    display: flex;
+  }
+  /* Sección de filtros*/
+  .filtros {
+    width: 30%;
+  }
+  .filtros h4, h5 {
+    padding-top: 0.5rem;
+  }
+  .scrollFiltro {
+    width: 100%;
+    min-height: 19vh;
+    font-size: small;
+  }
+  
+  /*Sección de lista de articulos*/
+  .scroll {
+    width: 70%;
+    min-height: 60vh;
+  }
+  .lista-articulos {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 1rem;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+  
+  .item {
+    height: 400px;
+    background-color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+  }
+  
+  .imagen {
+    position: relative;
+    display: inline-block;
+    height: 70%;
+  }
+
+  .editar-btn{
+    position: absolute;
+    bottom: 250px;
+    left: 265px;
+    border: none;
+    cursor: pointer;
+  }
+  .eliminar-btn{
+    position: absolute;
+    bottom: 250px;
+    right: 265px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .nombreArticulo, .precioArticulo{
+      height: 10%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+  
+  .precioArticulo{
+      font-weight: bold;
+  }
