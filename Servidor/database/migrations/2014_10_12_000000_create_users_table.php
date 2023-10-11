@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('apellidos');
             $table->string('correo')->unique();
             $table->bigInteger('idFacultad');
-            $table->bigInteger('idFoto');
-            $table->integer('numeroContacto');
+            $table->string('nombreImagenPerfil');
+            $table->string('numeroContacto');
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
