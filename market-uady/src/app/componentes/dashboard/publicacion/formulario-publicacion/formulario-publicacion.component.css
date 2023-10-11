@@ -8,11 +8,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   width: 100%;
 }
 
 .form-publicacion {
   width: 50%;
+  max-width: 1000px;
 }
 
 .example-form {
@@ -33,4 +35,10 @@
   background-color: #000000;
   color: #ffffff;
   border-radius: 10px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
 }
