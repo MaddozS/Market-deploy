@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -47,5 +48,23 @@ class AuthController extends Controller
         $accessToken = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json(['token' => $accessToken, 'token_type' => 'Bearer'], 200);
+    }
+
+    public function login(Request $request)
+    {
+        if(!Auth::attempt($request->only('correo', 'password'))){
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        $user = User::where('correo', $request['correo'])->firstOrFail();
+        $accessToken = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json(['token' => $accessToken, 'token_type' => 'Bearer'], 200);
+    }
+
+    public function logout(){
+        auth()->user()->tokens()->delete();
+
+        return response()->json(['message' => 'Bye']);
     }
 }
