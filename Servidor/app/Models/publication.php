@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class publication extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'titulo',
+        'descripcion',
+        'precio',
+        'matriculaPublicador'
+    ];
+
 }
