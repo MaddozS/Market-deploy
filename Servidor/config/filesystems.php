@@ -60,6 +60,12 @@ return [
             'root' => storage_path('images/profile'),
             'url' => env('APP_URL').'/profile',
             'visibility' => 'public',
+        ],
+        'publications' => [
+            'driver' => 'local',
+            'root' => storage_path('images/publications'),
+            'url' => env('APP_URL').'/publications',
+            'visibility' => 'public',
         ]
 
     ],
@@ -78,6 +84,7 @@ return [
     'links' => [
         public_path('storage') => storage_path('app/public'),
         public_path('profile') => storage_path('images/profile'),
+        public_path('publications') => storage_path('images/publications')
     ],
 
 ];
