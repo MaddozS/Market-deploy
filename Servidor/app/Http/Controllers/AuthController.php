@@ -62,6 +62,33 @@ class AuthController extends Controller
         return response()->json(['token' => $accessToken, 'token_type' => 'Bearer'], 200);
     }
 
+    public function update(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'idFacultad' => 'required|integer|min_digits:1|max_digits:2',
+            'imagenPerfil' => 'required|file|mimes:jpg,jpeg,png',
+            'numeroContacto' => 'required|string|min:10|max:10',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+        $user = User::find(auth()->user()->id);
+
+        $oldImageName = $user->nombreImagenPerfil;
+        Storage::disk('profile')->delete($oldImageName);
+        $newProfileImage = $request->file('imagenPerfil');
+        $newProfilefilename = uniqid() . '.' . File::extension($newProfileImage->getClientOriginalName());
+        Storage::disk('profile')->put($newProfilefilename, file_get_contents($newProfileImage));
+        
+        $user->idFacultad = $request->idFacultad;
+        $user->nombreImagenPerfil = $newProfilefilename;
+        $user->numeroContacto = $request->numeroContacto;
+        $user->save();
+
+        return response()->json(['message' => 'User updated']);
+    }
+
     public function logout(){
         auth()->user()->tokens()->delete();
 

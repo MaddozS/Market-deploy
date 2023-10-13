@@ -24,6 +24,8 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware(['auth:sanctum'])->group(function (){
+    Route::put('profile/update', [AuthController::class, 'update']);
+
     Route::post('publications/create', [PublicationsController::class, 'create']);
     Route::get('publications/{idPublication}', [PublicationsController::class, 'getPublication']);
     Route::put('publications', [PublicationsController::class, 'update']);
