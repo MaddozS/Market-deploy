@@ -107,4 +107,25 @@ class PublicationsController extends Controller
 
         return response()->json(['message' => 'Publication updated']);
     }
+
+    public function delete($idPublication)
+    {
+        $validator = Validator::make(['idPublication' => $idPublication], [
+            'idPublication' => 'required|integer|exists:publications,idPublicacion',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        $publicationImages = publications_image::where('idPublicacion', $idPublication)->pluck('nombreArchivo');
+        foreach ($publicationImages as $image) {
+            Storage::disk('publications')->delete($image);
+        }
+        publications_image::where('idPublicacion', $idPublication)->delete();
+
+        publication::find($idPublication)->delete();
+
+        return response()->json(['message' => 'Publication deleted']);
+    }
 }
