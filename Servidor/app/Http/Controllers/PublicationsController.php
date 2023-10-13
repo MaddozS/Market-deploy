@@ -67,4 +67,44 @@ class PublicationsController extends Controller
 
         return json_encode($publication, JSON_UNESCAPED_SLASHES);
     }
+
+    public function update(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'idPublication' => 'required|integer|exists:publications,idPublicacion',
+            'titulo' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:255',
+            'precio' => 'required|decimal:2|between:0,9999.99',
+            'imagenes' => 'required',
+            'imagenes.*' => 'required|mimes:jpg,jpeg,png|max:5120',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        $publication = publication::find($request->idPublication);
+        $publication->titulo = $request->titulo;
+        $publication->descripcion = $request->descripcion;
+        $publication->precio = $request->precio;
+        $publication->save();
+
+        $oldPublicationImages = publications_image::where('idPublicacion', $request->idPublication)->pluck('nombreArchivo');
+        foreach ($oldPublicationImages as $oldImage) {
+            Storage::disk('publications')->delete($oldImage);
+        }
+        publications_image::where('idPublicacion', $request->idPublication)->delete();
+
+        foreach ($request->file('imagenes') as $imageFile) {
+            $filename = uniqid() . '.' . File::extension($imageFile->getClientOriginalName());
+            Storage::disk('publications')->put($filename, file_get_contents($imageFile));
+            publications_image::create([
+                'nombreArchivo' => $filename,
+                'idPublicacion' => $request->idPublication
+            ]);
+        }
+
+
+        return response()->json(['message' => 'Publication updated']);
+    }
 }
