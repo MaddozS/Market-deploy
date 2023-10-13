@@ -1,6 +1,6 @@
 <header class="header"></header>
 <main>
-  <div class="container-fluid mt-5" style="max-width: 1500px">
+  <div class="container-xxl mt-5">
     <div class="row d-none d-lg-flex">
       <div class="col-7">
         <div class="container">
@@ -35,16 +35,16 @@
         </div>
       </div>
       <div class="col-5 py-2">
-        <p class="display-5 mb-1" style="font-weight: bold">
+        <p class="display-6 mb-1" style="font-weight: bold">
           {{ publicacion.titulo }}
         </p>
         <h2 class="mb-4 text-secondary">
           Publicado el
           {{ publicacion.fecha | date : "dd 'de' MMMM 'del' yyyy" : "es" }}
         </h2>
-        <h1 class="price mb-4" style="font-weight: bold">
+        <h2 class="price mb-4" style="font-weight: bold">
           {{ publicacion.precio | currency : "MXN" }}
-        </h1>
+        </h2>
         <h2 class="mb-1">Descripcion</h2>
         <p class="description mb-4">
           {{ publicacion.descripcion }}
@@ -82,7 +82,7 @@
     </div>
     <div class="row d-flex d-lg-none">
       <div class="col-12">
-        <p class="display-5 mx-5 mb-4" style="font-weight: bold">
+        <p class="display-6 mx-5 mb-4" style="font-weight: bold">
           {{ publicacion.titulo }}
         </p>
       </div>
@@ -129,9 +129,9 @@
           Publicado el
           {{ publicacion.fecha | date : "dd 'de' MMMM 'del' yyyy" : "es" }}
         </h2>
-        <h1 class="price mb-4" style="font-weight: bold">
+        <h2 class="price mb-4" style="font-weight: bold">
           {{ publicacion.precio | currency : "MXN" }}
-        </h1>
+        </h2>
         <h2 class="mb-1">Descripcion</h2>
         <p class="description mb-4">
           {{ publicacion.descripcion }}
@@ -167,31 +167,35 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="container-fluid py-5" style="max-width: 1500px">
-    <div class="row">
+    <div class="row mt-5">
       <div class="col-12">
-        <p class="display-6 mb-1" style="font-weight: bold">
-          Nuestros usuarios también vieron:
-        </p>
-      </div>
-    </div>
-    <div class="row">
-      <div
-        class="col-12 col-md-4 col-lg-3 other-publicacion"
-        *ngFor="let otherPublicacion of otherPublicaciones"
-      >
-        <img
-          [src]="otherPublicacion.image"
-          class="img-thumbnail"
-          alt="Selected Image"
-        />
-        <p class="mb-0">
-          {{ otherPublicacion.name }}
-        </p>
-        <p>
-          <b>{{ otherPublicacion.price | currency : "MXN" }}</b>
-        </p>
+        <div class="container-fluid" style="max-width: 1500px">
+          <div class="row">
+            <div class="col-12">
+              <h1 class="mb-1" style="font-weight: bold">
+                Nuestros usuarios también vieron:
+              </h1>
+            </div>
+          </div>
+          <div class="row">
+            <div
+              class="col-12 col-md-4 col-lg-3 other-publicacion"
+              *ngFor="let otherPublicacion of otherPublicaciones"
+            >
+              <img
+                [src]="otherPublicacion.image"
+                class="img-thumbnail"
+                alt="Selected Image"
+              />
+              <p class="mb-0">
+                {{ otherPublicacion.name }}
+              </p>
+              <p>
+                <b>{{ otherPublicacion.price | currency : "MXN" }}</b>
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
