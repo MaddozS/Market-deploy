@@ -25,8 +25,6 @@ class PublicationsController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
-        
-        
         $publication = publication::create([
             'titulo' => $request->titulo,
             'descripcion' => $request->descripcion,
@@ -44,5 +42,29 @@ class PublicationsController extends Controller
         }
 
         return response()->json(['message' => 'Publication created']);
+    }
+
+    public function getPublication($idPublication)
+    {
+        $validator = Validator::make(['idPublication' => $idPublication], [
+            'idPublication' => 'required|integer|exists:publications,idPublicacion',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        $publication = publication::find($idPublication)
+            ->select('titulo', 'descripcion', 'precio')->first();
+        $publicationImages = publications_image::where('idPublicacion', $idPublication)->get();
+
+        $imagesURL = [];
+        foreach ($publicationImages as $imageData) {
+            $imageURL = Storage::disk('publications')->url($imageData['nombreArchivo']);
+            array_push($imagesURL, $imageURL);
+        }
+        $publication['images'] = $imagesURL;
+
+        return json_encode($publication, JSON_UNESCAPED_SLASHES);
     }
 }

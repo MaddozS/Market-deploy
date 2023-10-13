@@ -16,4 +16,5 @@ class publication extends Model
         'matriculaPublicador'
     ];
 
+    protected $primaryKey = 'idPublicacion';
 }

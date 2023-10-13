@@ -25,6 +25,7 @@ Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware(['auth:sanctum'])->group(function (){
     Route::post('publications/create', [PublicationsController::class, 'create']);
-    
+    Route::get('publications/{idPublication}', [PublicationsController::class, 'getPublication']);
+
     Route::post('logout', [AuthController::class, 'logout']);
 });
