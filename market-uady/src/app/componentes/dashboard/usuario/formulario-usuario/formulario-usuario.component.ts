@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { GeneralService } from 'src/app/servicios/general.service';
 
 @Component({
   selector: 'app-formulario-usuario',
@@ -6,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./formulario-usuario.component.css']
 })
 export class FormularioUsuarioComponent {
-
+  
 }
