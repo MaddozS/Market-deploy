@@ -1,84 +1,94 @@
 <header class="header"></header>
 <main class="main-body">
-  <h1 class="mt-3 title text-center">Publicar nuevo producto o servicio</h1>
-  <form class="form-publicacion">
-    <div class="mb-4">
-      <label for="title" class="form-label h5">Título</label>
-      <input type="email" class="form-control" id="title" />
-    </div>
-    <div class="mb-4">
-      <label for="description" class="form-label h5">Descripción</label>
-      <textarea class="form-control" id="description" rows="4"></textarea>
-    </div>
-
-    <div class="mb-4">
-      <label for="basic-url" class="form-label h5">Precio</label>
-      <div class="input-group">
-        <span class="input-group-text" id="basic-addon3">$</span>
-        <input
-          type="number"
-          class="form-control"
-          id="basic-url"
-          aria-describedby="basic-addon3 basic-addon4"
-        />
+  <div class="container-fluid py-5 form-wrapper">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="my-4 title text-center">
+          Publicar nuevo producto o servicio
+        </h1>
       </div>
-    </div>
-
-    <div class="input-group mb-4">
-      <label for="price" class="form-label h5">Categoria</label>
-      <div class="input-group">
-        <select
-          class="form-select"
-          aria-label="Default select example"
-          id="select"
-        >
-          <option selected>Haz click para abrir el menu</option>
-          <option value="producto">Producto</option>
-          <option value="servicio">Servicio</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- A file uploader with multiple files and show the files in a list -->
-    <div class="mb-4">
-      <label for="formFile" class="form-label h5">Cargar imágenes</label>
-      <input
-        class="form-control"
-        type="file"
-        id="formFile"
-        multiple
-        accept="image/*"
-        (change)="onImageSelected($event)"
-      />
-      <!-- file list -->
-      <div class="container text-center mt-4">
-        <div class="row">
-          <div
-            class="col-4"
-            *ngFor="let image of uploadedImages"
-            style="height: 150px"
-          >
-            <img
-              [src]="image"
-              class="img-thumbnail"
-              alt="Selected Image"
-              style="height: 100%"
-            />
+      <div class="col-12">
+        <form class="form-publicacion">
+          <div class="my-4">
+            <label for="title" class="form-label h5">Título</label>
+            <input type="email" class="form-control" id="title" />
           </div>
-        </div>
+          <div class="mb-4">
+            <label for="description" class="form-label h5">Descripción</label>
+            <textarea class="form-control" id="description" rows="4"></textarea>
+          </div>
+
+          <div class="mb-4">
+            <label for="basic-url" class="form-label h5">Precio</label>
+            <div class="input-group">
+              <span class="input-group-text" id="basic-addon3">$</span>
+              <input
+                type="number"
+                class="form-control"
+                id="basic-url"
+                aria-describedby="basic-addon3 basic-addon4"
+              />
+            </div>
+          </div>
+
+          <div class="input-group mb-4">
+            <label for="price" class="form-label h5">Categoria</label>
+            <div class="input-group">
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                id="select"
+              >
+                <option selected>Haz click para abrir el menu</option>
+                <option value="producto">Producto</option>
+                <option value="servicio">Servicio</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- A file uploader with multiple files and show the files in a list -->
+          <div class="mb-4">
+            <label for="formFile" class="form-label h5">Cargar imágenes</label>
+            <input
+              class="form-control"
+              type="file"
+              id="formFile"
+              multiple
+              accept="image/*"
+              (change)="onImageSelected($event)"
+            />
+            <!-- file list -->
+            <div class="container text-center mt-4">
+              <div class="row">
+                <div
+                  class="col-4"
+                  *ngFor="let image of uploadedImages"
+                  style="height: 150px"
+                >
+                  <img
+                    [src]="image"
+                    class="img-thumbnail"
+                    alt="Selected Image"
+                    style="height: 100%"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <button
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#modalSuccess"
+            >
+              Publicar
+            </button>
+          </div>
+        </form>
       </div>
     </div>
-
-    <div class="form-group">
-      <button
-        type="button"
-        data-bs-toggle="modal"
-        data-bs-target="#modalSuccess"
-      >
-        Publicar
-      </button>
-    </div>
-  </form>
+  </div>
 </main>
 
 <!-- Modal -->
