@@ -37,7 +37,7 @@ class PublicationsController extends Controller
             Storage::disk('publications')->put($filename, file_get_contents($imageFile));
             publications_image::create([
                 'nombreArchivo' => $filename,
-                'idPublicacion' => $publication->id
+                'idPublicacion' => $publication->idPublicacion
             ]);
         }
 
