@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\publication;
 use App\Models\publications_image;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -55,7 +56,16 @@ class PublicationsController extends Controller
         }
 
         $publication = publication::find($idPublication)
-            ->select('titulo', 'descripcion', 'precio')->first();
+            ->select('titulo', 'descripcion', 'precio', 'matriculaPublicador')->first();
+
+        $sellerData = User::where('matricula', $publication['matriculaPublicador'])
+            ->select('id', 'nombres', 'apellidos', 'idFacultad', 'nombreImagenPerfil', 'numeroContacto')->first();
+        $sellerProfileImg = Storage::disk('profile')->url($sellerData['nombreImagenPerfil']);
+        $sellerData['imagen'] = $sellerProfileImg;
+        unset($sellerData['nombreImagenPerfil']);
+        unset($publication['matriculaPublicador']);
+
+
         $publicationImages = publications_image::where('idPublicacion', $idPublication)->get();
 
         $imagesURL = [];
@@ -63,9 +73,13 @@ class PublicationsController extends Controller
             $imageURL = Storage::disk('publications')->url($imageData['nombreArchivo']);
             array_push($imagesURL, $imageURL);
         }
-        $publication['images'] = $imagesURL;
+        $publication['imagenes'] = $imagesURL;
+        $publicationInfo = [
+            "publicacion" => $publication,
+            "vendedor" => $sellerData
+        ];
 
-        return json_encode($publication, JSON_UNESCAPED_SLASHES);
+        return json_encode($publicationInfo, JSON_UNESCAPED_SLASHES);
     }
 
     public function update(Request $request)
