@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\publication;
 use App\Models\publications_image;
 use App\Models\User;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -59,7 +61,7 @@ class PublicationsController extends Controller
             ->select('titulo', 'descripcion', 'precio', 'matriculaPublicador')->first();
 
         $sellerData = User::where('matricula', $publication['matriculaPublicador'])
-            ->select('id', 'nombres', 'apellidos', 'idFacultad', 'nombreImagenPerfil', 'numeroContacto')->first();
+            ->select('matricula', 'nombres', 'apellidos', 'idFacultad', 'nombreImagenPerfil', 'numeroContacto')->first();
         $sellerProfileImg = Storage::disk('profile')->url($sellerData['nombreImagenPerfil']);
         $sellerData['imagen'] = $sellerProfileImg;
         unset($sellerData['nombreImagenPerfil']);
@@ -80,6 +82,32 @@ class PublicationsController extends Controller
         ];
 
         return json_encode($publicationInfo, JSON_UNESCAPED_SLASHES);
+    }
+
+    public function getSellerProfile($matricula)
+    {
+        $validator = Validator::make(['matricula' => $matricula], [
+            'matricula' => 'required|exists:users,matricula',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+        
+        DB::statement("SET SQL_MODE=''"); //! Se requiere para poder obtener la query
+        $sellerProfile = publication::rightJoin('publications_images', 'publications.idPublicacion', '=', 'publications_images.idPublicacion')
+                                ->whereNotNull('publications.idPublicacion')
+                                ->groupBy('publications.idPublicacion')
+                                ->where('publications.matriculaPublicador', '=', $matricula)
+                                ->select('publications.idPublicacion', 'titulo', 'precio', 'nombreArchivo')
+                                ->get();
+        foreach ($sellerProfile as $publicationData) {
+            $imageURL = Storage::disk('publications')->url($publicationData['nombreArchivo']);
+            $publicationData['image'] = $imageURL;
+            unset($publicationData['nombreArchivo']);
+        }
+
+        return json_encode($sellerProfile, JSON_UNESCAPED_SLASHES);
     }
 
     public function update(Request $request)
