@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommonInfoController;
 use App\Http\Controllers\PublicationsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,8 @@ Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware(['auth:sanctum'])->group(function (){
     Route::put('profile/update', [AuthController::class, 'update']);
+    
+    Route::get('filters', [CommonInfoController::class, 'getFilters']);
 
     Route::post('publications/create', [PublicationsController::class, 'create']);
     Route::get('publications', [PublicationsController::class, 'mainPage']);
