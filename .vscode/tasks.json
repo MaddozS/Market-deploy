@@ -1,0 +1,20 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run laravel",
+      "type": "shell",
+      "command": "cd Servidor; php artisan serve",
+      "windows": {
+        "command": "cd Servidor; php artisan serve"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    }
+  ]
+}

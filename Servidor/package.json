@@ -1,28 +1,13 @@
 {
-  "name": "servidor",
-  "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "scripts": {
-    "start": "nodemon server.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "bcrypt": "^5.1.0",
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "exceljs": "^4.3.0",
-    "express": "^4.18.2",
-    "express-myconnection": "^1.0.4",
-    "html-pdf-node": "^1.0.8",
-    "jsonwebtoken": "^9.0.0",
-    "mysql": "^2.18.1",
-    "nodemailer": "^6.9.2",
-    "qrcode": "^1.5.3"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.22"
-  }
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "axios": "^1.1.2",
+        "laravel-vite-plugin": "^0.8.0",
+        "vite": "^4.0.0"
+    }
 }
