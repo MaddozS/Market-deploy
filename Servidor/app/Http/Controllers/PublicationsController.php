@@ -131,6 +131,53 @@ class PublicationsController extends Controller
         return json_encode($publications, JSON_UNESCAPED_SLASHES);
     }
 
+    public function search(Request $request){
+        $validator = Validator::make($request->all(), [
+            'busqueda' => 'required|string',
+            'filtros' => 'array',
+            'filtros.*' => 'exists:facultades,idFacultad'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+        $busqueda = '%' . $request->busqueda . "%";
+
+        DB::statement("SET SQL_MODE=''"); //! Se requiere para poder obtener la query
+        
+        $publications = [];
+        if(isset($request->filtros)){
+            $publications = publication::rightJoin('publications_images', 'publications.idPublicacion', '=', 'publications_images.idPublicacion')
+                            ->join('users', 'users.matricula', '=', 'publications.matriculaPublicador')
+                            ->groupBy('publications.idPublicacion')
+                            ->orderBy('idPublicacion', 'desc')
+                            ->where('titulo', 'like', $busqueda)
+                            ->orWhere('descripcion', 'like', $busqueda)
+                            ->whereNotNull('publications.idPublicacion')
+                            ->whereIn('users.idFacultad', $request->filtros)
+                            ->select('publications.idPublicacion', 'titulo', 'precio', 'nombreArchivo')
+                            ->get();
+        }else{
+            $publications = publication::rightJoin('publications_images', 'publications.idPublicacion', '=', 'publications_images.idPublicacion')
+                                    ->whereNotNull('publications.idPublicacion')
+                                    ->groupBy('publications.idPublicacion')
+                                    ->orderBy('idPublicacion', 'desc')
+                                    ->where('titulo', 'like', $busqueda)
+                                    ->orWhere('descripcion', 'like', $busqueda)
+                                    ->select('publications.idPublicacion', 'titulo', 'precio', 'nombreArchivo', 'matriculaPublicador')
+                                    ->get();
+
+        }
+
+        foreach ($publications as $publicationData) {
+            $imageURL = Storage::disk('publications')->url($publicationData['nombreArchivo']);
+            $publicationData['image'] = $imageURL;
+            unset($publicationData['nombreArchivo']);
+        }
+
+        return json_encode($publications, JSON_UNESCAPED_SLASHES);
+    }
+
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
