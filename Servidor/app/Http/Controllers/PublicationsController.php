@@ -110,6 +110,27 @@ class PublicationsController extends Controller
         return json_encode($sellerProfile, JSON_UNESCAPED_SLASHES);
     }
 
+    public function mainPage(){
+        $idFacultad = auth()->user()->idFacultad;
+
+        DB::statement("SET SQL_MODE=''"); //! Se requiere para poder obtener la query
+        $publications = publication::rightJoin('publications_images', 'publications.idPublicacion', '=', 'publications_images.idPublicacion')
+                            ->join('users', 'users.matricula', '=', 'publications.matriculaPublicador')
+                            ->where('users.idFacultad', '=', $idFacultad)
+                            ->whereNotNull('publications.idPublicacion')
+                            ->groupBy('publications.idPublicacion')
+                            ->orderBy('idPublicacion', 'desc')
+                            ->select('publications.idPublicacion', 'titulo', 'precio', 'nombreArchivo')
+                            ->get();
+        foreach ($publications as $publicationData) {
+            $imageURL = Storage::disk('publications')->url($publicationData['nombreArchivo']);
+            $publicationData['image'] = $imageURL;
+            unset($publicationData['nombreArchivo']);
+        }
+
+        return json_encode($publications, JSON_UNESCAPED_SLASHES);
+    }
+
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [

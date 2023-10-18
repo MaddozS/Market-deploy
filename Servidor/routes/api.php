@@ -27,6 +27,7 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::put('profile/update', [AuthController::class, 'update']);
 
     Route::post('publications/create', [PublicationsController::class, 'create']);
+    Route::get('publications', [PublicationsController::class, 'mainPage']);
     Route::get('publications/{idPublication}', [PublicationsController::class, 'getPublication']);
     Route::get('publications/profile/{matricula}', [PublicationsController::class, 'getSellerProfile']);
     Route::put('publications', [PublicationsController::class, 'update']);
