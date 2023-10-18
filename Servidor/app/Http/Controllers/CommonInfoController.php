@@ -20,4 +20,10 @@ class CommonInfoController extends Controller
 
         return response()->json($filtersData);
     }
+
+    public function getFaculties()
+    {
+        $facultades = Facultade::select('idFacultad', 'nombre')->get();
+        return response()->json($facultades);
+    }
 }
