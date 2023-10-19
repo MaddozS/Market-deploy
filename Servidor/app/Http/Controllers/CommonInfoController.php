@@ -10,7 +10,7 @@ class CommonInfoController extends Controller
 {
     public function getFilters()
     {
-        $facultades = Facultade::select('idFacultad', 'nombre')->get();
+        $facultades = Facultade::select('idFacultad', 'nombre', 'idCampus')->get();
         $campus = Campu::select('idCampus', 'nombre')->get();
 
         $filtersData = [
