@@ -20,9 +20,12 @@ export class GeneralService {
 
   private getHeaders(): HttpHeaders {
 
+    let tokenString = `Bearer ${sessionStorage.getItem('token')}`;
+    let tokenWithoutQuotes = tokenString.replace(/^Bearer\s+"(.*?)"$/, 'Bearer $1');
+    
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+      'Authorization': tokenWithoutQuotes
     });
   }
 
@@ -30,11 +33,15 @@ export class GeneralService {
     return this.http.post('http://localhost:8000/api/login', data);
   }
 
- 
-
   guardarUsuario(usuario: any): Observable<any> {
     return this.http.post('http://localhost:8000/api/register', usuario);
   }
+
+  obtenerDatosFiltro(): Observable<any> {
+    console.log(this.getHeaders())
+    return this.http.get('http://localhost:8000/api/filters', { headers: this.getHeaders() });
+  }
+
 
   
 	

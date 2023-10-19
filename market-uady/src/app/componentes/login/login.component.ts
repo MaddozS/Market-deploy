@@ -96,9 +96,11 @@ export class LoginComponent {
 
     this.servicio.login(this.usuario).subscribe(
 
-      (response) => {
+       (response) => {
         this.mostrarAlerta("Sesión iniciada")
+
         this.crearItemsSessionStorage(response);
+       
         this.router.navigate(['dashboard/inicio']);
       },
       (error) => {
@@ -108,8 +110,9 @@ export class LoginComponent {
 
   }
 
-  crearItemsSessionStorage(response: any) {
+  crearItemsSessionStorage(response: any){
     this.storage.setItem('token', response.token);
     this.storage.setItem('token_type', response.token_type);
   }
+  
 }
