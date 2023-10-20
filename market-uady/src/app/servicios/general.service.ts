@@ -52,7 +52,10 @@ export class GeneralService {
 
   obtenerPublicacionesInicio(): Observable<any>{
     return this.http.get('http://localhost:8000/api/publications', { headers: this.getHeaders() });
+  }
 
+  obtenerFacultades():Observable<any>{
+    return this.http.get('http://localhost:8000/api/facultades', { headers: this.getHeaders() });
   }
 
 

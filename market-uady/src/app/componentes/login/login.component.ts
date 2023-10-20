@@ -15,6 +15,7 @@ export class LoginComponent {
   form!: FormGroup;
   login!: FormGroup;
   viewLogin!: boolean;
+  facultades: any = [];
   usuario: any = {};
   constructor(private servicio: GeneralService,
     private router: Router,
@@ -27,7 +28,7 @@ export class LoginComponent {
     this.form = new FormGroup({
       nombres: new FormControl(this.usuario.nombres, Validators.required),
       apellidos: new FormControl(this.usuario.apellidos, Validators.required),
-      correo: new FormControl(this.usuario.correo, Validators.required),
+      correo: new FormControl(this.usuario.correo,[ Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@alumnos.uady\.mx$/)]),
       idFacultad: new FormControl(this.usuario.idFacultad, Validators.required),
       numeroContacto: new FormControl(this.usuario.numeroContacto, Validators.required),
       password: new FormControl(this.usuario.password, Validators.required),
@@ -39,6 +40,16 @@ export class LoginComponent {
       correo: new FormControl(this.usuario.correo, Validators.required),
       password: new FormControl(this.usuario.password, Validators.required)
     });
+
+
+    this.servicio.obtenerFacultades().subscribe(
+(response)=>{
+this.facultades = response;
+},
+(error)=>{
+
+}
+    );
   }
 
   openRegister() {
