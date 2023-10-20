@@ -18,6 +18,7 @@ export class InicioComponent {
 
   campus: any = [];
   facultades: any = [];
+  publicaciones: any = [];
 
   constructor(private servicio: GeneralService) { }
 
@@ -34,22 +35,60 @@ export class InicioComponent {
         for (let index = 0; index < this.facultades.length; index++) {
           this.facultades[index].seleccionado = true;
         }
+       
       },
       (error) => {
         console.log(error);
       }
 
     )
+    this.servicio.obtenerPublicacionesInicio().subscribe(
+      (response)=>{
+        this.publicaciones= response;
+     
+      },
+      (error) =>{
+        console.log(error);
+      }
+    );
   }
 
-actualizarValoresFacultades(item: any, bandera:boolean){
-  const objetosFiltrados: any[] = this.facultades.filter((facultad: any) => {
-    return facultad.idCampus === item.idCampus && (facultad.seleccionado = bandera);
-  });
-}
+  actualizarValoresFacultades(item: any, bandera: boolean) {
+    const objetosFiltrados: any[] = this.facultades.filter((facultad: any) => {
+      return facultad.idCampus === item.idCampus && (facultad.seleccionado = bandera);
+    });
+    this.filtrarPublicaciones();
+  }
 
-actualizarValoresCampus(idCampus:any, idFacultad:any){
+  actualizarValoresCampus(idCampus: any, bandera: boolean) {
+    const campusSeleccionado: any = this.campus.find((campus: { idCampus: any; }) => campus.idCampus === idCampus);
+    if (bandera == false) {
+      campusSeleccionado.seleccionado = false;
+    } else {
+      const facultadesFiltradas: any[] = this.facultades.filter((facultad: { idCampus: any; }) => facultad.idCampus === idCampus);
+      const tienenMismoSeleccionado: boolean = facultadesFiltradas.every(facultad => facultad.seleccionado === true);
+      if (tienenMismoSeleccionado) {
+        campusSeleccionado.seleccionado = true;
+      }
+    }
+    this.filtrarPublicaciones();
+  }
+
+  filtrarPublicaciones() {
+    const facultadesFiltradas: any[] = this.facultades.filter((facultad: any) => facultad.seleccionado === true);
+    const idFacultadesFiltradas: number[] = facultadesFiltradas.map((facultad: any) => facultad.idFacultad);
   
-}
+    this.servicio.obtenerPublicacionesFiltrado(idFacultadesFiltradas).subscribe(
+
+      (response) => {
+        this.publicaciones = response;
+      
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+  }
+
 
 }
