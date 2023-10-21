@@ -137,7 +137,7 @@ class PublicationsController extends Controller
 
     public function search(Request $request){
         $validator = Validator::make($request->all(), [
-            'busqueda' => 'required|string',
+            'busqueda' => 'string',
             'filtros' => 'array',
             'filtros.*' => 'exists:facultades,idFacultad'
         ]);
@@ -145,33 +145,28 @@ class PublicationsController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-        $busqueda = '%' . $request->busqueda . "%";
+        
 
         DB::statement("SET SQL_MODE=''"); //! Se requiere para poder obtener la query
         
-        $publications = [];
-        if(isset($request->filtros)){
-            $publications = publication::rightJoin('publications_images', 'publications.idPublicacion', '=', 'publications_images.idPublicacion')
-                            ->join('users', 'users.matricula', '=', 'publications.matriculaPublicador')
-                            ->groupBy('publications.idPublicacion')
-                            ->orderBy('idPublicacion', 'desc')
-                            ->where('titulo', 'like', $busqueda)
-                            ->orWhere('descripcion', 'like', $busqueda)
-                            ->whereNotNull('publications.idPublicacion')
-                            ->whereIn('users.idFacultad', $request->filtros)
-                            ->select('publications.idPublicacion', 'titulo', 'precio', 'nombreArchivo')
-                            ->get();
-        }else{
-            $publications = publication::rightJoin('publications_images', 'publications.idPublicacion', '=', 'publications_images.idPublicacion')
-                                    ->whereNotNull('publications.idPublicacion')
-                                    ->groupBy('publications.idPublicacion')
-                                    ->orderBy('idPublicacion', 'desc')
-                                    ->where('titulo', 'like', $busqueda)
-                                    ->orWhere('descripcion', 'like', $busqueda)
-                                    ->select('publications.idPublicacion', 'titulo', 'precio', 'nombreArchivo', 'matriculaPublicador')
-                                    ->get();
+        $query = publication::rightJoin('publications_images', 'publications.idPublicacion', '=', 'publications_images.idPublicacion')
+                ->groupBy('publications.idPublicacion')
+                ->orderBy('idPublicacion', 'desc')
+                ->whereNotNull('publications.idPublicacion')
+                ->select('publications.idPublicacion', 'titulo', 'precio', 'nombreArchivo');
 
+        if(isset($request->busqueda)){
+            $busqueda = '%' . $request->busqueda . "%";
+            $query->where('titulo', 'like', $busqueda)
+                  ->orWhere('descripcion', 'like', $busqueda);
         }
+        
+        if(isset($request->filtros)){
+            $publications = $query->join('users', 'users.matricula', '=', 'publications.matriculaPublicador')
+                            ->whereIn('users.idFacultad', $request->filtros);
+        }
+
+        $publications = $query->get();
 
         foreach ($publications as $publicationData) {
             $imageURL = Storage::disk('publications')->url($publicationData['nombreArchivo']);
