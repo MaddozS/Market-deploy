@@ -128,7 +128,11 @@ class PublicationsController extends Controller
             unset($publicationData['nombreArchivo']);
         }
 
-        return json_encode($publications, JSON_UNESCAPED_SLASHES);
+        $data = [
+            "publicaciones" => $publications,
+            "idFacultadUsuario" => $idFacultad
+        ];
+        return json_encode($data, JSON_UNESCAPED_SLASHES);
     }
 
     public function search(Request $request){
