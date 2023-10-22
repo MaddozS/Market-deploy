@@ -15,6 +15,21 @@
       "runOptions": {
         "runOn": "folderOpen"
       }
+    },
+        {
+      "label": "Run angular",
+      "type": "shell",
+      "command": "cd market-uady; ng serve --o",
+      "windows": {
+        "command": "cd market-uady; ng serve --o"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
     }
   ]
 }
