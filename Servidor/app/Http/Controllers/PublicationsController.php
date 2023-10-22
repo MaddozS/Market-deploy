@@ -154,17 +154,18 @@ class PublicationsController extends Controller
                 ->orderBy('idPublicacion', 'desc')
                 ->whereNotNull('publications.idPublicacion')
                 ->select('publications.idPublicacion', 'titulo', 'precio', 'nombreArchivo');
-
+                
+        if(isset($request->filtros)){
+            $publications = $query->join('users', 'users.matricula', '=', 'publications.matriculaPublicador')
+                            ->whereIn('users.idFacultad', $request->filtros);
+        }
+        
         if(isset($request->busqueda)){
             $busqueda = '%' . $request->busqueda . "%";
             $query->where('titulo', 'like', $busqueda)
                   ->orWhere('descripcion', 'like', $busqueda);
         }
         
-        if(isset($request->filtros)){
-            $publications = $query->join('users', 'users.matricula', '=', 'publications.matriculaPublicador')
-                            ->whereIn('users.idFacultad', $request->filtros);
-        }
 
         $publications = $query->get();
 
