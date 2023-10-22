@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PublicationsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +18,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+
+Route::middleware(['auth:sanctum'])->group(function (){
+    Route::put('profile/update', [AuthController::class, 'update']);
+
+    Route::post('publications/create', [PublicationsController::class, 'create']);
+    Route::get('publications/{idPublication}', [PublicationsController::class, 'getPublication']);
+    Route::put('publications', [PublicationsController::class, 'update']);
+    Route::delete('publications/{idPublication}', [PublicationsController::class, 'delete']);
+
+    Route::post('logout', [AuthController::class, 'logout']);
 });
