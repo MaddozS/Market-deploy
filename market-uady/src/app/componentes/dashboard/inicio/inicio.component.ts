@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
+import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { GeneralService } from 'src/app/servicios/general.service';
 
 export interface Task {
@@ -19,6 +20,9 @@ export class InicioComponent {
   campus: any = [];
   facultades: any = [];
   publicaciones: any = [];
+  busqueda:any='';
+  spinner:any=true;
+  body:any = {};
 
   constructor(private servicio: GeneralService) { }
 
@@ -29,11 +33,11 @@ export class InicioComponent {
         this.campus = response.campus;
         this.facultades = response.facultades;
         for (let index = 0; index < this.campus.length; index++) {
-          this.campus[index].seleccionado = true;
+          this.campus[index].seleccionado = false;
         }
 
         for (let index = 0; index < this.facultades.length; index++) {
-          this.facultades[index].seleccionado = true;
+          this.facultades[index].seleccionado = false;
         }
        
       },
@@ -44,7 +48,11 @@ export class InicioComponent {
     )
     this.servicio.obtenerPublicacionesInicio().subscribe(
       (response)=>{
-        this.publicaciones= response;
+       
+        this.publicaciones= response.publicaciones;
+        const facultadSeleccionada: any = this.facultades.find((facultad: { idFacultad: any; }) => facultad.idFacultad === response.idFacultadUsuario);
+        facultadSeleccionada.seleccionado = true;
+        this.actualizarValoresCampus(facultadSeleccionada.idCampus, true);
      
       },
       (error) =>{
@@ -61,6 +69,7 @@ export class InicioComponent {
   }
 
   actualizarValoresCampus(idCampus: any, bandera: boolean) {
+   
     const campusSeleccionado: any = this.campus.find((campus: { idCampus: any; }) => campus.idCampus === idCampus);
     if (bandera == false) {
       campusSeleccionado.seleccionado = false;
@@ -72,23 +81,31 @@ export class InicioComponent {
       }
     }
     this.filtrarPublicaciones();
+  
   }
 
   filtrarPublicaciones() {
+
+    this.spinner=true;
     const facultadesFiltradas: any[] = this.facultades.filter((facultad: any) => facultad.seleccionado === true);
     const idFacultadesFiltradas: number[] = facultadesFiltradas.map((facultad: any) => facultad.idFacultad);
-  
-    this.servicio.obtenerPublicacionesFiltrado(idFacultadesFiltradas).subscribe(
+    this.body = {};
+  if(this.busqueda.length!=0){
+    this.body.busqueda = this.busqueda;
+  }
+    this.body.filtros=idFacultadesFiltradas;
+    this.servicio.obtenerPublicacionesFiltrado(this.body).subscribe(
 
       (response) => {
         this.publicaciones = response;
-      
+        this.spinner=false;
       },
       (error) => {
         console.log(error);
+        this.spinner=false;
       }
     )
+    
   }
-
 
 }

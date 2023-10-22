@@ -13,8 +13,17 @@
 </div>
 <div class="contenedor">
   <div class="filtros container">
-    <h4>Filtros</h4>
-    <h5>Filtrar por campus</h5>
+    <h3>Filtros</h3>
+    <h4>Filtrar por título</h4>
+    <div class="form-group col-12">
+      <input   type="text"
+      form class="form-control"
+      autocomplete="off"
+      [(ngModel)]="busqueda"
+      (ngModelChange)="filtrarPublicaciones()"
+ />
+    </div>
+    <h4>Filtrar por campus</h4>
     <cdk-virtual-scroll-viewport itemSize="50" class="scrollFiltro">
       <div *ngFor="let item of campus">
         <input
@@ -23,12 +32,12 @@
           [(ngModel)]="item.seleccionado"
           (ngModelChange)="actualizarValoresFacultades(item, item.seleccionado)"
         />
-        <label class="form-check-label" for="flexCheckChecked">
+        <label class="form-check-label" >
           {{ item.nombre }}
         </label>
       </div>
     </cdk-virtual-scroll-viewport>
-    <h5>Filtrar por facultad</h5>
+    <h4>Filtrar por facultad</h4>
     <cdk-virtual-scroll-viewport itemSize="50" class="scrollFiltro">
       <div *ngFor="let item of facultades">
         <input
@@ -45,9 +54,19 @@
       </div>
     </cdk-virtual-scroll-viewport>
   </div>
-  <div></div>
-  <cdk-virtual-scroll-viewport itemSize="50" class="scroll">
+<div class="container">
+  <div *ngIf="spinner==true" class="spinnerPadre">
+    <div class="text-center spinnerHijo">
+      <div class="spinner-border " role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="publicaciones.length==0 && spinner!=true" class="spinnerPadre">
+ <h1>SIN PUBLICACIONES</h1> 
+  </div>
 
+  <cdk-virtual-scroll-viewport itemSize="50" class="scroll" *ngIf="spinner==false && publicaciones.length!=0">
     <div class="lista-articulos">
       <div class="item" *ngFor="let item of publicaciones">
         <div class="imagen">
@@ -58,4 +77,6 @@
       </div>
     </div>
   </cdk-virtual-scroll-viewport>
+</div>
+ 
 </div>

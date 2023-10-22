@@ -40,13 +40,8 @@ export class GeneralService {
   obtenerDatosFiltro(): Observable<any> {
     return this.http.get('http://localhost:8000/api/filters', { headers: this.getHeaders() });
   }
-   obtenerPublicacionesFiltrado(filtros:any): Observable<any> {
-    
-    const body = {
-      busqueda: 'Prueba de creacion publicacion',
-      filtros: filtros
-    };
-  
+   obtenerPublicacionesFiltrado(body:any): Observable<any> {
+
     return this.http.post('http://localhost:8000/api/publications/search',  body, { headers: this.getHeaders() });
   }
 
