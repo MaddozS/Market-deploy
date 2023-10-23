@@ -16,7 +16,7 @@ class CampusSeeder extends Seeder
         $data = [
             ['idCampus' => 1, 'nombre'=> 'Arquitectura, Hábitat, Arte y Diseño'],
             ['idCampus' => 2, 'nombre'=> 'Ciencias Biológicas y Agropecuarias'],
-            ['idCampus' => 3, 'nombre'=> 'Ciencias de la Salud\r\n'],
+            ['idCampus' => 3, 'nombre'=> 'Ciencias de la Salud'],
             ['idCampus' => 4, 'nombre'=> 'Ciencias Sociales, Económico-Administrativas y Humanidades'],
             ['idCampus' => 5, 'nombre'=> 'Ciencias Exactas e Ingenierías'],
             ['idCampus' => 6, 'nombre'=> 'Unidad Multidisciplinaria Tizimín'],
