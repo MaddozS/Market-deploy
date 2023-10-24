@@ -8,7 +8,7 @@ import {NgFor} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { PublicacionComponent } from './publicacion/publicacion.component';
 import { InicioComponent } from './inicio/inicio.component';
-
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -23,7 +23,8 @@ import { InicioComponent } from './inicio/inicio.component';
     MatCheckboxModule,
     NgFor,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatProgressSpinnerModule
   ]
 })
 export class DashboardModule { }
