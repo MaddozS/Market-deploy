@@ -11,12 +11,12 @@ import { StorageService } from 'src/app/servicios/storage.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  formData = new FormData();
   form!: FormGroup;
   login!: FormGroup;
   viewLogin!: boolean;
   facultades: any = [];
   usuario: any = {};
+  file!: File;
   constructor(
     private servicio: GeneralService,
     private router: Router,
@@ -28,25 +28,13 @@ export class LoginComponent {
     this.form = new FormGroup({
       nombres: new FormControl(this.usuario.nombres, Validators.required),
       apellidos: new FormControl(this.usuario.apellidos, Validators.required),
-      correo: new FormControl(this.usuario.correo, [
-        Validators.required,
-        Validators.pattern(/^[a-zA-Z0-9._%+-]+@alumnos.uady\.mx$/),
-      ]),
+      correo: new FormControl(this.usuario.correo, [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@alumnos.uady\.mx$/)]),
       idFacultad: new FormControl(this.usuario.idFacultad, Validators.required),
-      numeroContacto: new FormControl(
-        this.usuario.numeroContacto,
-        Validators.required
-      ),
+      numeroContacto: new FormControl(this.usuario.numeroContacto, Validators.required),
       password: new FormControl(this.usuario.password, Validators.required),
-      passwordConfirmado: new FormControl(
-        this.usuario.passwordConfirmado,
-        Validators.required
-      ),
+      passwordConfirmado: new FormControl(this.usuario.passwordConfirmado, Validators.required),
       matricula: new FormControl(this.usuario.matricula, Validators.required),
-      imagenPerfil: new FormControl(
-        this.usuario.imagenPerfil,
-        Validators.required
-      ),
+      imagenPerfil: new FormControl(this.usuario.imagenPerfil, Validators.required),
     });
     this.login = new FormGroup({
       correo: new FormControl(this.usuario.correo, Validators.required),
@@ -65,16 +53,18 @@ export class LoginComponent {
     this.viewLogin = false;
   }
   guardarUsuario() {
+    const formData = new FormData();
     if (this.usuario.password == this.usuario.passwordConfirmado) {
-      this.formData.append('nombres', this.usuario.nombres);
-      this.formData.append('apellidos', this.usuario.apellidos);
-      this.formData.append('idFacultad', this.usuario.idFacultad);
-      this.formData.append('correo', this.usuario.correo);
-      this.formData.append('matricula', this.usuario.matricula);
-      this.formData.append('numeroContacto', this.usuario.numeroContacto);
-      this.formData.append('password', this.usuario.password);
+      formData.append('nombres', this.usuario.nombres);
+      formData.append('apellidos', this.usuario.apellidos);
+      formData.append('idFacultad', this.usuario.idFacultad);
+      formData.append('correo', this.usuario.correo);
+      formData.append('matricula', this.usuario.matricula);
+      formData.append('numeroContacto', this.usuario.numeroContacto);
+      formData.append('password', this.usuario.password);
+      formData.append('imagenPerfil', this.file, this.file.name);
 
-      this.servicio.guardarUsuario(this.formData).subscribe(
+      this.servicio.guardarUsuario(formData).subscribe(
         (response) => {
           this.mostrarAlerta('Usuario creado');
           this.crearItemsSessionStorage(response);
@@ -92,9 +82,7 @@ export class LoginComponent {
   }
 
   onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-
-    this.formData.append('imagenPerfil', file, file.name);
+    this.file = event.target.files[0];
   }
 
   mostrarAlerta(mensaje: any) {
