@@ -8,7 +8,7 @@ import { StorageService } from 'src/app/servicios/storage.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
   formData = new FormData();
@@ -17,38 +17,47 @@ export class LoginComponent {
   viewLogin!: boolean;
   facultades: any = [];
   usuario: any = {};
-  constructor(private servicio: GeneralService,
+  constructor(
+    private servicio: GeneralService,
     private router: Router,
     private storage: StorageService,
-    private _snackBar: MatSnackBar,) {
-
-  }
+    private _snackBar: MatSnackBar
+  ) {}
   ngOnInit() {
     this.viewLogin = true;
     this.form = new FormGroup({
       nombres: new FormControl(this.usuario.nombres, Validators.required),
       apellidos: new FormControl(this.usuario.apellidos, Validators.required),
-      correo: new FormControl(this.usuario.correo,[ Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@alumnos.uady\.mx$/)]),
+      correo: new FormControl(this.usuario.correo, [
+        Validators.required,
+        Validators.pattern(/^[a-zA-Z0-9._%+-]+@alumnos.uady\.mx$/),
+      ]),
       idFacultad: new FormControl(this.usuario.idFacultad, Validators.required),
-      numeroContacto: new FormControl(this.usuario.numeroContacto, Validators.required),
+      numeroContacto: new FormControl(
+        this.usuario.numeroContacto,
+        Validators.required
+      ),
       password: new FormControl(this.usuario.password, Validators.required),
-      passwordConfirmado: new FormControl(this.usuario.passwordConfirmado, Validators.required),
+      passwordConfirmado: new FormControl(
+        this.usuario.passwordConfirmado,
+        Validators.required
+      ),
       matricula: new FormControl(this.usuario.matricula, Validators.required),
-      imagenPerfil: new FormControl(this.usuario.imagenPerfil, Validators.required)
+      imagenPerfil: new FormControl(
+        this.usuario.imagenPerfil,
+        Validators.required
+      ),
     });
     this.login = new FormGroup({
       correo: new FormControl(this.usuario.correo, Validators.required),
-      password: new FormControl(this.usuario.password, Validators.required)
+      password: new FormControl(this.usuario.password, Validators.required),
     });
 
-
     this.servicio.obtenerFacultades().subscribe(
-(response)=>{
-this.facultades = response;
-},
-(error)=>{
-
-}
+      (response) => {
+        this.facultades = response;
+      },
+      (error) => {}
     );
   }
 
@@ -56,7 +65,6 @@ this.facultades = response;
     this.viewLogin = false;
   }
   guardarUsuario() {
-
     if (this.usuario.password == this.usuario.passwordConfirmado) {
       this.formData.append('nombres', this.usuario.nombres);
       this.formData.append('apellidos', this.usuario.apellidos);
@@ -66,30 +74,27 @@ this.facultades = response;
       this.formData.append('numeroContacto', this.usuario.numeroContacto);
       this.formData.append('password', this.usuario.password);
 
-
       this.servicio.guardarUsuario(this.formData).subscribe(
         (response) => {
-          this.mostrarAlerta("Usuario creado");
+          this.mostrarAlerta('Usuario creado');
           this.crearItemsSessionStorage(response);
           this.router.navigate(['dashboard/inicio']);
         },
         (error) => {
-          this.mostrarAlerta("Error al crear el usuario");
+          this.mostrarAlerta('Error al crear el usuario');
         }
-      )
+      );
     } else {
-      this.mostrarAlerta("Las contraseñas no son iguales");
+      this.mostrarAlerta('Las contraseñas no son iguales');
     }
-
+    // Resetear el formulario
+    this.form.reset();
   }
-
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
 
     this.formData.append('imagenPerfil', file, file.name);
-
-
   }
 
   mostrarAlerta(mensaje: any) {
@@ -104,26 +109,22 @@ this.facultades = response;
     this.viewLogin = true;
   }
   ingresar() {
-
     this.servicio.login(this.usuario).subscribe(
-
-       (response) => {
-        this.mostrarAlerta("Sesión iniciada")
+      (response) => {
+        this.mostrarAlerta('Sesión iniciada');
 
         this.crearItemsSessionStorage(response);
-       
+
         this.router.navigate(['dashboard/inicio']);
       },
       (error) => {
-        this.mostrarAlerta("Usuario y/o contraseña incorrectos")
+        this.mostrarAlerta('Usuario y/o contraseña incorrectos');
       }
     );
-
   }
 
-  crearItemsSessionStorage(response: any){
+  crearItemsSessionStorage(response: any) {
     this.storage.setItem('token', response.token);
     this.storage.setItem('token_type', response.token_type);
   }
-  
 }
