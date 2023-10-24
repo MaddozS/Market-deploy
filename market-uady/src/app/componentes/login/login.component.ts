@@ -11,12 +11,13 @@ import { StorageService } from 'src/app/servicios/storage.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  formData = new FormData();
+  
   form!: FormGroup;
   login!: FormGroup;
   viewLogin!: boolean;
   facultades: any = [];
   usuario: any = {};
+  file!: File;
   constructor(private servicio: GeneralService,
     private router: Router,
     private storage: StorageService,
@@ -56,18 +57,18 @@ this.facultades = response;
     this.viewLogin = false;
   }
   guardarUsuario() {
-
+    const formData = new FormData();
     if (this.usuario.password == this.usuario.passwordConfirmado) {
-      this.formData.append('nombres', this.usuario.nombres);
-      this.formData.append('apellidos', this.usuario.apellidos);
-      this.formData.append('idFacultad', this.usuario.idFacultad);
-      this.formData.append('correo', this.usuario.correo);
-      this.formData.append('matricula', this.usuario.matricula);
-      this.formData.append('numeroContacto', this.usuario.numeroContacto);
-      this.formData.append('password', this.usuario.password);
+      formData.append('nombres', this.usuario.nombres);
+      formData.append('apellidos', this.usuario.apellidos);
+      formData.append('idFacultad', this.usuario.idFacultad);
+      formData.append('correo', this.usuario.correo);
+      formData.append('matricula', this.usuario.matricula);
+      formData.append('numeroContacto', this.usuario.numeroContacto);
+      formData.append('password', this.usuario.password);
+      formData.append('imagenPerfil', this.file, this.file.name);
 
-
-      this.servicio.guardarUsuario(this.formData).subscribe(
+      this.servicio.guardarUsuario(formData).subscribe(
         (response) => {
           this.mostrarAlerta("Usuario creado");
           this.crearItemsSessionStorage(response);
@@ -85,10 +86,7 @@ this.facultades = response;
 
 
   onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-
-    this.formData.append('imagenPerfil', file, file.name);
-
+  this.file= event.target.files[0];
 
   }
 
