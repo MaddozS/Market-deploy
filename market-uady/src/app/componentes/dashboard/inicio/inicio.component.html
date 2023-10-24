@@ -2,14 +2,9 @@
 <div class="fondo">
   <div class="anuncio">
     <div class="pregunta">¿Quieres vender un producto o servicio?</div>
-    <div class="texto">
-      En Market-UADY además de comprar, también puedes publicar tu
-      emprendimiento
-    </div>
+    <div class="texto">En Market-UADY además de comprar, también puedes publicar tu emprendimiento</div>
     <div class="buttonEmpezar">
-      <a class="btn" href="/dashboard/publicacion/formulario-publicacion"
-        >Empezar</a
-      >
+      <a class="btn" href="/dashboard/publicacion/formulario-publicacion">Empezar</a>
     </div>
   </div>
 </div>
@@ -18,14 +13,7 @@
     <h3>Filtros</h3>
     <h4>Filtrar por título</h4>
     <div class="form-group col-12">
-      <input
-        type="text"
-        form
-        class="form-control"
-        autocomplete="off"
-        [(ngModel)]="busqueda"
-        (ngModelChange)="filtrarPublicaciones()"
-      />
+      <input type="text" form class="form-control" autocomplete="off" [(ngModel)]="busqueda" (ngModelChange)="filtrarPublicaciones()" />
     </div>
     <h4>Filtrar por campus</h4>
     <cdk-virtual-scroll-viewport itemSize="50" class="scrollFiltro">
@@ -34,8 +22,7 @@
           class="form-check-input"
           type="checkbox"
           [(ngModel)]="item.seleccionado"
-          (ngModelChange)="actualizarValoresFacultades(item, item.seleccionado)"
-        />
+          (ngModelChange)="actualizarValoresFacultades(item, item.seleccionado)" />
         <label class="form-check-label">
           {{ item.nombre }}
         </label>
@@ -48,10 +35,7 @@
           class="form-check-input"
           type="checkbox"
           [(ngModel)]="item.seleccionado"
-          (ngModelChange)="
-            actualizarValoresCampus(item.idCampus, item.seleccionado)
-          "
-        />
+          (ngModelChange)="actualizarValoresCampus(item.idCampus, item.seleccionado)" />
         <label class="form-check-label">
           {{ item.nombre }}
         </label>
@@ -66,18 +50,11 @@
         </div>
       </div>
     </div>
-    <div
-      *ngIf="publicaciones.length == 0 && spinner != true"
-      class="spinnerPadre"
-    >
+    <div *ngIf="publicaciones.length == 0 && spinner != true" class="spinnerPadre">
       <h1>SIN PUBLICACIONES</h1>
     </div>
 
-    <cdk-virtual-scroll-viewport
-      itemSize="50"
-      class="scroll"
-      *ngIf="spinner == false && publicaciones.length != 0"
-    >
+    <cdk-virtual-scroll-viewport itemSize="50" class="scroll" *ngIf="spinner == false && publicaciones.length != 0">
       <div class="lista-articulos">
         <div class="item" *ngFor="let item of publicaciones">
           <div class="imagen">
