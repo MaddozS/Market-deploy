@@ -3,19 +3,23 @@
   <div class="container-fluid py-5 form-wrapper">
     <div class="row">
       <div class="col-12">
-        <h1 class="my-4 title text-center">
-          Publicar nuevo producto o servicio
-        </h1>
+        <h1 class="my-4 title text-center">Publicar nuevo producto o servicio</h1>
       </div>
       <div class="col-12">
-        <form class="form-publicacion">
+        <form class="form-publicacion" [formGroup]="form" (ngSubmit)="guardarPublicacion()" enctype="multipart/form-data">
           <div class="my-4">
             <label for="title" class="form-label h5">Título</label>
-            <input type="email" class="form-control" id="title" />
+            <input form class="form-control" id="title" autocomplete="off" formControlName="titulo" [(ngModel)]="publicacion.titulo" />
           </div>
           <div class="mb-4">
             <label for="description" class="form-label h5">Descripción</label>
-            <textarea class="form-control" id="description" rows="4"></textarea>
+            <textarea
+              form
+              class="form-control"
+              id="description"
+              rows="4"
+              formControlName="descripcion"
+              [(ngModel)]="publicacion.descripcion"></textarea>
           </div>
 
           <div class="mb-4">
@@ -23,22 +27,20 @@
             <div class="input-group">
               <span class="input-group-text" id="basic-addon3">$</span>
               <input
+                form
                 type="number"
                 class="form-control"
                 id="basic-url"
                 aria-describedby="basic-addon3 basic-addon4"
-              />
+                formControlName="precio"
+                [(ngModel)]="publicacion.precio" />
             </div>
           </div>
 
           <div class="input-group mb-4">
             <label for="price" class="form-label h5">Categoria</label>
             <div class="input-group">
-              <select
-                class="form-select"
-                aria-label="Default select example"
-                id="select"
-              >
+              <select form class="form-select" id="select" formControlName="categoria" [(ngModel)]="publicacion.categoria">
                 <option selected>Haz click para abrir el menu</option>
                 <option value="producto">Producto</option>
                 <option value="servicio">Servicio</option>
@@ -50,40 +52,28 @@
           <div class="mb-4">
             <label for="formFile" class="form-label h5">Cargar imágenes</label>
             <input
+              form
               class="form-control"
               type="file"
               id="formFile"
               multiple
               accept="image/*"
               (change)="onImageSelected($event)"
-            />
+              formControlName="imagenes"
+              [(ngModel)]="publicacion.imagenes" />
             <!-- file list -->
             <div class="container text-center mt-4">
-              <div class="row">
-                <div
-                  class="col-4"
-                  *ngFor="let image of uploadedImages"
-                  style="height: 150px"
-                >
-                  <img
-                    [src]="image"
-                    class="img-thumbnail"
-                    alt="Selected Image"
-                    style="height: 100%"
-                  />
+              <div class="row justify-content-center g-2">
+                <div class="col-6" *ngFor="let image of uploadedImages" style="height: 200px" style="position: relative">
+                  <img [src]="image" class="img-thumbnail" alt="Selected Image" style="height: 100%" />
+                  <button type="button" class="btn-close" aria-label="Close" (click)="removeImage(image)"></button>
                 </div>
               </div>
             </div>
           </div>
 
           <div class="form-group">
-            <button
-              type="button"
-              data-bs-toggle="modal"
-              data-bs-target="#modalSuccess"
-            >
-              Publicar
-            </button>
+            <button type="submit button" class="btn btn-dark" [disabled]="form.invalid">Publicar</button>
           </div>
         </form>
       </div>
@@ -92,35 +82,17 @@
 </main>
 
 <!-- Modal -->
-<div
-  class="modal fade"
-  id="modalSuccess"
-  tabindex="-1"
-  aria-labelledby="modalProductoLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="modalSuccess" tabindex="-1" aria-labelledby="modalProductoLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="modalProductoLabel">
-          Producto o servicio publicado
-        </h1>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
+        <h1 class="modal-title fs-5" id="modalProductoLabel">Producto o servicio publicado</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        Se ha publicado tu producto o servicio exitósamente, puedes verlo en la
-        sección de publicaciones.
-      </div>
+      <div class="modal-body">Se ha publicado tu producto o servicio exitósamente, puedes verlo en la sección de publicaciones.</div>
       <div class="modal-footer">
         <!-- <button type="button" clas s="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button> -->
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-          Ok
-        </button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
       </div>
     </div>
   </div>

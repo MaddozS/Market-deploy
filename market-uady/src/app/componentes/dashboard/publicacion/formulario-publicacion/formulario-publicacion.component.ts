@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { GeneralService } from 'src/app/servicios/general.service';
+import { Publicacion } from 'src/app/types';
 
 @Component({
   selector: 'app-formulario-publicacion',
@@ -6,7 +9,28 @@ import { Component } from '@angular/core';
   styleUrls: ['./formulario-publicacion.component.css'],
 })
 export class FormularioPublicacionComponent {
+  form!: FormGroup;
   uploadedImages: string[] = [];
+  files: File[] = [];
+  publicacion: Publicacion = {
+    imagenes: [],
+    titulo: '',
+    descripcion: '',
+    precio: 0,
+    categoria: 'producto',
+  };
+
+  constructor(private servicio: GeneralService) {}
+
+  ngOnInit() {
+    this.form = new FormGroup({
+      imagenes: new FormControl(this.publicacion.imagenes, Validators.required),
+      titulo: new FormControl(this.publicacion.titulo, Validators.required),
+      descripcion: new FormControl(this.publicacion.descripcion, Validators.required),
+      precio: new FormControl(this.publicacion.precio, [Validators.required, Validators.min(0)]),
+      categoria: new FormControl(this.publicacion.categoria, Validators.required),
+    });
+  }
 
   onImageSelected(event: any) {
     const files = event.target.files;
@@ -17,13 +41,25 @@ export class FormularioPublicacionComponent {
           this.uploadedImages.push(e.target.result);
         };
         reader.readAsDataURL(files[i]);
+        this.files.push(files[i]);
       }
     }
   }
 
-  uploadImages() {
-    // You can implement image upload logic here, e.g., using a service.
-    // Clear the file input after uploading
-    this.uploadedImages = [];
+  guardarPublicacion() {
+    this.servicio.crearPublicacion(this.publicacion, this.files).subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+  }
+
+  removeImage(image: string) {
+    const index = this.uploadedImages.indexOf(image);
+    this.uploadedImages.splice(index, 1);
+    this.files.splice(index, 1);
   }
 }
