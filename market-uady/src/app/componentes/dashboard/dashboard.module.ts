@@ -9,12 +9,14 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { PublicacionComponent } from './publicacion/publicacion.component';
 import { InicioComponent } from './inicio/inicio.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { HeaderComponent } from '../header/header.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
     PublicacionComponent,
-    InicioComponent
+    InicioComponent,
+    HeaderComponent
   ],
   imports: [
     CommonModule,
@@ -24,7 +26,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     NgFor,
     FormsModule,
     ReactiveFormsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    
   ]
 })
 export class DashboardModule { }

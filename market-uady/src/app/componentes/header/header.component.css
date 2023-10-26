@@ -1,0 +1,54 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    padding: 10px;
+    height: 10vh;
+  }
+  
+  .social-icons .mdi {
+    color: black;
+    padding: 5px;
+  }
+  
+  .logo img {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-right: 40px;
+  }
+  
+  .rounded {
+    border-radius: 50%;
+  }
+  
+  .FondoN {
+    background-color: #e9b776;
+    color: rgb(0, 0, 0);
+    padding-bottom: 20px;
+    margin-bottom: 100px;
+  }
+  
+  .titulo-superior {
+    text-align: center; /* Centra el texto horizontalmente */
+    font-weight: normal; /* Quita la negrita */
+    font-family: "Arial, Helvetica, sans-serif"; /* Establece la fuente a Arial y fuentes alternativas si es necesario */
+  }
+  
+  
+  
+  .footer {
+    background-color: #e9b776;
+    color: white;
+    padding: 20px;
+    position: absolute;
+    width: 100%;
+  }
+  
