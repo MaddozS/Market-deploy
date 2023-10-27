@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\publication;
 use App\Models\publications_image;
+use App\Models\User;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -55,7 +58,16 @@ class PublicationsController extends Controller
         }
 
         $publication = publication::find($idPublication)
-            ->select('titulo', 'descripcion', 'precio')->first();
+            ->select('titulo', 'descripcion', 'precio', 'matriculaPublicador')->first();
+
+        $sellerData = User::where('matricula', $publication['matriculaPublicador'])
+            ->select('matricula', 'nombres', 'apellidos', 'idFacultad', 'nombreImagenPerfil', 'numeroContacto')->first();
+        $sellerProfileImg = Storage::disk('profile')->url($sellerData['nombreImagenPerfil']);
+        $sellerData['imagen'] = $sellerProfileImg;
+        unset($sellerData['nombreImagenPerfil']);
+        unset($publication['matriculaPublicador']);
+
+
         $publicationImages = publications_image::where('idPublicacion', $idPublication)->get();
 
         $imagesURL = [];
@@ -63,9 +75,107 @@ class PublicationsController extends Controller
             $imageURL = Storage::disk('publications')->url($imageData['nombreArchivo']);
             array_push($imagesURL, $imageURL);
         }
-        $publication['images'] = $imagesURL;
+        $publication['imagenes'] = $imagesURL;
+        $publicationInfo = [
+            "publicacion" => $publication,
+            "vendedor" => $sellerData
+        ];
 
-        return json_encode($publication, JSON_UNESCAPED_SLASHES);
+        return json_encode($publicationInfo, JSON_UNESCAPED_SLASHES);
+    }
+
+    public function getSellerProfile($matricula)
+    {
+        $validator = Validator::make(['matricula' => $matricula], [
+            'matricula' => 'required|exists:users,matricula',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+        
+        DB::statement("SET SQL_MODE=''"); //! Se requiere para poder obtener la query
+        $sellerProfile = publication::rightJoin('publications_images', 'publications.idPublicacion', '=', 'publications_images.idPublicacion')
+                                ->whereNotNull('publications.idPublicacion')
+                                ->groupBy('publications.idPublicacion')
+                                ->where('publications.matriculaPublicador', '=', $matricula)
+                                ->select('publications.idPublicacion', 'titulo', 'precio', 'nombreArchivo')
+                                ->get();
+        foreach ($sellerProfile as $publicationData) {
+            $imageURL = Storage::disk('publications')->url($publicationData['nombreArchivo']);
+            $publicationData['image'] = $imageURL;
+            unset($publicationData['nombreArchivo']);
+        }
+
+        return json_encode($sellerProfile, JSON_UNESCAPED_SLASHES);
+    }
+
+    public function mainPage(){
+        $idFacultad = auth()->user()->idFacultad;
+
+        DB::statement("SET SQL_MODE=''"); //! Se requiere para poder obtener la query
+        $publications = publication::rightJoin('publications_images', 'publications.idPublicacion', '=', 'publications_images.idPublicacion')
+                            ->join('users', 'users.matricula', '=', 'publications.matriculaPublicador')
+                            ->where('users.idFacultad', '=', $idFacultad)
+                            ->whereNotNull('publications.idPublicacion')
+                            ->groupBy('publications.idPublicacion')
+                            ->orderBy('idPublicacion', 'desc')
+                            ->select('publications.idPublicacion', 'titulo', 'precio', 'nombreArchivo')
+                            ->get();
+        foreach ($publications as $publicationData) {
+            $imageURL = Storage::disk('publications')->url($publicationData['nombreArchivo']);
+            $publicationData['image'] = $imageURL;
+            unset($publicationData['nombreArchivo']);
+        }
+
+        $data = [
+            "publicaciones" => $publications,
+            "idFacultadUsuario" => $idFacultad
+        ];
+        return json_encode($data, JSON_UNESCAPED_SLASHES);
+    }
+
+    public function search(Request $request){
+        $validator = Validator::make($request->all(), [
+            'busqueda' => 'string',
+            'filtros' => 'array',
+            'filtros.*' => 'exists:facultades,idFacultad'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+        
+
+        DB::statement("SET SQL_MODE=''"); //! Se requiere para poder obtener la query
+        
+        $query = publication::rightJoin('publications_images', 'publications.idPublicacion', '=', 'publications_images.idPublicacion')
+                ->groupBy('publications.idPublicacion')
+                ->orderBy('idPublicacion', 'desc')
+                ->whereNotNull('publications.idPublicacion')
+                ->select('publications.idPublicacion', 'titulo', 'precio', 'nombreArchivo');
+                
+        if(isset($request->filtros)){
+            $publications = $query->join('users', 'users.matricula', '=', 'publications.matriculaPublicador')
+                            ->whereIn('users.idFacultad', $request->filtros);
+        }
+        
+        if(isset($request->busqueda)){
+            $busqueda = '%' . $request->busqueda . "%";
+            $query->where('titulo', 'like', $busqueda)
+                  ->orWhere('descripcion', 'like', $busqueda);
+        }
+        
+
+        $publications = $query->get();
+
+        foreach ($publications as $publicationData) {
+            $imageURL = Storage::disk('publications')->url($publicationData['nombreArchivo']);
+            $publicationData['image'] = $imageURL;
+            unset($publicationData['nombreArchivo']);
+        }
+
+        return json_encode($publications, JSON_UNESCAPED_SLASHES);
     }
 
     public function update(Request $request)

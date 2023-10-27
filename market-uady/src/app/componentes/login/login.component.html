@@ -69,13 +69,11 @@
             </div>
             <div class="form-group col-6">
               <label class="form-label">Facultad</label>
-              <input 
-              type="number"
-              form class="form-control"
-              autocomplete="off"
-              formControlName="idFacultad"
-              [(ngModel)]="usuario.idFacultad"/>
+              <select class="form-select" autocomplete="off" formControlName="idFacultad" [(ngModel)]="usuario.idFacultad">
+                <option *ngFor="let facultad of facultades" [value]="facultad.idFacultad">{{ facultad.nombre }}</option>
+              </select>
             </div>
+            
             <div class="form-group col-6">
               <label class="form-label">Correo institucional</label>
               <input   type="email"
