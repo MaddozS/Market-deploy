@@ -114,5 +114,6 @@ export class LoginComponent {
   crearItemsSessionStorage(response: any) {
     this.storage.setItem('token', response.token);
     this.storage.setItem('token_type', response.token_type);
+    this.storage.setItem('matricula', response.matricula);
   }
 }

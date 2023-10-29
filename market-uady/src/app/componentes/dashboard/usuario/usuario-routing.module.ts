@@ -7,8 +7,9 @@ import { FormularioUsuarioComponent } from './formulario-usuario/formulario-usua
 const routes: Routes = [
   {
     path: '', component: UsuarioComponent, children: [
-      { path: 'perfil-usuario', component:PerfilUsuarioComponent },
+      { path: 'perfil-usuario/:id', component:PerfilUsuarioComponent },
       { path: 'formulario-usuario', component:FormularioUsuarioComponent},
+
 
     ]
   }
