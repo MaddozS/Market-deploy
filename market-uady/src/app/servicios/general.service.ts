@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export class TuModulo { }
+
 @Injectable({
   providedIn: 'root'
 })
@@ -53,9 +55,12 @@ export class GeneralService {
     return this.http.get('http://localhost:8000/api/facultades', { headers: this.getHeaders() });
   }
 
+  obtenerDatosUsuario(): Observable<any> {
+    return this.http.get('http://localhost:8000/api/users', { headers: this.getHeaders() });
+  }
 
-  
-	
-
+  actualizarDatosPerfil(usuario: any): Observable<any> {
+    return this.http.post('http://localhost:8000/api/profile/update?_method=PUT', usuario);
+  }
 
 }

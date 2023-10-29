@@ -10,35 +10,35 @@
     <form class="row g-2">
       <div class="col-12">
         <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" value="Daniel Eduardo Gutierrez Delfin" disabled class="form-control camposFormulario">
+        <input type="text" id="nombre" name="nombre" [(ngModel)]="perfil.nombre" [disabled]="!modoEdicion" class="form-control camposFormulario">
       </div>
 
       <div class="col-12">
         <label for="facultad">Facultad de Pertenencia:</label>
-        <select class="form-control camposFormulario" id="facultad" name="facultad" required>
-          <option value="">Facultad de Matemáticas</option>
-          <option value="ciencias-antropologicas">Facultad de Ciencias Antropológicas</option>
+        <select class="form-select camposFormulario" id="facultad" name="facultad" [(ngModel)]="perfil.facultad" required>
+          <option *ngFor="let facultad of facultades" [value]="facultad.idFacultad">{{ facultad.nombre }}</option>
         </select>
       </div>
 
       <div class="col-12">
         <label for="correo">Correo institucional:</label>
-        <input type="text" id="correo" name="correo" value="a16383940@alumnos.uady.mx" disabled class="form-control camposFormulario">
+        <input type="text" id="correo" name="correo" [(ngModel)]="perfil.correo" [disabled]="!modoEdicion" class="form-control camposFormulario">
       </div>
 
       <div class="col-12">
         <label for="numeroContacto">Número de contacto:</label>
-        <input type="text" id="numeroContacto" name="numeroContacto" value="999 123 4567" class="form-control camposFormulario">
+        <input type="text" id="numeroContacto" name="numeroContacto" [(ngModel)]="perfil.numeroContacto" [disabled]="!modoEdicion" class="form-control camposFormulario">
       </div>
 
       <div class="col-12">
-          <label class="form-label">Foto de perfil</label>
-          <input type="file" class="form-control form-control-file" (change)="onFileSelected($event)" formControlName="imagenPerfil" />
+        <label class="form-label">Foto de perfil</label>
+        <input type="file" class="form-control form-control-file" (change)="onFileSelected($event)" [disabled]="!modoEdicion" />
       </div>
 
       <div class="col-12">
         <div class="d-grid gap-2">
-          <button type="button" class="btn">Enviar</button>
+          <button type="button" class="btn" (click)="editarPerfil()" [hidden]="modoEdicion">Editar perfil</button>
+          <button type="button" class="btn" (click)="guardarCambios()" [hidden]="!modoEdicion">Guardar cambios</button>
         </div>
       </div>
     </form>
