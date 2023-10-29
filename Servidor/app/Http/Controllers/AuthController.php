@@ -47,7 +47,7 @@ class AuthController extends Controller
 
         $accessToken = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json(['token' => $accessToken, 'token_type' => 'Bearer'], 200);
+        return response()->json(['token' => $accessToken, 'token_type' => 'Bearer', 'matricula' => $user->matricula], 200);
     }
 
     public function login(Request $request)
@@ -59,7 +59,7 @@ class AuthController extends Controller
         $user = User::where('correo', $request['correo'])->firstOrFail();
         $accessToken = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json(['token' => $accessToken, 'token_type' => 'Bearer'], 200);
+        return response()->json(['token' => $accessToken, 'token_type' => 'Bearer', 'matricula' => $user->matricula], 200);
     }
 
     public function update(Request $request)

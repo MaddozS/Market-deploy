@@ -1,53 +1,62 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Publicacion } from '../types';
-import { ThisReceiver } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GeneralService {
-  private baseUrl = 'http://localhost:8000/api';
+  private baseURL = 'http://localhost:8000/api';
+  private loggedIn = false;
 
   constructor(private http: HttpClient) {}
 
   private get token(): string {
-    let tokenString = `Bearer ${sessionStorage.getItem('token')}`;
-    let tokenWithoutQuotes = tokenString.replace(/^Bearer\s+"(.*?)"$/, 'Bearer $1');
-
+    const tokenString = `Bearer ${sessionStorage.getItem('token')}`;
+    const tokenWithoutQuotes = tokenString.replace(/^Bearer\s+"(.*?)"$/, 'Bearer $1');
     return tokenWithoutQuotes;
   }
 
-  private getHeaders(contentType = 'application/json'): HttpHeaders {
+  private getHeaders(): HttpHeaders {
     return new HttpHeaders({
-      'Content-Type': contentType,
+      'Content-Type': 'application/json',
       Authorization: this.token,
     });
   }
 
   login(data: any): Observable<any> {
-    return this.http.post('http://localhost:8000/api/login', data);
+    return this.http.post(`${this.baseURL}/login`, data).pipe(
+      tap(() => {
+        // Actualiza el estado de autenticación cuando el usuario inicia sesión exitosamente
+        this.loggedIn = true;
+        sessionStorage.setItem('isLoggedIn', 'true');
+      })
+    );
   }
-
+  isLoggedIn(): boolean {
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+    this.loggedIn = isLoggedIn === 'true';
+    console.log(this.loggedIn);
+    return this.loggedIn;
+  }
   guardarUsuario(usuario: any): Observable<any> {
-    return this.http.post('http://localhost:8000/api/register', usuario);
+    return this.http.post(`${this.baseURL}/register`, usuario);
   }
 
   obtenerDatosFiltro(): Observable<any> {
-    return this.http.get('http://localhost:8000/api/filters', { headers: this.getHeaders() });
+    return this.http.get(`${this.baseURL}/filters`, { headers: this.getHeaders() });
   }
-
   obtenerPublicacionesFiltrado(body: any): Observable<any> {
-    return this.http.post('http://localhost:8000/api/publications/search', body, { headers: this.getHeaders() });
+    return this.http.post(`${this.baseURL}/publications/search`, body, { headers: this.getHeaders() });
   }
 
   obtenerPublicacionesInicio(): Observable<any> {
-    return this.http.get('http://localhost:8000/api/publications', { headers: this.getHeaders() });
+    return this.http.get(`${this.baseURL}/publications`, { headers: this.getHeaders() });
   }
 
   obtenerFacultades(): Observable<any> {
-    return this.http.get('http://localhost:8000/api/facultades', { headers: this.getHeaders() });
+    return this.http.get(`${this.baseURL}/facultades`, { headers: this.getHeaders() });
   }
 
   crearPublicacion(publicacion: Publicacion, imagenes: File[]): Observable<any> {
@@ -62,7 +71,7 @@ export class GeneralService {
       formData.append('imagenes[]', imagenes[i], imagenes[i].name);
     }
 
-    return this.http.post(`${this.baseUrl}/publications/create`, formData, {
+    return this.http.post(`${this.baseURL}/publications/create`, formData, {
       // NOTE: We setting the content type to multipart/form-data, because we are sending files
       // and we need to set the boundary to a random string to avoid errors
       headers: new HttpHeaders({
