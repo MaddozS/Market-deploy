@@ -95,19 +95,29 @@ class PublicationsController extends Controller
         }
         
         DB::statement("SET SQL_MODE=''"); //! Se requiere para poder obtener la query
-        $sellerProfile = publication::rightJoin('publications_images', 'publications.idPublicacion', '=', 'publications_images.idPublicacion')
+        $sellerPublications = publication::rightJoin('publications_images', 'publications.idPublicacion', '=', 'publications_images.idPublicacion')
                                 ->whereNotNull('publications.idPublicacion')
                                 ->groupBy('publications.idPublicacion')
                                 ->where('publications.matriculaPublicador', '=', $matricula)
                                 ->select('publications.idPublicacion', 'titulo', 'precio', 'nombreArchivo')
                                 ->get();
-        foreach ($sellerProfile as $publicationData) {
+        foreach ($sellerPublications as $publicationData) {
             $imageURL = Storage::disk('publications')->url($publicationData['nombreArchivo']);
             $publicationData['image'] = $imageURL;
             unset($publicationData['nombreArchivo']);
         }
 
-        return json_encode($sellerProfile, JSON_UNESCAPED_SLASHES);
+        $sellerData = User::where('matricula', $matricula)
+            ->select('matricula', 'nombres', 'apellidos', 'idFacultad', 'nombreImagenPerfil', 'numeroContacto')->first();
+        $sellerProfileImg = Storage::disk('profile')->url($sellerData['nombreImagenPerfil']);
+        $sellerData['imagen'] = $sellerProfileImg;
+        unset($sellerData['nombreImagenPerfil']);
+
+        $data = [
+            "publicaciones" => $sellerPublications,
+            "vendedor" => $sellerData
+        ];
+        return json_encode($data, JSON_UNESCAPED_SLASHES);
     }
 
     public function mainPage(){
