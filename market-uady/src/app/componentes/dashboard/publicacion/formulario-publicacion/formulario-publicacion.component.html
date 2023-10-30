@@ -6,7 +6,11 @@
         <h1 class="my-4 title text-center">Publicar nuevo producto o servicio</h1>
       </div>
       <div class="col-12">
-        <form class="form-publicacion" [formGroup]="form" (ngSubmit)="guardarPublicacion()" enctype="multipart/form-data">
+        <form
+          class="form-publicacion"
+          [formGroup]="form"
+          (ngSubmit)="isEditing ? guardarCambios() : guardarPublicacion()"
+          enctype="multipart/form-data">
           <div class="my-4">
             <label for="title" class="form-label h5">Título</label>
             <input form class="form-control" id="title" autocomplete="off" formControlName="titulo" [(ngModel)]="publicacion.titulo" />
@@ -73,7 +77,9 @@
           </div>
 
           <div class="form-group">
-            <button type="submit button" class="btn btn-dark" [disabled]="form.invalid">Publicar</button>
+            <button type="submit button" class="btn btn-dark" [disabled]="form.invalid">
+              {{ isEditing ? 'Guardar cambios' : 'Publicar producto/servicio' }}
+            </button>
           </div>
         </form>
       </div>
@@ -95,5 +101,12 @@
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
       </div>
     </div>
+  </div>
+</div>
+
+<div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="d-flex">
+    <div class="toast-body">Hello, world! This is a toast message.</div>
+    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
   </div>
 </div>

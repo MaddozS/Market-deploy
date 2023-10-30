@@ -3,6 +3,10 @@
   border: yellow 5px solid;
 }
 
+.success-snackbar {
+  background-color: #43a047;
+}
+
 .main-body {
   display: flex;
   flex-direction: column;
