@@ -9,7 +9,7 @@ const routes: Routes = [
     path: '',
     component: PublicacionComponent,
     children: [
-      { path: 'vista-publicacion', component: VistaPublicacionComponent },
+      { path: 'vista-publicacion', children: [{ path: ':id', component: VistaPublicacionComponent }] },
       {
         path: 'formulario-publicacion',
         children: [
