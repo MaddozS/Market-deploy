@@ -1,18 +1,18 @@
 <div class="header"></div>
 <div class="fondo ">
     <div class="imagenPerfil">
-        <img src="../../../../assets/dani.jpg">
+      <img [src]="perfil.imagen" alt="Imagen de perfil" style="width: 180px; height: 180px;">
     </div>
   <div class="nombreUsuario">
-      Daniel Eduardo Gutiérrez Delfín          <img src="../../../../assets/editar.jpg" width="40px" height="40px" style="cursor: pointer;">
+    {{ perfil.nombres }} {{ perfil.apellidos }}          <img src="../../../../assets/editar.jpg" width="40px" height="40px" style="cursor: pointer;">
       <div class="datosUsuario">
         <div class="imagenEscuela">
-            <img src="../../../../assets/escuela.jpg">
-            Facultad de Matemáticas
+          <img src="../../../../assets/escuela.jpg">
+          {{ nombreFacultad }}
         </div>
         <div class="imagenEscuela">
             <img src="../../../../assets/whatsapp.png">
-            999 123 4567
+            {{ perfil.numeroContacto }}
         </div>
       </div>
 </div>
