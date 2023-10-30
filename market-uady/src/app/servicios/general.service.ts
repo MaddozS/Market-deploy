@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { Publicacion } from '../types';
+import { Publicacion, PublicacionResponse, PublicacionEdit } from '../types';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +12,7 @@ export class GeneralService {
 
   constructor(private http: HttpClient) {}
 
-  private get token(): string {
+  public get token(): string {
     const tokenString = `Bearer ${sessionStorage.getItem('token')}`;
     const tokenWithoutQuotes = tokenString.replace(/^Bearer\s+"(.*?)"$/, 'Bearer $1');
     return tokenWithoutQuotes;
@@ -78,5 +78,36 @@ export class GeneralService {
         Authorization: this.token,
       }),
     });
+  }
+
+  editarPublicacion(id: number, publicacion: PublicacionEdit, imagenes: File[]): Observable<any> {
+    console.log(publicacion);
+    const formData = new FormData();
+    formData.append('titulo', publicacion.titulo);
+    formData.append('descripcion', publicacion.descripcion);
+    // Add 2 decimal places to the price, because the API expects it
+    if (typeof publicacion.precio === 'string') {
+      const precio = parseFloat(publicacion.precio);
+      formData.append('precio', precio.toFixed(2));
+    } else {
+      formData.append('precio', publicacion.precio.toFixed(2));
+    }
+    formData.append('categoria', publicacion.categoria);
+    formData.append('idPublication', id.toString());
+    for (let i = 0; i < imagenes.length; i++) {
+      formData.append('imagenes[]', imagenes[i], imagenes[i].name);
+    }
+
+    return this.http.post(`${this.baseURL}/publications?_method=PUT`, formData, {
+      // NOTE: We setting the content type to multipart/form-data, because we are sending files
+      // and we need to set the boundary to a random string to avoid errors
+      headers: new HttpHeaders({
+        Authorization: this.token,
+      }),
+    });
+  }
+
+  obtenerPublicacion(id: number): Observable<PublicacionResponse> {
+    return this.http.get<PublicacionResponse>(`${this.baseURL}/publications/${id}`, { headers: this.getHeaders() });
   }
 }
