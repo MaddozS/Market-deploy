@@ -57,9 +57,10 @@ class PublicationsController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
-        $publication = publication::find($idPublication)
-            ->select('titulo', 'descripcion', 'precio', 'matriculaPublicador')->first();
-
+        $publication = publication::where('idPublicacion', $idPublication)
+            ->select('titulo', 'descripcion', 'precio', 'matriculaPublicador')
+            ->first();
+        
         $sellerData = User::where('matricula', $publication['matriculaPublicador'])
             ->select('matricula', 'nombres', 'apellidos', 'idFacultad', 'nombreImagenPerfil', 'numeroContacto')->first();
         $sellerProfileImg = Storage::disk('profile')->url($sellerData['nombreImagenPerfil']);
