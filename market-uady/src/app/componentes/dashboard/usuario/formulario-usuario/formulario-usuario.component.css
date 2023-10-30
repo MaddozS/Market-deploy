@@ -2,10 +2,19 @@
     height: 10vh;
     border: yellow 5px solid;
   }
-  
-  /*Sección de fondo de edifio central*/
+  .nombre-desabilitado {
+    background-color: #f2f2f2; /* Cambia el color de fondo a gris */
+    color: #888888; /* Cambia el color del texto a un gris más claro */
+    cursor: not-allowed; /* Cambia el cursor al estilo "no permitido" */
+  }
+  .camposFormulario:disabled {
+    background-color: #f2f2f2; /* Cambia el color de fondo a gris */
+    color: #888888; /* Cambia el color del texto a un gris más claro */
+    cursor: not-allowed; /* Cambia el cursor al estilo "no permitido" */
+  }
   .editarPerfil {
     margin-top: 50px;
+    margin-bottom: 60px;
     width: 100%;
     height: 15%;
     text-align: center;
