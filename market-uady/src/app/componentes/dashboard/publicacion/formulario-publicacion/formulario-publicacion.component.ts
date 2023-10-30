@@ -101,13 +101,13 @@ export class FormularioPublicacionComponent {
 
     // Check if the images does not exceed the limit of images
     if (this.imagesCount + filesUploaded.length > MAX_IMAGES_PER_PUBLICATION) {
-      console.log('El número máximo de imágenes por publicación es 5');
+      this.mostrarMensaje(`El límite de imágenes por publicación es de ${MAX_IMAGES_PER_PUBLICATION}`);
       return;
     }
 
     for (const file of filesUploaded) {
       if (file.size > MAX_FILE_SIZE) {
-        alert('El tamaño de la imagen no puede ser mayor a 4MB');
+        this.mostrarMensaje('El tamaño máximo de las imágenes es de 4MB');
         return;
       }
 
