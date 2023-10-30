@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Facultad;
 use App\Models\publication;
 use App\Models\publications_image;
 use App\Models\User;
@@ -56,18 +57,27 @@ class PublicationsController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-
+        
+        // Getting publication data
         $publication = publication::where('idPublicacion', $idPublication)
             ->select('titulo', 'descripcion', 'precio', 'matriculaPublicador')
             ->first();
-        
+
+        // Getting seller of the publication
         $sellerData = User::where('matricula', $publication['matriculaPublicador'])
             ->select('matricula', 'nombres', 'apellidos', 'idFacultad', 'nombreImagenPerfil', 'numeroContacto')->first();
+
+        // Getting the faculty of the seller
+        $faculty = Facultad::where('idFacultad', $sellerData['idFacultad'])
+          ->select('nombre')
+          ->first();
+          
         $sellerProfileImg = Storage::disk('profile')->url($sellerData['nombreImagenPerfil']);
         $sellerData['imagen'] = $sellerProfileImg;
         unset($sellerData['nombreImagenPerfil']);
         unset($publication['matriculaPublicador']);
 
+        $sellerData['facultad'] = $faculty;
 
         $publicationImages = publications_image::where('idPublicacion', $idPublication)->get();
 
