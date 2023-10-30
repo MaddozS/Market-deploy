@@ -5,17 +5,33 @@ export type Publicacion = {
   precio: number;
   categoria: 'producto' | 'servicio';
 };
+
+export type Facultad = {
+  nombre: string;
+};
+
+export type Vendedor = {
+  apellidos: string;
+  idFacultad: number;
+  imagen: string;
+  matricula: string;
+  nombres: string;
+  numeroContacto: string;
+  facultad: Facultad;
+};
+
 // omit images and precio
 export type PublicacionEdit = Omit<Publicacion, 'imagenes' | 'precio'> & {
   imagenes: string[] | null;
   precio: string | number;
 };
 
-type PublicationInnerResponse = Omit<Publicacion, 'imagenes'> & {
+//
+export type PublicationGet = Omit<Publicacion, 'imagenes'> & {
   imagenes: string[];
 };
 
 export type PublicacionResponse = {
-  publicacion: PublicationInnerResponse;
-  vendedor: any;
+  publicacion: PublicationGet;
+  vendedor: Vendedor;
 };
