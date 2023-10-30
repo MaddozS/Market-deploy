@@ -195,7 +195,7 @@ class PublicationsController extends Controller
             'titulo' => 'required|string|max:255',
             'descripcion' => 'required|string|max:255',
             'precio' => 'required|decimal:2|between:0,9999.99',
-            'imagenes' => 'required',
+            'imagenes' => 'nullable|array',
             'imagenes.*' => 'required|mimes:jpg,jpeg,png|max:5120',
         ]);
 
@@ -209,22 +209,23 @@ class PublicationsController extends Controller
         $publication->precio = $request->precio;
         $publication->save();
 
-        $oldPublicationImages = publications_image::where('idPublicacion', $request->idPublication)->pluck('nombreArchivo');
-        foreach ($oldPublicationImages as $oldImage) {
-            Storage::disk('publications')->delete($oldImage);
+        if ($request->file('imagenes') != null) {
+          
+          $oldPublicationImages = publications_image::where('idPublicacion', $request->idPublication)->pluck('nombreArchivo');
+          foreach ($oldPublicationImages as $oldImage) {
+              Storage::disk('publications')->delete($oldImage);
+          }
+          publications_image::where('idPublicacion', $request->idPublication)->delete();
+
+          foreach ($request->file('imagenes') as $imageFile) {
+              $filename = uniqid() . '.' . File::extension($imageFile->getClientOriginalName());
+              Storage::disk('publications')->put($filename, file_get_contents($imageFile));
+              publications_image::create([
+                  'nombreArchivo' => $filename,
+                  'idPublicacion' => $request->idPublication
+              ]);
+          }
         }
-        publications_image::where('idPublicacion', $request->idPublication)->delete();
-
-        foreach ($request->file('imagenes') as $imageFile) {
-            $filename = uniqid() . '.' . File::extension($imageFile->getClientOriginalName());
-            Storage::disk('publications')->put($filename, file_get_contents($imageFile));
-            publications_image::create([
-                'nombreArchivo' => $filename,
-                'idPublicacion' => $request->idPublication
-            ]);
-        }
-
-
         return response()->json(['message' => 'Publication updated']);
     }
 
