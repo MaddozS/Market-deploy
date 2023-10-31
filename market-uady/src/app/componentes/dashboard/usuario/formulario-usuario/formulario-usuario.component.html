@@ -13,7 +13,7 @@
     
       <div class="col-12">
         <label for="facultad">Facultad de Pertenencia:</label>
-        <select class="form-select camposFormulario" id="facultad" name="facultad" formControlName="idFacultad" required>
+        <select class="form-select camposFormulario" [(ngModel)]="perfil.idFacultad" formControlName="idFacultad" required>
           <option *ngFor="let facultad of facultades" [value]="facultad.idFacultad">{{ facultad.nombre }}</option>
         </select>
       </div>
@@ -24,7 +24,7 @@
 
       <div class="col-12">
         <label for="numeroContacto">Número de contacto:</label>
-        <input type="tel" id="numeroContacto" name="numeroContacto" formControlName="numeroContacto" class="form-control camposFormulario">
+        <input type="tel"  [(ngModel)]="perfil.numeroContacto" formControlName="numeroContacto" class="form-control camposFormulario">
       </div>
 
       <div class="col-12">
