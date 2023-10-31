@@ -134,20 +134,34 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-12">
-              <h1 class="mb-1" style="font-weight: bold">Nuestros usuarios también vieron:</h1>
+              <h1 class="mb-1" style="font-weight: bold">Más del vendedor:</h1>
             </div>
           </div>
-          <div class="row">
+          <div class="row gx-2 gy-4 pt-3">
+            <div class="col-3" *ngFor="let item of otherPublicaciones">
+              <a [routerLink]="['/dashboard/publicacion/vista-publicacion', item.idPublicacion]">
+                <div class="card" style="width: 100%">
+                  <img src="{{ item.image }}" class="card-img-top" style="max-height: 250px; object-fit: cover" />
+                  <div class="card-body">
+                    <div class="nombreArticulo">{{ item.titulo }}</div>
+                    <div class="precioArticulo">{{ item.precio | currency }}</div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- <div class="row">
             <div class="col-12 col-md-4 col-lg-3 other-publicacion" *ngFor="let otherPublicacion of otherPublicaciones">
-              <img [src]="otherPublicacion.image" class="img-thumbnail" alt="Selected Image" />
+              <img [src]="otherPublicacion.image" class="img-thumbnail" [alt]="otherPublicacion.descripcion" />
               <p class="mb-0">
-                {{ otherPublicacion.name }}
+                {{ otherPublicacion.titulo }}
               </p>
               <p>
-                <b>{{ otherPublicacion.price | currency: 'MXN' }}</b>
+                <b>{{ otherPublicacion.precio | currency: 'MXN' }}</b>
               </p>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
