@@ -74,7 +74,19 @@ export class FormularioUsuarioComponent implements OnInit {
   }
 
   onFileSelected(event: any) {
-    this.file = event.target.files[0];
+    const file = event.target.files[0]; // Obtiene el archivo seleccionado
+  
+    if (file) {
+      this.file = file; // Asigna el archivo seleccionado a this.file
+      const reader = new FileReader();
+  
+      reader.onload = (e: any) => {
+        // Cuando se carga el archivo, actualiza la propiedad "imagen" del perfil
+        this.perfil.imagen = e.target.result;
+      };
+  
+      reader.readAsDataURL(file);
+    }
   }
   
   editarPerfil() {
@@ -105,7 +117,7 @@ export class FormularioUsuarioComponent implements OnInit {
     this.servicio.actualizarDatosPerfil(formData).subscribe(
       (response) => {
         this.mostrarAlerta('Usuario actualizado');
-        this.router.navigate(['dashboard/inicio']);
+        this.router.navigate(['dashboard/usuario/perfil-usuario/'+this.perfil.matricula]);
       },
       (error) => {
         this.mostrarAlerta('Error al crear el usuario');
