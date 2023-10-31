@@ -110,4 +110,8 @@ export class GeneralService {
   obtenerPublicacion(id: number): Observable<PublicacionResponse> {
     return this.http.get<PublicacionResponse>(`${this.baseURL}/publications/${id}`, { headers: this.getHeaders() });
   }
+
+  obtenerPublicacionesDelVendedor(matricula: string): Observable<any> {
+    return this.http.get(`${this.baseURL}/publications/profile/${matricula}`, { headers: this.getHeaders() });
+  }
 }
