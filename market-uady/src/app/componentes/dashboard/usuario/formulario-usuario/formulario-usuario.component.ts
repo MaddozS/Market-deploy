@@ -10,6 +10,7 @@ export class Perfil {
   matricula: string;
   numeroContacto: string;
   imagenPerfil: File | string;
+  imagen: string | undefined;
 
   constructor() {
     this.nombres = '';
@@ -18,6 +19,7 @@ export class Perfil {
     this.matricula = '';
     this.numeroContacto = '';
     this.imagenPerfil = '';
+    this.imagen = '';
   }
 }
 
@@ -93,10 +95,7 @@ export class FormularioUsuarioComponent implements OnInit {
 
   guardarUsuario() {
     const formData = new FormData();
-    formData.append('nombres', this.perfil.nombres);
-    formData.append('apellidos', this.perfil.apellidos);
     formData.append('idFacultad', this.perfil.idFacultad);
-    formData.append('matricula', this.perfil.matricula);
     formData.append('numeroContacto', this.perfil.numeroContacto);
     formData.append('imagenPerfil', this.file, this.file.name);
   

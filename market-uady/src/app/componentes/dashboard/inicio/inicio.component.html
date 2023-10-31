@@ -55,13 +55,19 @@
     </div>
 
     <cdk-virtual-scroll-viewport itemSize="50" class="scroll" *ngIf="spinner == false && publicaciones.length != 0">
-      <div class="lista-articulos">
-        <div class="item" *ngFor="let item of publicaciones">
-          <div class="imagen">
-            <img src="{{ item.image }}" class="rounded" />
+      <div class="container">
+        <div class="row gx-2 gy-4 pt-3">
+          <div class="col-3" *ngFor="let item of publicaciones">
+            <a [routerLink]="['/dashboard/publicacion/vista-publicacion', item.idPublicacion]">
+              <div class="card" style="width: 100%">
+                <img src="{{ item.image }}" class="card-img-top" style="max-height: 200px; object-fit: cover" />
+                <div class="card-body">
+                  <div class="nombreArticulo">{{ item.titulo }}</div>
+                  <div class="precioArticulo">{{ item.precio | currency }}</div>
+                </div>
+              </div>
+            </a>
           </div>
-          <div class="nombreArticulo">{{ item.titulo }}</div>
-          <div class="precioArticulo">{{ item.precio | currency }}</div>
         </div>
       </div>
     </cdk-virtual-scroll-viewport>

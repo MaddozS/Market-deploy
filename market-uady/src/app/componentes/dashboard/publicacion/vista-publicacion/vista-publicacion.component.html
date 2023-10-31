@@ -1,35 +1,28 @@
 <header class="header"></header>
 <main>
-  <div class="container-xl mt-5">
+  <div class="container-lg mt-5">
     <div class="row d-none d-lg-flex">
       <div class="col-7">
         <div class="container">
           <!-- Image carousel -->
           <div class="row">
-            <div class="image-list column col-3">
-              <div
-                class="col-12 mb-2"
-                *ngFor="let image of images"
-                style="height: 150px; width: 150px"
-              >
+            <div class="image-list column col-2">
+              <div class="col-12 image" *ngFor="let image of publicacion.imagenes">
                 <img
                   [src]="image"
                   class="img-thumbnail"
                   alt="Selected Image"
-                  style="height: 100%; width: 100%; object-fit: cover"
                   (click)="currentImage = image"
-                  [ngClass]="{ 'border-primary': currentImage == image }"
-                />
+                  [ngClass]="{ 'border-primary': currentImage == image }" />
               </div>
             </div>
 
-            <div class="main-image col-8">
+            <div class="main-image col-10">
               <img
                 [src]="currentImage"
                 class="img-thumbnail"
                 alt="Selected Image"
-                style="height: 660px; width: 100%; object-fit: contain"
-              />
+                style="height: 600px; width: 100%; object-fit: contain" />
             </div>
           </div>
         </div>
@@ -38,42 +31,33 @@
         <p class="display-6 mb-1" style="font-weight: bold">
           {{ publicacion.titulo }}
         </p>
-        <h2 class="mb-4 text-secondary">
+        <!-- <h2 class="mb-4 text-secondary">
           Publicado el
-          {{ publicacion.fecha | date : "dd 'de' MMMM 'del' yyyy" : "es" }}
-        </h2>
+          {{ publicacion.fecha | date: "dd 'de' MMMM 'del' yyyy" : 'es' }}
+        </h2> -->
         <h2 class="price mb-4" style="font-weight: bold">
-          {{ publicacion.precio | currency : "MXN" }}
+          {{ publicacion.precio | currency: 'MXN' }}
         </h2>
         <h2 class="mb-1">Descripcion</h2>
         <p class="description mb-4">
           {{ publicacion.descripcion }}
         </p>
-        <h2 class="mb-1">Categoría</h2>
+        <!-- <h2 class="mb-1">Categoría</h2>
         <p class="description">
           {{ publicacion.categoria }}
-        </p>
+        </p> -->
         <h2 class="mb-1">Información de contacto</h2>
         <div class="container-fluid">
           <div class="row">
             <div class="col-auto">
-              <img
-                [src]="publicacion.autor.foto"
-                class="rounded-circle"
-                height="90px"
-                width="90px"
-              />
+              <img [src]="vendedor.imagen" class="rounded-circle" height="90px" width="90px" />
             </div>
             <div class="col">
-              <p class="description mb-2">
-                {{ publicacion.autor.nombre }} {{ publicacion.autor.apellido }}
-              </p>
-              <p class="description mb-2">
-                <i class="bi bi-buildings"></i> {{ publicacion.autor.facultad }}
-              </p>
+              <p class="description mb-2">{{ vendedor.nombres }} {{ vendedor.apellidos }}</p>
+              <p class="description mb-2"><i class="bi bi-buildings"></i> {{ vendedor.facultad.nombre }}</p>
               <p class="description mb-2">
                 <i class="bi bi-telephone-fill"></i>
-                {{ publicacion.autor.numero }}
+                {{ vendedor.numeroContacto }}
               </p>
             </div>
           </div>
@@ -90,21 +74,14 @@
         <div class="container">
           <!-- Image carousel -->
           <div class="row">
-            <div class="image-list row col-12 justify-content-center mx-0">
-              <div class="col-3 mb-2" *ngFor="let image of images">
+            <div class="image-list row col-12 justify-content-center mx-0 mb-2">
+              <div class="col image" *ngFor="let image of publicacion.imagenes">
                 <img
                   [src]="image"
                   class="img-thumbnail"
                   alt="Selected Image"
-                  style="
-                    height: auto;
-                    width: 100%;
-                    object-fit: cover;
-                    aspect-ratio: 1/1;
-                  "
                   (click)="currentImage = image"
-                  [ngClass]="{ 'border-primary': currentImage == image }"
-                />
+                  [ngClass]="{ 'border-primary': currentImage == image }" />
               </div>
             </div>
 
@@ -113,54 +90,39 @@
                 [src]="currentImage"
                 class="img-thumbnail"
                 alt="Selected Image"
-                style="
-                  height: auto;
-                  width: 100%;
-                  object-fit: contain;
-                  aspect-ratio: 1/1;
-                "
-              />
+                style="height: auto; width: 100%; object-fit: contain; aspect-ratio: 1/1" />
             </div>
           </div>
         </div>
       </div>
       <div class="col-12 px-5">
-        <h2 class="mb-4 text-secondary">
+        <!-- <h2 class="mb-4 text-secondary">
           Publicado el
-          {{ publicacion.fecha | date : "dd 'de' MMMM 'del' yyyy" : "es" }}
-        </h2>
+          {{ publicacion.fecha | date: "dd 'de' MMMM 'del' yyyy" : 'es' }}
+        </h2> -->
         <h2 class="price mb-4" style="font-weight: bold">
-          {{ publicacion.precio | currency : "MXN" }}
+          {{ publicacion.precio | currency: 'MXN' }}
         </h2>
         <h2 class="mb-1">Descripcion</h2>
         <p class="description mb-4">
           {{ publicacion.descripcion }}
         </p>
-        <h2 class="mb-1">Categoría</h2>
+        <!-- <h2 class="mb-1">Categoría</h2>
         <p class="description">
           {{ publicacion.categoria }}
-        </p>
+        </p> -->
         <h2 class="mb-1 text-center">Información de contacto</h2>
         <div class="container-fluid">
           <div class="row justify-content-center">
             <div class="col-auto">
-              <img
-                [src]="publicacion.autor.foto"
-                class="rounded-circle"
-                height="90px"
-                width="90px"
-              />
+              <img [src]="vendedor.imagen" class="rounded-circle" height="90px" width="90px" />
             </div>
             <div class="col-auto">
-              <p class="description mb-2">
-                {{ publicacion.autor.nombre }} {{ publicacion.autor.apellido }}
-              </p>
-              <p class="description mb-2">
-                <i class="bi bi-buildings"></i> {{ publicacion.autor.facultad }}
-              </p>
+              <p class="description mb-2">{{ vendedor.nombres }} {{ vendedor.apellidos }}</p>
+              <p class="description mb-2"><i class="bi bi-buildings"></i> {{ vendedor.facultad.nombre }}</p>
               <p class="description mb-2">
                 <i class="bi bi-telephone-fill"></i>
-                {{ publicacion.autor.numero }}
+                {{ vendedor.numeroContacto }}
               </p>
             </div>
           </div>
@@ -172,26 +134,17 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-12">
-              <h1 class="mb-1" style="font-weight: bold">
-                Nuestros usuarios también vieron:
-              </h1>
+              <h1 class="mb-1" style="font-weight: bold">Nuestros usuarios también vieron:</h1>
             </div>
           </div>
           <div class="row">
-            <div
-              class="col-12 col-md-4 col-lg-3 other-publicacion"
-              *ngFor="let otherPublicacion of otherPublicaciones"
-            >
-              <img
-                [src]="otherPublicacion.image"
-                class="img-thumbnail"
-                alt="Selected Image"
-              />
+            <div class="col-12 col-md-4 col-lg-3 other-publicacion" *ngFor="let otherPublicacion of otherPublicaciones">
+              <img [src]="otherPublicacion.image" class="img-thumbnail" alt="Selected Image" />
               <p class="mb-0">
                 {{ otherPublicacion.name }}
               </p>
               <p>
-                <b>{{ otherPublicacion.price | currency : "MXN" }}</b>
+                <b>{{ otherPublicacion.price | currency: 'MXN' }}</b>
               </p>
             </div>
           </div>

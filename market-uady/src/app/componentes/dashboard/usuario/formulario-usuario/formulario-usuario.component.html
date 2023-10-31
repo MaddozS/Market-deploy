@@ -6,7 +6,7 @@
     Editar Perfil
   </div>
   <div class="d-flex justify-content-center align-items-center" style="height: 80%;">
-    <form class="row g-2" [formGroup]="formulario" (ngSubmit)="guardarUsuario()">
+    <form class="row g-2" [formGroup]="formulario" (ngSubmit)="guardarUsuario()" enctype="multipart/form-data">
       <div class="col-12">
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" formControlName="nombres" readonly class="form-control camposFormulario nombre-desabilitado" [value]="perfil.nombres + ' ' + perfil.apellidos">      </div>
@@ -20,11 +20,11 @@
       
       <div class="col-12">
         <label for="correo">Correo institucional:</label>
-        <input type="text" id="correo" name="correo" [value]="getCorreoFormateado(perfil.matricula)" readonly class="form-control camposFormulario nombre-desabilitado">      </div>
+        <input type="email" id="correo" name="correo" [value]="getCorreoFormateado(perfil.matricula)" readonly class="form-control camposFormulario nombre-desabilitado">      </div>
 
       <div class="col-12">
         <label for="numeroContacto">Número de contacto:</label>
-        <input type="text" id="numeroContacto" name="numeroContacto" formControlName="numeroContacto" class="form-control camposFormulario">
+        <input type="tel" id="numeroContacto" name="numeroContacto" formControlName="numeroContacto" class="form-control camposFormulario">
       </div>
 
       <div class="col-12">
@@ -32,17 +32,17 @@
         <input type="file" 
         class="form-control form-control-file" 
         (change)="onFileSelected($event)" 
-        [(ngModel)]="perfil.imagenPerfil" 
+      
         accept="image/jpeg, image/png, image/gif" 
-        formControlName="imagenPerfil" />
+        />
       </div>
       <div class="col-12">
-        <img [src]="perfil.imagenPerfil" alt="Foto de perfil" class="img-fluid" />
+        <img [src]="perfil.imagen" alt="Foto de perfil" class="img-fluid" />
       </div>
 
       <div class="col-12">
         <div class="d-grid gap-2">
-          <button type="button" class="btn" (click)="guardarUsuario()">Guardar cambios</button>
+          <button type="submit" class="btn" >Guardar cambios</button>
         </div>
       </div>
     </form>

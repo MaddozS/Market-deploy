@@ -6,7 +6,7 @@
 /*Sección de fondo de edifio central*/
 .fondo {
   height: 30vh;
-  background-image: url("src/assets/uady.png");
+  background-image: url('src/assets/uady.png');
   background-size: cover;
   display: flex;
   align-items: center;
@@ -127,4 +127,13 @@ h5 {
 }
 label {
   font-size: small;
+}
+
+.card {
+  transition: all 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.025);
+  cursor: pointer;
 }

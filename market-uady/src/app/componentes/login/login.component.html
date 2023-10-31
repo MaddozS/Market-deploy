@@ -1,137 +1,107 @@
+<div id="contenedorPadre">
+  <div id="contenedorHijo">
+    <div class="imgLogo">
+      <img src="../../../assets/logo.png" />
+    </div>
+    <div class="contenedorForm">
+      <ng-container *ngIf="viewLogin">
+        <div class="title">
+          <h1>Iniciar sesión</h1>
+        </div>
+        <form class="row g-2" [formGroup]="login" (ngSubmit)="ingresar()">
+          <div class="form-group col-12">
+            <label class="form-label">Correo institucional</label>
+            <input type="email" form class="form-control" autocomplete="off" formControlName="correo" [(ngModel)]="usuario.correo" />
+          </div>
+          <div class="form-group col-12">
+            <label class="form-label">Contraseña</label>
+            <input type="password" form class="form-control" autocomplete="off" formControlName="password" [(ngModel)]="usuario.password" />
+          </div>
+          <div class="d-grid contenedorBtnSubmit">
+            <button type="submit" class="btn btn-dark" [disabled]="login.invalid">Iniciar sesión</button>
+          </div>
+          <div class="contenedorPreguntaRegistro">
+            <p class="text-center">
+              ¿Aún no te registras?
+              <b
+                ><a (click)="openRegister()" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                  >Crear cuenta</a
+                ></b
+              >
+            </p>
+          </div>
+        </form>
+      </ng-container>
+      <ng-container *ngIf="!viewLogin">
+        <div class="title">
+          <h1>Crear una cuenta</h1>
+        </div>
+        <form class="row g-2" [formGroup]="form" (ngSubmit)="guardarUsuario()" enctype="multipart/form-data">
+          <div class="form-group col-6">
+            <label class="form-label">Nombre(s)</label>
+            <input type="text" form class="form-control" autocomplete="off" formControlName="nombres" [(ngModel)]="usuario.nombres" />
+          </div>
+          <div class="form-group col-6">
+            <label class="form-label">Apellidos</label>
+            <input type="text" form class="form-control" autocomplete="off" formControlName="apellidos" [(ngModel)]="usuario.apellidos" />
+          </div>
+          <div class="form-group col-6">
+            <label class="form-label">Facultad</label>
+            <select class="form-select" autocomplete="off" formControlName="idFacultad" [(ngModel)]="usuario.idFacultad">
+              <option *ngFor="let facultad of facultades" [value]="facultad.idFacultad">{{ facultad.nombre }}</option>
+            </select>
+          </div>
 
-  <div id="contenedorPadre">
-    <div id="contenedorHijo">
-      <div class="imgLogo">
-        <img src="../../../assets/logo.png" />
-      </div>
-      <div class="contenedorForm">
-        <ng-container *ngIf="viewLogin">
-          <div class="title">
-            <h1>Iniciar sesión</h1>
+          <div class="form-group col-6">
+            <label class="form-label">Correo institucional</label>
+            <input type="email" form class="form-control" autocomplete="off" formControlName="correo" [(ngModel)]="usuario.correo" />
           </div>
-          <form class="row g-2" [formGroup]="login" (ngSubmit)="ingresar()">
-            <div class="form-group col-12">
-              <label class="form-label">Correo institucional</label>
-              <input   type="email"
-              form class="form-control"
-              autocomplete="off"
-              formControlName="correo"
-              [(ngModel)]="usuario.correo"  />
-            </div>
-            <div class="form-group col-12">
-              <label class="form-label">Contraseña</label>
-              <input type="password"
-              form class="form-control"
-              autocomplete="off"
-              formControlName="password"
-              [(ngModel)]="usuario.password"  />
-            </div>
-            <div class="d-grid contenedorBtnSubmit">
-              <button type="submit" class="btn btn-dark" [disabled]="login.invalid">Iniciar sesión</button>
-            </div>
-            <div class="contenedorPreguntaRegistro">
-              <p class="text-center">
-                ¿Aún no te registras?
-                <b
-                  ><a
-                    (click)="openRegister()"
-                    class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-                    >Crear cuenta</a
-                  ></b
-                >
-              </p>
-            </div>
-          </form>
-        </ng-container>
-        <ng-container *ngIf="!viewLogin">
-          <div class="title">
-            <h1>Crear una cuenta</h1>
+          <div class="form-group col-6">
+            <label class="form-label">Matricula</label>
+            <input type="text" form class="form-control" autocomplete="off" formControlName="matricula" [(ngModel)]="usuario.matricula" />
           </div>
-          <form class="row g-2" [formGroup]="form" (ngSubmit)="guardarUsuario()" enctype="multipart/form-data">
-            <div class="form-group col-6 " >
-              <label class="form-label">Nombre(s)</label>
-              <input  type="text"
+          <div class="form-group col-6">
+            <label class="form-label">Número de contacto</label>
+            <input
+              type="tel"
               form
               class="form-control"
               autocomplete="off"
-              formControlName="nombres"
-              [(ngModel)]="usuario.nombres"
-              />
-            </div>
-            <div class="form-group col-6">
-              <label class="form-label">Apellidos</label>
-              <input 
-              type="text"
-              form class="form-control"
-              autocomplete="off"
-              formControlName="apellidos"
-              [(ngModel)]="usuario.apellidos"  />
-            </div>
-            <div class="form-group col-6">
-              <label class="form-label">Facultad</label>
-              <select class="form-select" autocomplete="off" formControlName="idFacultad" [(ngModel)]="usuario.idFacultad">
-                <option *ngFor="let facultad of facultades" [value]="facultad.idFacultad">{{ facultad.nombre }}</option>
-              </select>
-            </div>
-            
-            <div class="form-group col-6">
-              <label class="form-label">Correo institucional</label>
-              <input   type="email"
-              form class="form-control"
-              autocomplete="off"
-              formControlName="correo"
-              [(ngModel)]="usuario.correo"  />
-            </div>
-            <div class="form-group col-6">
-              <label class="form-label">Matricula</label>
-              <input   type="text"
-              form class="form-control"
-              autocomplete="off"
-              formControlName="matricula"
-              [(ngModel)]="usuario.matricula"  />
-            </div>
-            <div class="form-group col-6">
-              <label class="form-label">Número de contacto</label>
-              <input type="tel"
-              form class="form-control"
-              autocomplete="off"
               formControlName="numeroContacto"
-              [(ngModel)]="usuario.numeroContacto"  />
-            </div>
-            <div class="form-group col-12">
-              <label class="form-label">Foto de perfil</label>
-              <input type="file" class=" form-control form-control-file"  
-               (change)="onFileSelected($event)" 
-               [(ngModel)]="usuario.imagenPerfil"  
-                formControlName="imagenPerfil"/>
-            </div>
-            <div class="form-group col-6">
-              <label class="form-label">Contraseña</label>
-              <input type="password"
-              form class="form-control"
-              autocomplete="off"
-              formControlName="password"
-              [(ngModel)]="usuario.password"  />
-            </div>
-            <div class="form-group col-6">
-              <label class="form-label">Confirmar contraseña</label>
-              <input type="password"  
-              form class="form-control"
+              [(ngModel)]="usuario.numeroContacto" />
+          </div>
+          <div class="form-group col-12">
+            <label class="form-label">Foto de perfil</label>
+            <input
+              type="file"
+              class="form-control form-control-file"
+              (change)="onFileSelected($event)"
+              [(ngModel)]="usuario.imagenPerfil"
+              formControlName="imagenPerfil" />
+          </div>
+          <div class="form-group col-6">
+            <label class="form-label">Contraseña</label>
+            <input type="password" form class="form-control" autocomplete="off" formControlName="password" [(ngModel)]="usuario.password" />
+          </div>
+          <div class="form-group col-6">
+            <label class="form-label">Confirmar contraseña</label>
+            <input
+              type="password"
+              form
+              class="form-control"
               autocomplete="off"
               formControlName="passwordConfirmado"
-              [(ngModel)]="usuario.passwordConfirmado"  />
-            </div>
-        
-      
-            <div class="d-grid contenedorBtnSubmit col-6">
-              <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
-            </div>
-            <div class="d-grid contenedorBtnSubmit col-6">
-              <button type="submit" class="btn btn-dark" [disabled]="form.invalid">Crear cuenta</button>
-            </div>
-          </form>
-        </ng-container>
-      </div>
+              [(ngModel)]="usuario.passwordConfirmado" />
+          </div>
+
+          <div class="d-grid contenedorBtnSubmit col-6">
+            <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
+          </div>
+          <div class="d-grid contenedorBtnSubmit col-6">
+            <button type="submit" class="btn btn-dark" [disabled]="form.invalid">Crear cuenta</button>
+          </div>
+        </form>
+      </ng-container>
     </div>
   </div>
-
+</div>
