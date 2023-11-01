@@ -37,8 +37,8 @@ export class FormularioPublicacionComponent {
   mostrarMensaje(mensaje: string) {
     this._snackBar.open(mensaje, 'Cerrar', {
       duration: 5000,
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
     });
   }
 
