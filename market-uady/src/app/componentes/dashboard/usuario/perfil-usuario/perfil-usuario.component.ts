@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GeneralService } from 'src/app/servicios/general.service';
+import { PublicationGet, Vendedor } from 'src/app/types';
 import { Router } from '@angular/router';
 
 export class Perfil {
@@ -28,12 +28,64 @@ export class Perfil {
 })
 export class PerfilUsuarioComponent implements OnInit {
   perfil: Perfil;
-  nombreFacultad: string = ''; // Inicializado con cadena vacía
-  facultades: any[] = []; // Asegúrate de tener la lista de facultades
+  nombreFacultad: string = '';
+  facultades: any[] = [];
+  publicaciones: any[] = [];
 
-  constructor(private fb: FormBuilder, private servicio: GeneralService, private router: Router) {
+  // Declaración de las siguientes variables para la información de la publicación
+  publicacion: PublicationGet = {
+    titulo: '',
+    descripcion: '',
+    precio: 0,
+    categoria: 'producto',
+    imagenes: [],
+  };
+  vendedor: Vendedor = {
+    nombres: '',
+    apellidos: '',
+    idFacultad: 0,
+    imagen: '',
+    matricula: '',
+    numeroContacto: '',
+    facultad: {
+      nombre: '',
+    },
+  };
+  currentImage!: string;
+
+  constructor(private servicio: GeneralService, private router: Router) {
     this.perfil = new Perfil();
-    // Resto del constructor
+  }
+
+  getMatriculaVendedor(idVendedor: number) {
+    this.servicio.obtenerPublicacion(idVendedor).subscribe({
+      next: (response) => {
+        const { vendedor } = response;
+        // Obtiene la matrícula del vendedor
+        const matriculaVendedor = vendedor ? vendedor.matricula : '';
+        
+        // Filtra las publicaciones basadas en la matrícula del vendedor
+        this.filtrarPublicacionesPorMatricula(matriculaVendedor);
+      },
+      error: (error) => {
+        console.log('Error al obtener la matrícula del vendedor:', error);
+      },
+    });
+  }
+  
+  filtrarPublicacionesPorMatricula(matricula: string) {
+    this.publicaciones = this.publicaciones.filter((publicacion: any) => {
+      // Acceder a la matrícula del vendedor desde la publicación
+      const matriculaVendedor = publicacion.vendedor ? publicacion.vendedor.matricula : '';
+  
+      // Compara la matrícula del vendedor con la matrícula obtenida
+      return matriculaVendedor === matricula;
+    });
+  }
+
+  irAFormularioUsuario() {
+    // Redirige al formulario de usuario
+    this.router.navigate(['dashboard/usuario/formulario-usuario']);
   }
 
   ngOnInit() {
@@ -45,27 +97,44 @@ export class PerfilUsuarioComponent implements OnInit {
         this.servicio.obtenerFacultades().subscribe(
           (facultadesResponse) => {
             this.facultades = facultadesResponse;
-            // Buscar el nombre de la facultad
-            console.log('Facultades:', this.facultades);
-            const idFacultad = parseInt(this.perfil.idFacultad, 10); // Asegúrate de que esté en el formato correcto
+            const idFacultad = parseInt(this.perfil.idFacultad, 10);
             const facultad = this.facultades.find(f => f.idFacultad === idFacultad);
 
             if (facultad) {
               this.nombreFacultad = facultad.nombre;
             } else {
-            this.nombreFacultad = 'Facultad Desconocida';
+              this.nombreFacultad = 'Facultad Desconocida';
             }
           },
           (error) => {
             console.error('Error al obtener la lista de facultades:', error);
           }
         );
+        
+        // Obtener las publicaciones del usuario
+        this.servicio.obtenerPublicacionesInicio().subscribe(
+          (publicacionesResponse) => {
+            this.publicaciones = publicacionesResponse.publicaciones;
+            console.log(this.publicaciones);
+        
+            // Obtiene la matrícula del vendedor para cada publicación
+            this.publicaciones.forEach((publicacion: any) => {
+              const idVendedor = publicacion.vendedor ? publicacion.vendedor.id : null;
+              if (idVendedor) {
+                this.getMatriculaVendedor(idVendedor);
+              }
+            });
+          },
+          (error) => {
+            console.error('Error al obtener las publicaciones:', error);
+          }
+        );
+        
       },
       (error) => {
         console.error('Error al obtener datos del usuario:', error);
       }
     );
   }
-
-  // Otras funciones y métodos
+  
 }

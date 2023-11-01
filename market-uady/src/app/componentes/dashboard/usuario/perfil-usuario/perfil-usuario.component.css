@@ -13,6 +13,26 @@
     justify-content: flex-end;
   }
 
+  .card {
+    position: relative;
+  }
+  
+  .editar-icon {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+  }
+  
+  .eliminar-icon {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+  }
+
+  .circular-icon img {
+    border-radius: 10%;
+  }
+
   .imagenPerfil {
     height: 90%;
     margin: 40px;
