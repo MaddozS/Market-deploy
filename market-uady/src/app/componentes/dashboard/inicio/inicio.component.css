@@ -129,11 +129,3 @@ label {
   font-size: small;
 }
 
-.card {
-  transition: all 0.2s ease-in-out;
-}
-
-.card:hover {
-  transform: scale(1.025);
-  cursor: pointer;
-}

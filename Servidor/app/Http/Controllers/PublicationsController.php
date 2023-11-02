@@ -60,7 +60,6 @@ class PublicationsController extends Controller
         
         // Getting publication data
         $publication = publication::where('idPublicacion', $idPublication)
-            ->select('titulo', 'descripcion', 'precio', 'matriculaPublicador')
             ->first();
 
         // Getting seller of the publication
