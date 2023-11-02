@@ -50,7 +50,9 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-auto">
-              <img [src]="vendedor.imagen" class="rounded-circle" height="90px" width="90px" />
+               <a [routerLink]="['/dashboard/usuario/perfil-usuario', vendedor.matricula]">
+                <img [src]="vendedor.imagen" class="rounded-circle" height="90px" width="90px" />
+              </a> 
             </div>
             <div class="col">
               <p class="description mb-2">{{ vendedor.nombres }} {{ vendedor.apellidos }}</p>
@@ -116,6 +118,9 @@
           <div class="row justify-content-center">
             <div class="col-auto">
               <img [src]="vendedor.imagen" class="rounded-circle" height="90px" width="90px" />
+              <!-- <a [routerLink]="['/dashboard/usuario/perfil-usuario', vendedor.matricula]">
+                <img [src]="vendedor.imagen" class="rounded-circle" height="90px" width="90px" />
+              </a> -->
             </div>
             <div class="col-auto">
               <p class="description mb-2">{{ vendedor.nombres }} {{ vendedor.apellidos }}</p>

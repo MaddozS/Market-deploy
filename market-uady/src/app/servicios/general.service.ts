@@ -129,7 +129,7 @@ export class GeneralService {
     });
   }
 
-  obtenerPublicacionesDelVendedor(matricula: string): Observable<any> {
+  obtenerPublicacionesDelVendedor(matricula: any): Observable<any> {
     return this.http.get(`${this.baseURL}/publications/profile/${matricula}`, { headers: this.getHeaders() });
   }
 }

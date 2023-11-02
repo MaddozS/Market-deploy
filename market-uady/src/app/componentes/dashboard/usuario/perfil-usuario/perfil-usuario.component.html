@@ -4,7 +4,8 @@
       <img [src]="perfil.imagen" alt="Imagen de perfil" style="width: 180px; height: 180px;">
     </div>
     <div class="nombreUsuario">
-      {{ perfil.nombres }} {{ perfil.apellidos }} <img (click)="irAFormularioUsuario()" src="../../../../assets/editar.jpg" width="40px" height="40px" style="cursor: pointer;">
+      {{ perfil.nombres }} {{ perfil.apellidos }} 
+      <img (click)="irAFormularioUsuario()" src="../../../../assets/editar.jpg" width="40px" height="40px" style="cursor: pointer;" *ngIf="perfilUsuario" >
       <div class="datosUsuario">
         <div class="imagenEscuela">
           <img src="../../../../assets/escuela.jpg">
@@ -18,9 +19,9 @@
     </div>
 </div>
 <div class="productosTitulo">
-  Productos y/o servicios
+    Productos y/o servicios
   <div class="buttonEmpezar">
-    <button type="button" class="btn">+ Nuevo producto</button>
+    <button type="button" class="btn" *ngIf="perfilUsuario" >Nuevo producto</button>
   </div>
 </div>
 <div class="publicaciones-matricula">
@@ -28,12 +29,12 @@
     <div class="row gx-2 gy-4 pt-3">
       <div class="col-3" *ngFor="let item of publicaciones">
         <a [routerLink]="['/dashboard/publicacion/vista-publicacion', item.idPublicacion]">
-          <div class="card" style="width: 100%">
+          <div class="card" style="width: 100%" >
             <img [src]="item.image" class="card-img-top" style="max-height: 200px; object-fit: cover" />
-            <div class="editar-icon circular-icon">
+            <div class="editar-icon circular-icon" *ngIf="perfilUsuario">
               <img src="../../../../assets/editar.jpg" width="30px" height="30px">
             </div>
-            <div class="eliminar-icon circular-icon">
+            <div class="eliminar-icon circular-icon" *ngIf="perfilUsuario">
               <img src="../../../../assets/eliminar.jpg" width="30px" height="30px">
             </div>
             <div class="card-body">

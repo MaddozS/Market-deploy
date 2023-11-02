@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GeneralService } from 'src/app/servicios/general.service';
 import { PublicationGet, Vendedor } from 'src/app/types';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 export class Perfil {
   nombres: string;
@@ -24,81 +24,46 @@ export class Perfil {
 @Component({
   selector: 'app-perfil-usuario',
   templateUrl: './perfil-usuario.component.html',
-  styleUrls: ['./perfil-usuario.component.css']
+  styleUrls: ['./perfil-usuario.component.css'],
 })
 export class PerfilUsuarioComponent implements OnInit {
-  perfil: Perfil;
-  nombreFacultad: string = '';
+  perfil: any;
+  nombreFacultad = '';
   facultades: any[] = [];
   publicaciones: any[] = [];
+  perfilUsuario = false;
 
   // Declaración de las siguientes variables para la información de la publicación
-  publicacion: PublicationGet = {
-    titulo: '',
-    descripcion: '',
-    precio: 0,
-    categoria: 'producto',
-    imagenes: [],
-  };
-  vendedor: Vendedor = {
-    nombres: '',
-    apellidos: '',
-    idFacultad: 0,
-    imagen: '',
-    matricula: '',
-    numeroContacto: '',
-    facultad: {
-      nombre: '',
-    },
-  };
+
   currentImage!: string;
 
-  constructor(private servicio: GeneralService, private router: Router) {
-    this.perfil = new Perfil();
-  }
+  constructor(
+    private servicio: GeneralService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
 
-  getMatriculaVendedor(idVendedor: number) {
-    this.servicio.obtenerPublicacion(idVendedor).subscribe({
-      next: (response) => {
-        const { vendedor } = response;
-        // Obtiene la matrícula del vendedor
-        const matriculaVendedor = vendedor ? vendedor.matricula : '';
-        
-        // Filtra las publicaciones basadas en la matrícula del vendedor
-        this.filtrarPublicacionesPorMatricula(matriculaVendedor);
-      },
-      error: (error) => {
-        console.log('Error al obtener la matrícula del vendedor:', error);
-      },
-    });
-  }
-  
-  filtrarPublicacionesPorMatricula(matricula: string) {
-    this.publicaciones = this.publicaciones.filter((publicacion: any) => {
-      // Acceder a la matrícula del vendedor desde la publicación
-      const matriculaVendedor = publicacion.vendedor ? publicacion.vendedor.matricula : '';
-  
-      // Compara la matrícula del vendedor con la matrícula obtenida
-      return matriculaVendedor === matricula;
-    });
-  }
-
-  irAFormularioUsuario() {
-    // Redirige al formulario de usuario
-    this.router.navigate(['dashboard/usuario/formulario-usuario']);
   }
 
   ngOnInit() {
-    // Obtener datos del usuario
-    this.servicio.obtenerDatosUsuario().subscribe(
-      (response) => {
-        this.perfil = response;
-        // Obtener la lista de facultades
+    this.route.params.subscribe((params) => {
+      const matriculaString = sessionStorage.getItem('matricula');
+      if (matriculaString != null) {
+        const cleanedMatriculaString = matriculaString.replace(/[^0-9]/g, ''); // Eliminar caracteres no numéricos
+        const matricula: number = parseInt(cleanedMatriculaString, 10);
+        if (!isNaN(matricula) && matricula == params['id']) {
+          this.perfilUsuario = true;
+        }
+        this.servicio.obtenerPublicacionesDelVendedor(params['id']).subscribe((response) => {
+          this.publicaciones = response.publicaciones;
+          this.perfil = response.vendedor;
+          console.log(response);
+        });
         this.servicio.obtenerFacultades().subscribe(
           (facultadesResponse) => {
             this.facultades = facultadesResponse;
             const idFacultad = parseInt(this.perfil.idFacultad, 10);
-            const facultad = this.facultades.find(f => f.idFacultad === idFacultad);
+            const facultad = this.facultades.find((f) => f.idFacultad === idFacultad);
 
             if (facultad) {
               this.nombreFacultad = facultad.nombre;
@@ -110,31 +75,14 @@ export class PerfilUsuarioComponent implements OnInit {
             console.error('Error al obtener la lista de facultades:', error);
           }
         );
-        
-        // Obtener las publicaciones del usuario
-        this.servicio.obtenerPublicacionesInicio().subscribe(
-          (publicacionesResponse) => {
-            this.publicaciones = publicacionesResponse.publicaciones;
-            console.log(this.publicaciones);
-        
-            // Obtiene la matrícula del vendedor para cada publicación
-            this.publicaciones.forEach((publicacion: any) => {
-              const idVendedor = publicacion.vendedor ? publicacion.vendedor.id : null;
-              if (idVendedor) {
-                this.getMatriculaVendedor(idVendedor);
-              }
-            });
-          },
-          (error) => {
-            console.error('Error al obtener las publicaciones:', error);
-          }
-        );
-        
-      },
-      (error) => {
-        console.error('Error al obtener datos del usuario:', error);
       }
-    );
+    });
   }
-  
+
+  irAFormularioUsuario() {
+    // Redirige al formulario de usuario
+    this.router.navigate(['dashboard/usuario/formulario-usuario']);
+  }
+
+ 
 }

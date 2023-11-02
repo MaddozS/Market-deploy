@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
+import { Router } from '@angular/router';
 import { GeneralService } from 'src/app/servicios/general.service';
 
 export interface Task {
@@ -23,7 +24,9 @@ export class InicioComponent {
   spinner: any = true;
   body: any = {};
 
-  constructor(private servicio: GeneralService) {}
+  constructor(
+    private servicio: GeneralService
+  ) {}
 
   ngOnInit() {
     this.servicio.obtenerDatosFiltro().subscribe(
@@ -98,4 +101,5 @@ export class InicioComponent {
       }
     );
   }
+
 }
