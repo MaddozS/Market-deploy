@@ -88,6 +88,11 @@ export class PerfilUsuarioComponent implements OnInit {
     this.router.navigate(['dashboard/usuario/formulario-usuario']);
   }
 
+  irAEdicionPublicacion() {
+    // Agrega aquí tu lógica para redirigir a la edición de la publicación
+    this.router.navigate(['/dashboard/publicacion/formulario-publicacion']);
+  }
+
   ngOnInit() {
     // Obtener datos del usuario
     this.servicio.obtenerDatosUsuario().subscribe(

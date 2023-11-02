@@ -27,22 +27,23 @@
   <div class="container">
     <div class="row gx-2 gy-4 pt-3">
       <div class="col-3" *ngFor="let item of publicaciones">
-        <a [routerLink]="['/dashboard/publicacion/vista-publicacion', item.idPublicacion]">
-          <div class="card" style="width: 100%">
+        <div class="card" style="width: 100%">
+          <a [routerLink]="['/dashboard/publicacion/vista-publicacion', item.idPublicacion]">
             <img [src]="item.image" class="card-img-top" style="max-height: 200px; object-fit: cover" />
-            <div class="editar-icon circular-icon">
-              <img src="../../../../assets/editar.jpg" width="30px" height="30px">
-            </div>
-            <div class="eliminar-icon circular-icon">
-              <img src="../../../../assets/eliminar.jpg" width="30px" height="30px">
-            </div>
-            <div class="card-body">
-              <div class="nombreArticulo">{{ item.titulo }}</div>
-              <div class="precioArticulo">{{ item.precio | currency }}</div>
-            </div>
+          </a>
+          <div class="editar-icon circular-icon">
+            <img src="../../../../assets/editar.jpg" (click)="irAEdicionPublicacion()" style="cursor: pointer;" width="30px" height="30px">
           </div>
-        </a>
+          <div class="eliminar-icon circular-icon">
+            <img src="../../../../assets/eliminar.jpg" width="30px" height="30px" style="cursor: pointer;">
+          </div>
+          <div class="card-body">
+            <div class="nombreArticulo">{{ item.titulo }}</div>
+            <div class="precioArticulo">{{ item.precio | currency }}</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
