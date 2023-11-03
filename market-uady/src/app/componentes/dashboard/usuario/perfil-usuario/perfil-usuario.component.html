@@ -39,10 +39,10 @@
           <div class="card" style="width: 100%">
             <img [src]="item.image" class="card-img-top" style="height: 200px; object-fit: cover" />
             <div class="editar-icon circular-icon">
-              <img src="../../../../assets/editar.jpg" width="30px" height="30px">
+              <img src="../../../../assets/editar.jpg" width="30px" height="30px" *ngIf="perfilUsuario">
             </div>
             <div class="eliminar-icon circular-icon">
-              <img src="../../../../assets/eliminar.jpg" width="30px" height="30px">
+              <img src="../../../../assets/eliminar.jpg" width="30px" height="30px" *ngIf="perfilUsuario">
             </div>
             <div class="card-body">
               <div class="nombreArticulo">{{ item.titulo }}</div>
