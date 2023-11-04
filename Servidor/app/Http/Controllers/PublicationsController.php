@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Facultad;
 use App\Models\publication;
 use App\Models\publications_image;
 use App\Models\User;
@@ -56,17 +57,26 @@ class PublicationsController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
+        
+        // Getting publication data
+        $publication = publication::where('idPublicacion', $idPublication)
+            ->first();
 
-        $publication = publication::find($idPublication)
-            ->select('titulo', 'descripcion', 'precio', 'matriculaPublicador')->first();
-
+        // Getting seller of the publication
         $sellerData = User::where('matricula', $publication['matriculaPublicador'])
             ->select('matricula', 'nombres', 'apellidos', 'idFacultad', 'nombreImagenPerfil', 'numeroContacto')->first();
+
+        // Getting the faculty of the seller
+        $faculty = Facultad::where('idFacultad', $sellerData['idFacultad'])
+          ->select('nombre')
+          ->first();
+          
         $sellerProfileImg = Storage::disk('profile')->url($sellerData['nombreImagenPerfil']);
         $sellerData['imagen'] = $sellerProfileImg;
         unset($sellerData['nombreImagenPerfil']);
         unset($publication['matriculaPublicador']);
 
+        $sellerData['facultad'] = $faculty;
 
         $publicationImages = publications_image::where('idPublicacion', $idPublication)->get();
 
@@ -95,19 +105,29 @@ class PublicationsController extends Controller
         }
         
         DB::statement("SET SQL_MODE=''"); //! Se requiere para poder obtener la query
-        $sellerProfile = publication::rightJoin('publications_images', 'publications.idPublicacion', '=', 'publications_images.idPublicacion')
+        $sellerPublications = publication::rightJoin('publications_images', 'publications.idPublicacion', '=', 'publications_images.idPublicacion')
                                 ->whereNotNull('publications.idPublicacion')
                                 ->groupBy('publications.idPublicacion')
                                 ->where('publications.matriculaPublicador', '=', $matricula)
                                 ->select('publications.idPublicacion', 'titulo', 'precio', 'nombreArchivo')
                                 ->get();
-        foreach ($sellerProfile as $publicationData) {
+        foreach ($sellerPublications as $publicationData) {
             $imageURL = Storage::disk('publications')->url($publicationData['nombreArchivo']);
             $publicationData['image'] = $imageURL;
             unset($publicationData['nombreArchivo']);
         }
 
-        return json_encode($sellerProfile, JSON_UNESCAPED_SLASHES);
+        $sellerData = User::where('matricula', $matricula)
+            ->select('matricula', 'nombres', 'apellidos', 'idFacultad', 'nombreImagenPerfil', 'numeroContacto')->first();
+        $sellerProfileImg = Storage::disk('profile')->url($sellerData['nombreImagenPerfil']);
+        $sellerData['imagen'] = $sellerProfileImg;
+        unset($sellerData['nombreImagenPerfil']);
+
+        $data = [
+            "publicaciones" => $sellerPublications,
+            "vendedor" => $sellerData
+        ];
+        return json_encode($data, JSON_UNESCAPED_SLASHES);
     }
 
     public function mainPage(){
@@ -185,7 +205,7 @@ class PublicationsController extends Controller
             'titulo' => 'required|string|max:255',
             'descripcion' => 'required|string|max:255',
             'precio' => 'required|decimal:2|between:0,9999.99',
-            'imagenes' => 'required',
+            'imagenes' => 'nullable|array',
             'imagenes.*' => 'required|mimes:jpg,jpeg,png|max:5120',
         ]);
 
@@ -199,22 +219,23 @@ class PublicationsController extends Controller
         $publication->precio = $request->precio;
         $publication->save();
 
-        $oldPublicationImages = publications_image::where('idPublicacion', $request->idPublication)->pluck('nombreArchivo');
-        foreach ($oldPublicationImages as $oldImage) {
-            Storage::disk('publications')->delete($oldImage);
+        if ($request->file('imagenes') != null) {
+          
+          $oldPublicationImages = publications_image::where('idPublicacion', $request->idPublication)->pluck('nombreArchivo');
+          foreach ($oldPublicationImages as $oldImage) {
+              Storage::disk('publications')->delete($oldImage);
+          }
+          publications_image::where('idPublicacion', $request->idPublication)->delete();
+
+          foreach ($request->file('imagenes') as $imageFile) {
+              $filename = uniqid() . '.' . File::extension($imageFile->getClientOriginalName());
+              Storage::disk('publications')->put($filename, file_get_contents($imageFile));
+              publications_image::create([
+                  'nombreArchivo' => $filename,
+                  'idPublicacion' => $request->idPublication
+              ]);
+          }
         }
-        publications_image::where('idPublicacion', $request->idPublication)->delete();
-
-        foreach ($request->file('imagenes') as $imageFile) {
-            $filename = uniqid() . '.' . File::extension($imageFile->getClientOriginalName());
-            Storage::disk('publications')->put($filename, file_get_contents($imageFile));
-            publications_image::create([
-                'nombreArchivo' => $filename,
-                'idPublicacion' => $request->idPublication
-            ]);
-        }
-
-
         return response()->json(['message' => 'Publication updated']);
     }
 

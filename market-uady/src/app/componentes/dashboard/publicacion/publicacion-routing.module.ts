@@ -6,15 +6,23 @@ import { FormularioPublicacionComponent } from './formulario-publicacion/formula
 
 const routes: Routes = [
   {
-    path: '', component: PublicacionComponent, children: [
-      { path: 'vista-publicacion', component:VistaPublicacionComponent },
-      { path: 'formulario-publicacion', component:FormularioPublicacionComponent},
-    ]
-  }
+    path: '',
+    component: PublicacionComponent,
+    children: [
+      { path: 'vista-publicacion', children: [{ path: ':id', component: VistaPublicacionComponent }] },
+      {
+        path: 'formulario-publicacion',
+        children: [
+          { path: '', component: FormularioPublicacionComponent },
+          { path: 'edit/:id', component: FormularioPublicacionComponent },
+        ],
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class PublicacionRoutingModule { }
+export class PublicacionRoutingModule {}

@@ -3,6 +3,10 @@
   border: yellow 5px solid;
 }
 
+.success-snackbar {
+  background-color: #43a047;
+}
+
 .main-body {
   display: flex;
   flex-direction: column;
@@ -12,7 +16,7 @@
 }
 
 .form-wrapper {
-  max-width: 600px;
+  max-width: 500px;
 }
 
 .example-form {
@@ -39,4 +43,24 @@
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 1rem;
+}
+
+.btn-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 1rem;
+  font-size: 1rem;
+  background-color: red;
+  border: none;
+  border-radius: 50%;
+  color: #ffffff;
+  z-index: 100;
+  padding: 5px;
+  opacity: 0.5;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-close:hover {
+  opacity: 1;
 }

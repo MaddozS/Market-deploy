@@ -2,154 +2,108 @@
     height: 10vh;
     border: yellow 5px solid;
   }
-  
-  /*Sección de fondo de edifio central*/
-
-  
-  .anuncio {
-    background-color: white;
-    width: 25%;
-    height: 75%;
-    text-align: center;
-    margin-right: 4%;
-    border-radius: 1rem;
+  .nombre-desabilitado {
+    background-color: #f2f2f2; /* Cambia el color de fondo a gris */
+    color: #888888; /* Cambia el color del texto a un gris más claro */
+    cursor: not-allowed; /* Cambia el cursor al estilo "no permitido" */
   }
-  .camposFormulario{
-    width: 400px;
-    margin-bottom: 30px;
-  }
-  .cargarImagen{
-    width: 100px;
-    margin-bottom: 30px;
-  }
-  .etiquetaForm{
-    text-align: left;
-    margin-left: 490px;
-    font-size: 12px;
-  }
-  .formularioEditarPerfil{
-    display: block;
-    text-align: center;
+  .camposFormulario:disabled {
+    background-color: #f2f2f2; /* Cambia el color de fondo a gris */
+    color: #888888; /* Cambia el color del texto a un gris más claro */
+    cursor: not-allowed; /* Cambia el cursor al estilo "no permitido" */
   }
   .editarPerfil {
     margin-top: 50px;
+    margin-bottom: 60px;
     width: 100%;
     height: 15%;
     text-align: center;
     border-radius: 1rem;
-    font-size: 50px;
-  }
-  .productosTitulo {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    text-align: left;
-    border-radius: 1rem;
     font-size: 40px;
-    padding-top: 30px;
-    padding-bottom: 30px;
-    padding-left: 80px;
-    padding-right: 0px;
   }
-  
-  .datosUsuario {
-    font-size: 25px;
-  }
-  
-  .pregunta,
-  .texto,
-  .buttonEmpezar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .pregunta {
-    height: 25%;
-    font-weight: bold;
-  }
-  .text {
-    height: 30%;
-    font-size: small;
-  }
-  
-  .buttonEnviar {
-    height: 30%;
-  }
-  
-  .buttonEnviar button {
-    background-color: var(--amarillo);
-    font-weight: bold;
-    margin-bottom: 30px;
-  }
-  .btn{
-    width: 400px;
-  }
-  
-  /*Contenedor principal*/
-  .contenedor {
-    display: flex;
-  }
-  /* Sección de filtros*/
-  .filtros {
-    width: 30%;
-  }
-  .filtros h4, h5 {
-    padding-top: 0.5rem;
-  }
-  .scrollFiltro {
-    width: 100%;
-    min-height: 19vh;
-    font-size: small;
-  }
-  
-  /*Sección de lista de articulos*/
-  .scroll {
-    width: 70%;
-    min-height: 60vh;
-  }
-  .lista-articulos {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-gap: 1rem;
-    padding-left: 5%;
-    padding-right: 5%;
-  }
-  
-  .item {
-    height: 400px;
-    background-color: rgba(255, 255, 255, 0.8);
-    text-align: center;
-  }
-  
-  .imagen {
-    position: relative;
-    display: inline-block;
-    height: 70%;
-  }
+  /* Contenedor principal */
+.contenedor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-  .editar-btn{
-    position: absolute;
-    bottom: 250px;
-    left: 265px;
-    border: none;
-    cursor: pointer;
-  }
-  .eliminar-btn{
-    position: absolute;
-    bottom: 250px;
-    right: 265px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .nombreArticulo, .precioArticulo{
-      height: 10%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-  }
-  
-  .precioArticulo{
-      font-weight: bold;
-  }
+/* Formulario de Edición de Perfil */
+.formularioEditarPerfil {
+  text-align: center;
+}
+
+/* Lista de Artículos */
+.lista-articulos {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 1rem;
+  padding-left: 5%;
+  padding-right: 5%;
+  max-width: 100%; /* Hace que la lista sea 100% del ancho del contenedor */
+}
+
+/* Elementos de la Lista de Artículos */
+.item {
+  height: auto; /* Permite que la altura sea flexible */
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  position: relative;
+  display: inline-block;
+}
+
+.imagen {
+  height: auto; /* Permite que la altura de la imagen sea flexible */
+  position: relative;
+}
+
+.editar-btn,
+.eliminar-btn {
+  position: absolute;
+  bottom: 10px; /* Ajusta la posición según tus necesidades */
+  cursor: pointer;
+}
+
+/* Detalles del Artículo */
+.nombreArticulo,
+.precioArticulo {
+  height: auto; /* Permite que la altura sea flexible */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* Estilos anteriores... */
+
+/* Formulario */
+.contenedorForm {
+  width: 30%; /* Ancho máximo del formulario */
+  margin: 0 auto; /* Centra el formulario horizontalmente */
+}
+
+/* Campos de entrada */
+.camposFormulario {
+  width: 100%; /* Toma el ancho completo del contenedor */
+  padding: 10px; /* Espacio interno en los campos */
+  margin-bottom: 15px; /* Espacio entre los campos */
+  font-size: 16px; /* Tamaño de fuente */
+}
+
+/* Botones */
+.btn {
+  width: 100%; /* Toma el ancho completo del contenedor */
+  background-color: var(--amarillo);
+  font-weight: bold;
+  margin-bottom: 10px; /* Espacio entre los botones */
+  font-size: 16px; /* Tamaño de fuente */
+  padding: 10px; /* Espacio interno en los botones */
+}
+
+/* Etiquetas */
+.etiquetaForm {
+  text-align: left; /* Alinea las etiquetas a la izquierda */
+  font-size: 14px; /* Tamaño de fuente de las etiquetas */
+  margin-top: 10px; /* Espacio entre etiquetas y campos */
+}
+
+/* Estilos adicionales... */

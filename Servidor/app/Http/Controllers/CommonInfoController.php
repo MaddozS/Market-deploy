@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Campu;
-use App\Models\Facultade;
+use App\Models\Campus;
+use App\Models\Facultad;
 use Illuminate\Http\Request;
 
 class CommonInfoController extends Controller
 {
     public function getFilters()
     {
-        $facultades = Facultade::select('idFacultad', 'nombre', 'idCampus')->get();
-        $campus = Campu::select('idCampus', 'nombre')->get();
+        $facultades = Facultad::select('idFacultad', 'nombre', 'idCampus')->get();
+        $campus = Campus::select('idCampus', 'nombre')->get();
 
         $filtersData = [
             'campus' => $campus,
@@ -23,7 +23,7 @@ class CommonInfoController extends Controller
 
     public function getFaculties()
     {
-        $facultades = Facultade::select('idFacultad', 'nombre')->get();
+        $facultades = Facultad::select('idFacultad', 'nombre')->get();
         return response()->json($facultades);
     }
 }

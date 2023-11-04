@@ -8,23 +8,35 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-right: 20px;
 }
 .image-list.row {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-right: 20px;
 }
+
+.image-list.row .image {
+  margin-bottom: 0;
+}
+
 .image-list img {
   max-width: 100%;
-  height: auto;
-  margin-bottom: 10px;
+  width: 100%;
   cursor: pointer;
+  object-fit: cover;
   border: 2px solid #ddd;
-  border-radius: 5px;
+  aspect-ratio: 1/1;
 }
+
+.image-list .image {
+  margin-bottom: 15px;
+}
+
+.image-list .image:last-child {
+  margin-bottom: 0;
+}
+
 .main-image {
   display: flex;
   align-items: center;
@@ -71,3 +83,4 @@
   object-fit: cover;
   font-size: 14px;
 }
+

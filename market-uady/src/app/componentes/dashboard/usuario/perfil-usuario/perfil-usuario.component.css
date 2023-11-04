@@ -13,6 +13,55 @@
     justify-content: flex-end;
   }
 
+  .datosUsuario {
+    margin-top: 20px; /* Agrega margen superior para separar los elementos */
+  }
+  
+
+  .productosTitulo {
+    margin-top: 20px; /* Ajusta el valor según tus necesidades */
+    /* Tu otro estilo existente aquí... */
+  }
+
+  .card {
+    position: relative;
+  }
+  
+  .editar-icon {
+    left: 10px;
+  }
+  
+  .eliminar-icon {
+    right: 10px;
+  }
+
+  
+  .editar-icon, .eliminar-icon {
+    position: absolute;
+    top: 10px;
+    width: 30px; /* Ancho deseado */
+    height: 30px; /* Alto deseado */
+    cursor: pointer;
+    transition: transform 0.2s, color 0.2s, box-shadow 0.2s;
+  }
+  
+  .editar-icon img, .eliminar-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  .editar-icon:hover, .eliminar-icon:hover {
+    transform: scale(1.1); /* Hace que el icono se agrande al pasar el cursor */
+    color: #ff0000; /* Cambia el color al pasar el cursor */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Agrega una sombra al pasar el cursor */
+  }
+  
+
+  .circular-icon img {
+    border-radius: 10%;
+  }
+
   .imagenPerfil {
     height: 90%;
     margin: 40px;
@@ -23,16 +72,12 @@
     width: 100%;
     border-radius: 100px;
   }
-  .imagenEscuela {
-    height: 10%;
-    display: flex;
-    align-items: center;
-  }
   
   .imagenEscuela img {
     height:3%;
     width: 3%;
     margin-right: 10px;
+    margin-bottom: 20px;
   }
   
   .anuncio {
@@ -60,8 +105,8 @@
     font-size: 40px;
     padding-top: 30px;
     padding-bottom: 30px;
-    padding-left: 80px;
     padding-right: 0px;
+    justify-content: space-between;
   }
   
   .datosUsuario {
@@ -91,7 +136,8 @@
   .buttonEmpezar button {
     background-color: var(--amarillo);
     font-weight: bold;
-    margin-left: 590px;
+    margin-left: 20px; /* Espacio desde el lado izquierdo */
+    align-items: center;
   }
   .btn{
     width: 200px;
@@ -165,3 +211,8 @@
   .precioArticulo{
       font-weight: bold;
   }
+
+
+ 
+
+  
