@@ -212,7 +212,9 @@
       font-weight: bold;
   }
 
-
- 
+.modal-title{
+  font-size: large;
+  font-weight: bold;
+}
 
   

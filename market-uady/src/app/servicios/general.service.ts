@@ -132,4 +132,9 @@ export class GeneralService {
   obtenerPublicacionesDelVendedor(matricula: any): Observable<any> {
     return this.http.get(`${this.baseURL}/publications/profile/${matricula}`, { headers: this.getHeaders() });
   }
+
+  eliminarPublicacion(id: any) {
+    return this.http.delete(`${this.baseURL}/publications/${id}`, { headers: this.getHeaders() });
+
+  }
 }

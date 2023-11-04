@@ -20,6 +20,7 @@ export class FormularioPublicacionComponent {
   currentId: number | null = null;
   imagesCountShouldReset = false;
 
+  titulo = 'Publicar nuevo producto o servicio';
   publicacion: PublicacionEdit = {
     imagenes: [],
     titulo: '',
@@ -70,11 +71,12 @@ export class FormularioPublicacionComponent {
         titulo: new FormControl(this.publicacion.titulo, [Validators.required]),
         descripcion: new FormControl(this.publicacion.descripcion, [Validators.required]),
         precio: new FormControl(this.publicacion.precio, [Validators.required, Validators.min(0.01)]),
-        categoria: new FormControl(this.publicacion.categoria, [Validators.required]),
+        /*  categoria: new FormControl(this.publicacion.categoria, [Validators.required]), */
         imagenes: new FormControl(this.publicacion.imagenes),
       });
       if (id) {
         this.getPublicacion(+id);
+        this.titulo = 'Editar producto o servicio';
       }
       //images are required only when creating a publication
       if (!this.isEditing) {
