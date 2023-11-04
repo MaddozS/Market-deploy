@@ -60,17 +60,24 @@ export class FormularioUsuarioComponent implements OnInit {
   }
 
   obtenerDatosUsuario() {
-    this.servicio.obtenerDatosUsuario().subscribe(
-      (response) => {
-        this.perfil = response;
-        this.formulario.patchValue(this.perfil);
-        this.correoFormateado = 'a ' + this.perfil.matricula + '@alumnos.uady.mx';
-        console.log('Datos del usuario:', this.perfil);
-      },
-      (error) => {
-        console.error('Error al obtener datos del usuario:', error);
-      }
-    );
+
+    const matriculaString = sessionStorage.getItem('matricula');
+    if (matriculaString != null) {
+      const cleanedMatriculaString = matriculaString.replace(/[^0-9]/g, ''); // Eliminar caracteres no numéricos
+      const matricula: number = parseInt(cleanedMatriculaString, 10);
+      this.servicio.obtenerDatosUsuario(matricula).subscribe(
+        (response) => {
+          this.perfil = response;
+          this.formulario.patchValue(this.perfil);
+          this.correoFormateado = 'a ' + this.perfil.matricula + '@alumnos.uady.mx';
+          console.log('Datos del usuario:', this.perfil);
+        },
+        (error) => {
+          console.error('Error al obtener datos del usuario:', error);
+        }
+      );
+    }
+    
   }
 
   onFileSelected(event: any) {

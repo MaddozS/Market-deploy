@@ -112,15 +112,14 @@ export class GeneralService {
     return this.http.get<PublicacionResponse>(`${this.baseURL}/publications/${id}`, { headers: this.getHeaders() });
   }
 
-  obtenerDatosUsuario(): Observable<any> {
-    return this.http.get('http://localhost:8000/api/publications/profile/16003059', { headers: this.getHeaders() }).pipe(
-      map((response: any) => response.vendedor)
-    );
+  obtenerDatosUsuario(id: any): Observable<any> {
+    return this.http
+      .get(`${this.baseURL}/publications/profile/${id}`, { headers: this.getHeaders() })
+      .pipe(map((response: any) => response.vendedor));
   }
 
   actualizarDatosPerfil(body: any): Observable<any> {
-    
-    return this.http.post('http://localhost:8000/api/profile/update?_method=PUT', body, {
+    return this.http.post(`${this.baseURL}/profile/update?_method=PUT`, body, {
       // NOTE: We setting the content type to multipart/form-data, because we are sending files
       // and we need to set the boundary to a random string to avoid errors
       headers: new HttpHeaders({
@@ -135,6 +134,5 @@ export class GeneralService {
 
   eliminarPublicacion(id: any) {
     return this.http.delete(`${this.baseURL}/publications/${id}`, { headers: this.getHeaders() });
-
   }
 }
