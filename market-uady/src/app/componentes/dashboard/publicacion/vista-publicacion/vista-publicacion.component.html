@@ -1,4 +1,3 @@
-<header class="header"></header>
 <main>
   <div class="container-lg mt-5">
     <div class="row d-none d-lg-flex">
@@ -146,7 +145,7 @@
             <div class="col-3" *ngFor="let item of otherPublicaciones">
               <a [routerLink]="['/dashboard/publicacion/vista-publicacion', item.idPublicacion]">
                 <div class="card" style="width: 100%">
-                  <img src="{{ item.image }}" class="card-img-top" style="max-height: 250px; object-fit: cover" />
+                  <img src="{{ item.image }}" class="card-img-top" style=" object-fit: cover" />
                   <div class="card-body">
                     <div class="nombreArticulo">{{ item.titulo }}</div>
                     <div class="precioArticulo">{{ item.precio | currency }}</div>

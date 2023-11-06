@@ -128,4 +128,7 @@ h5 {
 label {
   font-size: small;
 }
+.card-img-top{
+  height: 200px;
+}
 

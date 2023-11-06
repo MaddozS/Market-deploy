@@ -1,9 +1,8 @@
-<header class="header"></header>
 <main class="main-body">
   <div class="container-fluid py-5 form-wrapper">
     <div class="row">
       <div class="col-12">
-        <h1 class="my-4 title text-center">Publicar nuevo producto o servicio</h1>
+        <h1 class="my-4 title text-center">{{titulo}}</h1>
       </div>
       <div class="col-12">
         <form
@@ -41,7 +40,7 @@
             </div>
           </div>
 
-          <div class="input-group mb-4">
+     <!--      <div class="input-group mb-4">
             <label for="price" class="form-label h5">Categoria</label>
             <div class="input-group">
               <select form class="form-select" id="select" formControlName="categoria" [(ngModel)]="publicacion.categoria">
@@ -50,7 +49,7 @@
                 <option value="servicio">Servicio</option>
               </select>
             </div>
-          </div>
+          </div> -->
 
           <!-- A file uploader with multiple files and show the files in a list -->
           <div class="mb-4">

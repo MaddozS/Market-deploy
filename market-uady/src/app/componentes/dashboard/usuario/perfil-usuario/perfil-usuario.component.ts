@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GeneralService } from 'src/app/servicios/general.service';
 import { PublicationGet, Vendedor } from 'src/app/types';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export class Perfil {
   nombres: string;
@@ -32,7 +33,8 @@ export class PerfilUsuarioComponent implements OnInit {
   facultades: any[] = [];
   publicaciones: any[] = [];
   perfilUsuario = false;
-
+  idToDelete = null;
+  idVendedor:any;
   // Declaración de las siguientes variables para la información de la publicación
 
   currentImage!: string;
@@ -40,9 +42,15 @@ export class PerfilUsuarioComponent implements OnInit {
   constructor(
     private servicio: GeneralService,
     private router: Router,
-    private route: ActivatedRoute
-  ) {
-
+    private route: ActivatedRoute,
+    private _snackBar: MatSnackBar
+  ) {}
+  mostrarMensaje(mensaje: string) {
+    this._snackBar.open(mensaje, 'Cerrar', {
+      duration: 5000,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+    });
   }
 
   irAEdicionPublicacion() {
@@ -56,14 +64,12 @@ export class PerfilUsuarioComponent implements OnInit {
       if (matriculaString != null) {
         const cleanedMatriculaString = matriculaString.replace(/[^0-9]/g, ''); // Eliminar caracteres no numéricos
         const matricula: number = parseInt(cleanedMatriculaString, 10);
+        this.idVendedor = params['id'];
         if (!isNaN(matricula) && matricula == params['id']) {
           this.perfilUsuario = true;
         }
-        this.servicio.obtenerPublicacionesDelVendedor(params['id']).subscribe((response) => {
-          this.publicaciones = response.publicaciones;
-          this.perfil = response.vendedor;
-          console.log(response);
-        });
+    
+       this.obtenerPublicacionesVendedor(this.idVendedor);
         this.servicio.obtenerFacultades().subscribe(
           (facultadesResponse) => {
             this.facultades = facultadesResponse;
@@ -88,6 +94,37 @@ export class PerfilUsuarioComponent implements OnInit {
     // Redirige al formulario de usuario
     this.router.navigate(['dashboard/usuario/formulario-usuario']);
   }
+  irAFormularioProducto() {
+    this.router.navigate(['dashboard/publicacion/formulario-publicacion']);
+  }
+  editarProducto(id: any) {
+    this.router.navigate(['/dashboard/publicacion/formulario-publicacion/edit', id]);
+  }
+  irAVistaPublicacion(id: any) {
+    this.router.navigate(['/dashboard/publicacion/vista-publicacion', id]);
+  }
 
- 
+  seleccionarIdPublicacion($id: any) {
+    this.idToDelete = $id;
+  }
+
+  eliminarPublicacion(){
+    this.servicio.eliminarPublicacion(this.idToDelete).subscribe(
+      (response)=>{
+        this.obtenerPublicacionesVendedor(this.idVendedor);
+
+        this.mostrarMensaje("Publicación eliminada");
+      }
+    )
+  }
+
+  obtenerPublicacionesVendedor(id:any){
+
+    this.servicio.obtenerPublicacionesDelVendedor(id).subscribe((response) => {
+      this.publicaciones = response.publicaciones;
+      this.perfil = response.vendedor;
+      console.log(response);
+    });
+
+  }
 }

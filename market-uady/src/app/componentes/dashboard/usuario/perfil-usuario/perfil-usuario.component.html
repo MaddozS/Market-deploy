@@ -1,4 +1,3 @@
-<div class="header"></div>
 <div class="fondo">
   <div class="imagenPerfil">
     <img [src]="perfil.imagen" alt="Imagen de perfil" style="width: 180px; height: 180px; object-fit: cover" />
@@ -30,7 +29,7 @@
       <div class="productosTitulo">
         <div class="productosTexto">Productos y/o servicios</div>
         <div class="buttonEmpezar">
-          <button type="button" class="btn" *ngIf="perfilUsuario">Nuevo producto</button>
+          <button type="button" class="btn" *ngIf="perfilUsuario" (click)="irAFormularioProducto()">Nuevo producto</button>
         </div>
       </div>
     </div>
@@ -41,21 +40,45 @@
   <div class="container">
     <div class="row gx-2 gy-4 pt-3">
       <div class="col-3" *ngFor="let item of publicaciones">
-        <a [routerLink]="['/dashboard/publicacion/vista-publicacion', item.idPublicacion]">
-          <div class="card" style="width: 100%">
-            <img [src]="item.image" class="card-img-top" style="height: 200px; object-fit: cover" />
-            <div class="editar-icon circular-icon">
-              <img src="../../../../assets/editar.jpg" width="30px" height="30px" *ngIf="perfilUsuario" />
-            </div>
-            <div class="eliminar-icon circular-icon">
-              <img src="../../../../assets/eliminar.jpg" width="30px" height="30px" *ngIf="perfilUsuario" />
-            </div>
-            <div class="card-body">
-              <div class="nombreArticulo">{{ item.titulo }}</div>
-              <div class="precioArticulo">{{ item.precio | currency }}</div>
-            </div>
+        <div class="card" style="width: 100%">
+          <img
+            [src]="item.image"
+            class="card-img-top"
+            style="height: 200px; object-fit: cover"
+            (click)="irAVistaPublicacion(item.idPublicacion)" />
+          <div class="editar-icon circular-icon" (click)="editarProducto(item.idPublicacion)">
+            <img src="../../../../assets/editar.jpg" width="30px" height="30px" *ngIf="perfilUsuario" />
           </div>
-        </a>
+          <div class="eliminar-icon circular-icon">
+            <img
+              src="../../../../assets/eliminar.jpg"
+              width="30px"
+              height="30px"
+              *ngIf="perfilUsuario"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+              (click)="seleccionarIdPublicacion(item.idPublicacion)" />
+          </div>
+          <div class="card-body">
+            <div class="nombreArticulo">{{ item.titulo }}</div>
+            <div class="precioArticulo">{{ item.precio | currency }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">¿Está seguro?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">La publicación se eliminará permanentemente.</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="eliminarPublicacion()">Eliminar publicación</button>
       </div>
     </div>
   </div>
