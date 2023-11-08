@@ -4,24 +4,6 @@ import { PublicationGet, Vendedor } from 'src/app/types';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-export class Perfil {
-  nombres: string;
-  apellidos: string;
-  idFacultad: string;
-  matricula: string;
-  numeroContacto: string;
-  imagen: File | string;
-
-  constructor() {
-    this.nombres = '';
-    this.apellidos = '';
-    this.idFacultad = '';
-    this.matricula = '';
-    this.numeroContacto = '';
-    this.imagen = '';
-  }
-}
-
 @Component({
   selector: 'app-perfil-usuario',
   templateUrl: './perfil-usuario.component.html',

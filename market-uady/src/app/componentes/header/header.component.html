@@ -1,22 +1,49 @@
 <div class="FondoN">
     <h3 class="titulo-superior">El sitio de emprendimiento para estudiantes de la Universidad Autónoma de Yucatán</h3>
     <header class="header">
-        <div class="social-media">
-            <div class="social-icons">
-                <a href="#"><i class="mdi mdi-facebook mdi-24px"></i></a>
-                <a href="#"><i class="mdi mdi-twitter mdi-24px"></i></a>
-                <a href="#"><i class="mdi mdi-instagram mdi-24px"></i></a>
-                <a>Contacto</a>
-            </div>
-        </div>
         <div class="logo">
-            <!-- <img src="ruta-al-logo.png" alt="Logo"> -->
+            <img src="../../../assets/logo.png" alt="Logo" class="logoC">
         </div>
-        <div class="profile">               
-            <p>{{ nombreDeLaPersona }}</p>
-              <!-- <img src="ruta-a-la-imagen-de-perfil.jpg" alt="Imagen de perfil" class="rounded"> -->
-            
-              <a href="#" style="color: rgb(0, 0, 0);"><i class="mdi mdi-account-circle mdi-36px"></i></a>
+        <div class="profile">
+            <p>{{ perfil.nombres }} {{ perfil.apellidos }}</p>
+            <div id="user-profile">
+        
+                <div class="dropdown">
+                    <div class="profile-image-container" id="menuBtn" onclick="toggleMenu(event)">
+                        <img src="{{ perfil.imagen }}" alt="Imagen de perfil" class="rounded" id="profile-image">
+                    </div>
+                    <div class="dropdown-content" id="myDropdown">
+                        <a href="#">Opción 1</a>
+                        <a href="#">Opción 2</a>
+                    </div>
+                </div>
+                
+            </div>
         </div>
     </header>
 </div>
+<!--
+<script>
+// Obtén el botón y el menú desplegable
+var menuBtn = document.getElementById("menuBtn");
+var dropdown = document.getElementById("myDropdown");
+
+// Agrega un evento de clic al botón para mostrar u ocultar el menú desplegable
+menuBtn.addEventListener("click", function() {
+    if (dropdown.style.display === "block") {
+        dropdown.style.display = "none";
+    } else {
+        dropdown.style.display = "block";
+    }
+});
+
+// Cierra el menú desplegable si se hace clic en cualquier otro lugar de la página
+window.addEventListener("click", function(event) {
+    if (event.target !== menuBtn && event.target !== dropdown) {
+        dropdown.style.display = "none";
+    }
+});
+
+
+</script>
+-->
