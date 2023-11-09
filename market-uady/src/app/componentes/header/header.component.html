@@ -13,8 +13,9 @@
                         <img src="{{ perfil.imagen }}" alt="Imagen de perfil" class="rounded" id="profile-image">
                     </div>
                     <div class="dropdown-content" id="myDropdown">
-                        <a href="#">Opción 1</a>
-                        <a href="#">Opción 2</a>
+                        <a href="#">Editar perfil</a>
+                        <a href="#" id="cerrarSesion">Cerrar sesión</a>
+
                     </div>
                 </div>
                 
@@ -22,6 +23,26 @@
         </div>
     </header>
 </div>
+
+<script>
+    document.getElementById('cerrarSesion').addEventListener('click', function (e) {
+  e.preventDefault(); // Evita que el enlace realice una redirección predeterminada
+
+  // Elimina los elementos de sessionStorage
+  sessionStorage.removeItem('matricula');
+  sessionStorage.removeItem('idUsuario');
+  sessionStorage.removeItem('token');
+
+  // Redirige al usuario a la página de inicio de sesión
+  window.location.href = 'ruta-de-tu-pagina-de-inicio-de-sesion.html';
+});
+
+</script>
+
+
+
+
+
 <!--
 <script>
 // Obtén el botón y el menú desplegable

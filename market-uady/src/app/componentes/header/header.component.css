@@ -5,7 +5,7 @@
     background-color: #ffffff;
     color: rgb(0, 0, 0);
     padding: 10px;
-    height: 10vh;
+    height: 15vh;
     border: 5px solid var(--amarillo);
   }
   
@@ -17,6 +17,7 @@
   .logo img {
     width: 17vw;
     height: 9vh;
+    margin-left: 30px;
   }
   
   .profile {
@@ -138,4 +139,8 @@
 #myDropdown a:hover {
     background-color: #e9b776; /* Cambia el color de fondo al pasar el cursor */
     color: #fff; /* Cambia el color del texto al pasar el cursor */
+}
+
+#profile-image-container{
+  margin-right: 15px;
 }
