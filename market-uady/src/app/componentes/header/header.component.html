@@ -2,7 +2,9 @@
   <h3 class="titulo-superior">El sitio de emprendimiento para estudiantes de la Universidad Autónoma de Yucatán</h3>
   <header class="header">
     <div class="logo">
-      <img src="../../../assets/logo.png" alt="Logo" class="logoC" />
+      <a [routerLink]="['/dashboard/']">
+        <img src="../../../assets/logo.png" alt="Logo" class="logoC" />
+      </a>
     </div>
     <div class="profile">
       <p>{{ perfil.nombres }} {{ perfil.apellidos }}</p>
@@ -12,8 +14,8 @@
             <img src="{{ perfil.imagen }}" alt="Imagen de perfil" class="rounded" id="profile-image" />
           </div>
           <div class="dropdown-content" id="myDropdown">
-            <a [routerLink]="['/dashboard/usuario/formulario-usuario']">Editar perfil</a>
-            <a  (click)="redirectToLogout()">Cerrar sesión</a>
+            <a [routerLink]="['/dashboard/usuario/perfil-usuario/', idVendedor]">Ver perfil</a>
+            <a (click)="redirectToLogout()">Cerrar sesión</a>
           </div>
         </div>
       </div>
