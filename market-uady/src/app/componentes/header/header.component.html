@@ -1,70 +1,22 @@
 <div class="FondoN">
-    <h3 class="titulo-superior">El sitio de emprendimiento para estudiantes de la Universidad Autónoma de Yucatán</h3>
-    <header class="header">
-        <div class="logo">
-            <img src="../../../assets/logo.png" alt="Logo" class="logoC">
+  <h3 class="titulo-superior">El sitio de emprendimiento para estudiantes de la Universidad Autónoma de Yucatán</h3>
+  <header class="header">
+    <div class="logo">
+      <img src="../../../assets/logo.png" alt="Logo" class="logoC" />
+    </div>
+    <div class="profile">
+      <p>{{ perfil.nombres }} {{ perfil.apellidos }}</p>
+      <div id="user-profile">
+        <div class="dropdown">
+          <div class="profile-image-container" id="menuBtn" onclick="toggleMenu(event)">
+            <img src="{{ perfil.imagen }}" alt="Imagen de perfil" class="rounded" id="profile-image" />
+          </div>
+          <div class="dropdown-content" id="myDropdown">
+            <a [routerLink]="['/dashboard/usuario/formulario-usuario']">Editar perfil</a>
+            <a  (click)="redirectToLogout()">Cerrar sesión</a>
+          </div>
         </div>
-        <div class="profile">
-            <p>{{ perfil.nombres }} {{ perfil.apellidos }}</p>
-            <div id="user-profile">
-        
-                <div class="dropdown">
-                    <div class="profile-image-container" id="menuBtn" onclick="toggleMenu(event)">
-                        <img src="{{ perfil.imagen }}" alt="Imagen de perfil" class="rounded" id="profile-image">
-                    </div>
-                    <div class="dropdown-content" id="myDropdown">
-                        <a href="#">Editar perfil</a>
-                        <a href="#" id="cerrarSesion">Cerrar sesión</a>
-
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-    </header>
+      </div>
+    </div>
+  </header>
 </div>
-
-<script>
-    document.getElementById('cerrarSesion').addEventListener('click', function (e) {
-  e.preventDefault(); // Evita que el enlace realice una redirección predeterminada
-
-  // Elimina los elementos de sessionStorage
-  sessionStorage.removeItem('matricula');
-  sessionStorage.removeItem('idUsuario');
-  sessionStorage.removeItem('token');
-
-  // Redirige al usuario a la página de inicio de sesión
-  window.location.href = 'ruta-de-tu-pagina-de-inicio-de-sesion.html';
-});
-
-</script>
-
-
-
-
-
-<!--
-<script>
-// Obtén el botón y el menú desplegable
-var menuBtn = document.getElementById("menuBtn");
-var dropdown = document.getElementById("myDropdown");
-
-// Agrega un evento de clic al botón para mostrar u ocultar el menú desplegable
-menuBtn.addEventListener("click", function() {
-    if (dropdown.style.display === "block") {
-        dropdown.style.display = "none";
-    } else {
-        dropdown.style.display = "block";
-    }
-});
-
-// Cierra el menú desplegable si se hace clic en cualquier otro lugar de la página
-window.addEventListener("click", function(event) {
-    if (event.target !== menuBtn && event.target !== dropdown) {
-        dropdown.style.display = "none";
-    }
-});
-
-
-</script>
--->

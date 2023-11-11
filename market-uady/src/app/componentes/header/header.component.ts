@@ -33,7 +33,14 @@ export class HeaderComponent {
   redirectToLogout() {
     // Realiza aquí las acciones necesarias antes de cerrar la sesión
     // Luego redirige a la página de inicio de sesión
+    sessionStorage.removeItem('matricula');
+    sessionStorage.removeItem('idUsuario');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('token_type');
+
     this.router.navigate(['/login']); // Ajusta la ruta según tu página de inicio de sesión
+
   }
 
 
