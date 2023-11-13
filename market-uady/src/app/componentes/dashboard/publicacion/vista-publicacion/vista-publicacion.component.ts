@@ -18,6 +18,7 @@ type SimplePublication = Omit<PublicationGet, 'imagenes'> & {
 })
 export class VistaPublicacionComponent {
   publicacion: PublicationGet = {
+    idPublicacion: 0,
     titulo: '',
     descripcion: '',
     precio: 0,
@@ -99,7 +100,6 @@ export class VistaPublicacionComponent {
           this.publicacion = publicacion;
           this.vendedor = vendedor;
           this.currentImage = publicacion?.imagenes[0];
-
           // Fetch other publications of the user
           if (vendedor) {
             return this.servicio.obtenerPublicacionesDelVendedor(vendedor.matricula);
