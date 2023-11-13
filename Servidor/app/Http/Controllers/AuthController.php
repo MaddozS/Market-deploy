@@ -26,7 +26,28 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            for ($i = 0; $i < count($validator->errors()); $i++) {
+                $error = $validator->errors()->all()[$i];
+                if ($error == 'The matricula has already been taken.') {
+                    return response()->json(['message' => 'Matricula ya esta registrada en el sistema'], 400);
+                }
+                if ($error == 'The correo has already been taken.') {
+                    return response()->json(['message' => 'El correo ya está registrado en el sistema'], 400);
+                }
+                if ($error == 'The imagen perfil must be a file of type: jpg, jpeg, png.') {
+                    return response()->json(['message' => 'La imagen de perfil debe ser un archivo de tipo: jpg, jpeg, png.'], 400);
+                }
+                if ($error == 'The numero contacto must be at least 10 characters.') {
+                    return response()->json(['message' => 'El número de contacto debe tener al menos 10 digitos.'], 400);
+                }
+                if ($error == 'The numero contacto may not be greater than 10 characters.') {
+                    return response()->json(['message' => 'El número de contacto no puede tener más de 10 digitos.'], 400);
+                }
+                if ($error == 'The password must be at least 8 characters.') {
+                    return response()->json(['message' => 'La contraseña debe tener al menos 8 caracteres.'], 400);
+                }
+            }
+            // return response()->json($validator->errors(), 400);
         }
 
         $profileImage = $request->file('imagenPerfil');
