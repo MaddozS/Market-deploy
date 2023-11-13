@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { GeneralService } from 'src/app/servicios/general.service';
-import { Publicacion, PublicacionEdit } from 'src/app/types';
-import { ActivatedRoute } from '@angular/router';
+import { Publicacion, PublicacionEdit, PublicacionResponse } from 'src/app/types';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { MAX_FILE_SIZE, MAX_IMAGES_PER_PUBLICATION } from 'src/app/constants/const';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-formulario-publicacion',
@@ -35,8 +36,8 @@ export class FormularioPublicacionComponent {
     private _snackBar: MatSnackBar
   ) {}
 
-  mostrarMensaje(mensaje: string) {
-    this._snackBar.open(mensaje, 'Cerrar', {
+  mostrarMensaje(mensaje: string, action?: string) {
+    this._snackBar.open(mensaje, action || 'Cerrar', {
       duration: 5000,
       horizontalPosition: 'center',
       verticalPosition: 'bottom',
@@ -63,27 +64,43 @@ export class FormularioPublicacionComponent {
   }
 
   ngOnInit() {
-    // Getting the id from the URL
-    this.route.paramMap.subscribe((params) => {
-      const id = params.get('id');
-      // Initialize the form depending if the user is editing or creating a publication
-      this.form = new FormGroup({
-        titulo: new FormControl(this.publicacion.titulo, [Validators.required]),
-        descripcion: new FormControl(this.publicacion.descripcion, [Validators.required]),
-        precio: new FormControl(this.publicacion.precio, [Validators.required, Validators.min(0.01)]),
-        /*  categoria: new FormControl(this.publicacion.categoria, [Validators.required]), */
-        imagenes: new FormControl(this.publicacion.imagenes),
-      });
-      if (id) {
-        this.getPublicacion(+id);
-        this.titulo = 'Editar producto o servicio';
-      }
-      //images are required only when creating a publication
-      if (!this.isEditing) {
-        this.form.removeControl('imagenes');
-        this.form.addControl('imagenes', new FormControl(this.publicacion.imagenes, [Validators.required]));
-      }
+    this.form = new FormGroup({
+      titulo: new FormControl(this.publicacion.titulo, [Validators.required]),
+      descripcion: new FormControl(this.publicacion.descripcion, [Validators.required]),
+      precio: new FormControl(this.publicacion.precio, [Validators.required, Validators.min(0.01)]),
+      /*  categoria: new FormControl(this.publicacion.categoria, [Validators.required]), */
+      imagenes: new FormControl(this.publicacion.imagenes),
     });
+
+    // Getting the id from the URL
+    this.route.paramMap
+      .pipe(
+        switchMap((params: ParamMap) => {
+          const id = params.get('id');
+          if (id) {
+            return this.servicio.obtenerPublicacion(parseInt(id));
+          }
+          return of(null);
+        }),
+        switchMap((response: any) => {
+          if (response) {
+            const { publicacion } = response as PublicacionResponse;
+            this.publicacion = { ...this.publicacion, ...publicacion, imagenes: null };
+            // Get images url from the publicacion and transform them into an File array
+            // to be able to show them in the form
+            // this.files = files;
+            this.uploadedImages = publicacion.imagenes;
+            this.isEditing = true;
+            this.imagesCountShouldReset = true;
+            this.currentId = publicacion.idPublicacion;
+          } else {
+            this.form.removeControl('imagenes');
+            this.form.addControl('imagenes', new FormControl(this.publicacion.imagenes, [Validators.required]));
+          }
+          return of(null);
+        })
+      )
+      .subscribe();
   }
 
   onImageSelected(event: any) {
