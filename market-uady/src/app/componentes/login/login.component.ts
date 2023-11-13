@@ -65,20 +65,20 @@ export class LoginComponent {
       formData.append('imagenPerfil', this.file, this.file.name);
 
       this.servicio.guardarUsuario(formData).subscribe(
-        (response) => {
+        async (response) => {
           this.mostrarAlerta('Usuario creado');
-          this.crearItemsSessionStorage(response);
+          await this.servicio.setToken(response);
+          this.form.reset();
           this.router.navigate(['dashboard/inicio']);
         },
         (error) => {
-          this.mostrarAlerta('Error al crear el usuario');
+          const { message } = error.error;
+          this.mostrarAlerta(message);
         }
       );
     } else {
-      this.mostrarAlerta('Las contraseñas no son iguales');
+      this.mostrarAlerta('Las contraseñas no coinciden');
     }
-    // Resetear el formulario
-    this.form.reset();
   }
 
   onFileSelected(event: any) {
