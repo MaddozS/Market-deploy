@@ -35,6 +35,20 @@ export class GeneralService {
       })
     );
   }
+
+  async setToken(response: any) {
+    try {
+      sessionStorage.setItem('token', response.token);
+      sessionStorage.setItem('token', response.token);
+      sessionStorage.setItem('token_type', response.token_type);
+      sessionStorage.setItem('matricula', response.matricula);
+      sessionStorage.setItem('isLoggedIn', 'true');
+      return true;
+    } catch (error) {
+      return error;
+    }
+  }
+
   isLoggedIn(): boolean {
     const isLoggedIn = sessionStorage.getItem('isLoggedIn');
     this.loggedIn = isLoggedIn === 'true';
