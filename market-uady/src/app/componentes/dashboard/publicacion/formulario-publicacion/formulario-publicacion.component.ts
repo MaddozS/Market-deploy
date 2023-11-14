@@ -37,8 +37,8 @@ export class FormularioPublicacionComponent {
   ) {}
 
   mostrarMensaje(mensaje: string, action?: string) {
-    this._snackBar.open(mensaje, action || 'Cerrar', {
-      duration: 5000,
+    this._snackBar.open(mensaje, '', {
+      duration: 500,
       horizontalPosition: 'center',
       verticalPosition: 'bottom',
     });
@@ -143,7 +143,7 @@ export class FormularioPublicacionComponent {
   guardarPublicacion() {
     this.servicio.crearPublicacion(this.publicacion as Publicacion, this.files).subscribe({
       next: (response) => {
-        this.mostrarMensaje('Publicación creada!');
+        this.mostrarMensaje('Publicación creada');
         this.form.reset();
         this.uploadedImages = [];
         this.files = [];
