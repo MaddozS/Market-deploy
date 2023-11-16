@@ -6,7 +6,7 @@
 /*Sección de fondo de edifio central*/
 .fondo {
   height: 30vh;
-  background-image: url("src/assets/uady.png");
+  background-image: url('src/assets/uady.png');
   background-size: cover;
   display: flex;
   align-items: center;
@@ -42,7 +42,7 @@
   height: 45%;
 }
 
-.buttonEmpezar button {
+.buttonEmpezar .btn {
   background-color: var(--amarillo);
   font-weight: bold;
 }
@@ -55,18 +55,20 @@
 .filtros {
   width: 30%;
 }
-.filtros h4, h5 {
-  padding-top: 0.5rem;
+.filtros h3,
+h4,
+h5 {
+  padding-top: 0.3rem;
+  font-weight: bolder;
 }
 .scrollFiltro {
   width: 100%;
-  min-height: 19vh;
-  font-size: small;
+  min-height: 12vh;
 }
 
 /*Sección de lista de articulos*/
 .scroll {
-  width: 70%;
+  width: 100%;
   min-height: 60vh;
 }
 .lista-articulos {
@@ -92,13 +94,41 @@
   width: 100%;
 }
 
-.nombreArticulo, .precioArticulo{
-    height: 15%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.nombreArticulo,
+.precioArticulo {
+  height: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.precioArticulo{
-    font-weight: bold;
+.precioArticulo {
+  font-weight: bold;
 }
+
+.spinnerPadre {
+  width: 100%;
+  min-height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinnerHijo {
+  text-align: center; /* para centrar el contenido horizontalmente */
+}
+
+.spinner-border {
+  --bs-spinner-width: 8rem;
+  --bs-spinner-height: 8rem;
+  --bs-spinner-vertical-align: -0.125e;
+  --bs-spinner-border-width: 1rem;
+  color: var(--amarillo);
+}
+label {
+  font-size: small;
+}
+.card-img-top{
+  height: 200px;
+}
+
