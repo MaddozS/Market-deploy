@@ -87,7 +87,7 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'idFacultad' => 'required|integer|min_digits:1|max_digits:2',
-            'imagenPerfil' => 'required|file|mimes:jpg,jpeg,png',
+            'imagenPerfil' => 'nullable|file|mimes:jpg,jpeg,png',
             'numeroContacto' => 'required|string|min:10|max:10',
         ]);
 
@@ -97,10 +97,15 @@ class AuthController extends Controller
         $user = User::find(auth()->user()->id);
 
         $oldImageName = $user->nombreImagenPerfil;
-        Storage::disk('profile')->delete($oldImageName);
+        
         $newProfileImage = $request->file('imagenPerfil');
-        $newProfilefilename = uniqid() . '.' . File::extension($newProfileImage->getClientOriginalName());
-        Storage::disk('profile')->put($newProfilefilename, file_get_contents($newProfileImage));
+        if ($newProfileImage == null) {
+            $newProfilefilename = $oldImageName;
+        } else {
+            Storage::disk('profile')->delete($oldImageName);
+            $newProfilefilename = uniqid() . '.' . File::extension($newProfileImage->getClientOriginalName());
+            Storage::disk('profile')->put($newProfilefilename, file_get_contents($newProfileImage));
+        }
         
         $user->idFacultad = $request->idFacultad;
         $user->nombreImagenPerfil = $newProfilefilename;

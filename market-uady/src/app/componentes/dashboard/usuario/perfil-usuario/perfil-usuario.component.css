@@ -1,220 +1,215 @@
 .header {
-    height: 10vh;
-    border: yellow 5px solid;
-  }
-  
-  /*Sección de fondo de edifio central*/
-  .fondo {
-    height: 30vh;
-    background-color: white;
-    background-size: cover;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-  }
+  height: 10vh;
+  border: yellow 5px solid;
+}
 
-  .datosUsuario {
-    margin-top: 20px; /* Agrega margen superior para separar los elementos */
-  }
-  
+/*Sección de fondo de edifio central*/
+.fondo {
+  height: 30vh;
+  background-color: white;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
 
-  .productosTitulo {
-    margin-top: 20px; /* Ajusta el valor según tus necesidades */
-    /* Tu otro estilo existente aquí... */
-  }
+.datosUsuario {
+  margin-top: 20px; /* Agrega margen superior para separar los elementos */
+}
 
-  .card {
-    position: relative;
-  }
-  
-  .editar-icon {
-    left: 10px;
-  }
-  
-  .eliminar-icon {
-    right: 10px;
-  }
+.productosTitulo {
+  margin-top: 20px; /* Ajusta el valor según tus necesidades */
+  /* Tu otro estilo existente aquí... */
+}
 
-  
-  .editar-icon, .eliminar-icon {
-    position: absolute;
-    top: 10px;
-    width: 30px; /* Ancho deseado */
-    height: 30px; /* Alto deseado */
-    cursor: pointer;
-    transition: transform 0.2s, color 0.2s, box-shadow 0.2s;
-  }
-  
-  .editar-icon img, .eliminar-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-  
-  .editar-icon:hover, .eliminar-icon:hover {
-    transform: scale(1.1); /* Hace que el icono se agrande al pasar el cursor */
-    color: #ff0000; /* Cambia el color al pasar el cursor */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Agrega una sombra al pasar el cursor */
-  }
-  
+.card {
+  position: relative;
+}
 
-  .circular-icon img {
-    border-radius: 10%;
-  }
+.editar-icon {
+  left: 10px;
+}
 
-  .imagenPerfil {
-    height: 90%;
-    margin: 40px;
-  }
-  
-  .imagenPerfil img {
-    height: 100%;
-    width: 100%;
-    border-radius: 100px;
-  }
-  
-  .imagenEscuela img {
-    height:3%;
-    width: 3%;
-    margin-right: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .anuncio {
-    background-color: white;
-    width: 25%;
-    height: 75%;
-    text-align: center;
-    margin-right: 4%;
-    border-radius: 1rem;
-  }
-  .nombreUsuario {
-    background-color: white;
-    width: 75%;
-    height: 75%;
-    text-align: left;
-    border-radius: 1rem;
-    font-size: 50px;
-  }
-  .productosTitulo {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    text-align: left;
-    border-radius: 1rem;
-    font-size: 40px;
-    padding-top: 30px;
-    padding-bottom: 30px;
-    padding-right: 0px;
-    justify-content: space-between;
-  }
-  
-  .datosUsuario {
-    font-size: 25px;
-  }
-  
-  .pregunta,
-  .texto,
-  .buttonEmpezar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .pregunta {
-    height: 25%;
-    font-weight: bold;
-  }
-  .text {
-    height: 30%;
-    font-size: small;
-  }
-  
-  .buttonEmpezar {
-    height: 30%;
-  }
-  
-  .buttonEmpezar button {
-    background-color: var(--amarillo);
-    font-weight: bold;
-    margin-left: 20px; /* Espacio desde el lado izquierdo */
-    align-items: center;
-  }
-  .btn{
-    width: 200px;
-  }
-  
-  /*Contenedor principal*/
-  .contenedor {
-    display: flex;
-  }
-  /* Sección de filtros*/
-  .filtros {
-    width: 30%;
-  }
-  .filtros h4, h5 {
-    padding-top: 0.5rem;
-  }
-  .scrollFiltro {
-    width: 100%;
-    min-height: 19vh;
-    font-size: small;
-  }
-  
-  /*Sección de lista de articulos*/
-  .scroll {
-    width: 70%;
-    min-height: 60vh;
-  }
-  .lista-articulos {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-gap: 1rem;
-    padding-left: 5%;
-    padding-right: 5%;
-  }
-  
-  .item {
-    height: 400px;
-    background-color: rgba(255, 255, 255, 0.8);
-    text-align: center;
-  }
-  
-  .imagen {
-    position: relative;
-    display: inline-block;
-    height: 70%;
-  }
+.eliminar-icon {
+  right: 10px;
+}
 
-  .editar-btn{
-    position: absolute;
-    bottom: 250px;
-    left: 265px;
-    border: none;
-    cursor: pointer;
-  }
-  .eliminar-btn{
-    position: absolute;
-    bottom: 250px;
-    right: 265px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .nombreArticulo, .precioArticulo{
-      height: 10%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-  }
-  
-  .precioArticulo{
-      font-weight: bold;
-  }
+.editar-icon,
+.eliminar-icon {
+  position: absolute;
+  top: 10px;
+  width: 30px; /* Ancho deseado */
+  height: 30px; /* Alto deseado */
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
+}
 
-.modal-title{
-  font-size: large;
+.editar-icon img,
+.eliminar-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.editar-icon:hover,
+.eliminar-icon:hover {
+  transform: scale(1.1); /* Hace que el icono se agrande al pasar el cursor */
+  color: #ff0000; /* Cambia el color al pasar el cursor */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Agrega una sombra al pasar el cursor */
+}
+
+.circular-icon img {
+  border-radius: 10%;
+}
+
+.imagenPerfil img {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.imagenEscuela img {
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.anuncio {
+  background-color: white;
+  width: 25%;
+  height: 75%;
+  text-align: center;
+  margin-right: 4%;
+  border-radius: 1rem;
+}
+.nombreUsuario {
+  font-size: 40px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.productosTitulo {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  border-radius: 1rem;
+  font-size: 40px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  padding-right: 0px;
+  justify-content: space-between;
+}
+
+.datosUsuario {
+  font-size: 25px;
+}
+
+.pregunta,
+.texto,
+.buttonEmpezar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pregunta {
+  height: 25%;
+  font-weight: bold;
+}
+.text {
+  height: 30%;
+  font-size: small;
+}
+
+.buttonEmpezar {
+  height: 30%;
+}
+
+.buttonEmpezar button {
+  background-color: var(--amarillo);
+  font-weight: bold;
+  margin-left: 20px; /* Espacio desde el lado izquierdo */
+  align-items: center;
+}
+.btn {
+  width: 200px;
+}
+
+/*Contenedor principal*/
+.contenedor {
+  display: flex;
+}
+/* Sección de filtros*/
+.filtros {
+  width: 30%;
+}
+.filtros h4,
+h5 {
+  padding-top: 0.5rem;
+}
+.scrollFiltro {
+  width: 100%;
+  min-height: 19vh;
+  font-size: small;
+}
+
+/*Sección de lista de articulos*/
+.scroll {
+  width: 70%;
+  min-height: 60vh;
+}
+.lista-articulos {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 1rem;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.item {
+  height: 400px;
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+}
+
+.imagen {
+  position: relative;
+  display: inline-block;
+  height: 70%;
+}
+
+.editar-btn {
+  position: absolute;
+  bottom: 250px;
+  left: 265px;
+  border: none;
+  cursor: pointer;
+}
+.eliminar-btn {
+  position: absolute;
+  bottom: 250px;
+  right: 265px;
+  border: none;
+  cursor: pointer;
+}
+
+.nombreArticulo,
+.precioArticulo {
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.precioArticulo {
   font-weight: bold;
 }
 
-  
+.modal-title {
+  font-size: large;
+  font-weight: bold;
+}

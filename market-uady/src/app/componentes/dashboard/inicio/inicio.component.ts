@@ -3,6 +3,7 @@ import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { GeneralService } from 'src/app/servicios/general.service';
+import { switchMap } from 'rxjs/operators';
 
 export interface Task {
   name: string;
@@ -24,60 +25,63 @@ export class InicioComponent {
   spinner: any = true;
   body: any = {};
 
-  constructor(
-    private servicio: GeneralService
-  ) {}
+  constructor(private servicio: GeneralService) {}
 
   ngOnInit() {
-    this.servicio.obtenerDatosFiltro().subscribe(
-      (response) => {
-        this.campus = response.campus;
-        this.facultades = response.facultades;
-        for (let index = 0; index < this.campus.length; index++) {
-          this.campus[index].seleccionado = false;
-        }
+    this.servicio
+      .obtenerDatosFiltro()
+      .pipe(
+        switchMap((response) => {
+          this.campus = response.campus.map((campus: any) => {
+            return { ...campus, seleccionado: false };
+          });
+          this.facultades = response.facultades.map((facultad: any) => {
+            return { ...facultad, seleccionado: false };
+          });
 
-        for (let index = 0; index < this.facultades.length; index++) {
-          this.facultades[index].seleccionado = false;
+          // Switch to the obtenerPublicacionesInicio Observable
+          return this.servicio.obtenerPublicacionesInicio();
+        })
+      )
+      .subscribe(
+        (response) => {
+          this.publicaciones = response.publicaciones;
+          const facultadSeleccionada: any = this.facultades.find(
+            (facultad: { idFacultad: any }) => facultad.idFacultad === response.idFacultadUsuario
+          );
+          this.facultades = this.facultades.map((facultad: any) => {
+            if (facultad.idFacultad === response.idFacultadUsuario) {
+              return { ...facultad, seleccionado: true };
+            }
+            return facultad;
+          });
+          this.actualizarValoresCampus(facultadSeleccionada.idCampus);
+        },
+        (error) => {
+          console.log(error);
         }
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-    this.servicio.obtenerPublicacionesInicio().subscribe(
-      (response) => {
-        this.publicaciones = response.publicaciones;
-        const facultadSeleccionada: any = this.facultades.find(
-          (facultad: { idFacultad: any }) => facultad.idFacultad === response.idFacultadUsuario
-        );
-        facultadSeleccionada.seleccionado = true;
-        this.actualizarValoresCampus(facultadSeleccionada.idCampus, true);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+      );
   }
 
-  actualizarValoresFacultades(item: any, bandera: boolean) {
-    const objetosFiltrados: any[] = this.facultades.filter((facultad: any) => {
-      return facultad.idCampus === item.idCampus && (facultad.seleccionado = bandera);
+  actualizarValoresFacultades(campus: any, bandera: boolean) {
+    const facultadesSeleccionadas: any[] = this.facultades.filter((facultad: { idCampus: any }) => facultad.idCampus === campus.idCampus);
+    console.log('facultadesSeleccionadas', facultadesSeleccionadas);
+    facultadesSeleccionadas.forEach((facultad: any) => {
+      facultad.seleccionado = bandera;
     });
     this.filtrarPublicaciones();
   }
 
-  actualizarValoresCampus(idCampus: any, bandera: boolean) {
+  actualizarValoresCampus(idCampus: any) {
+    // Verificar si todas las facultades del campus están seleccionadas, si es así, seleccionar el campus
+    const facultadesSeleccionadas: any[] = this.facultades.filter((facultad: { idCampus: any }) => facultad.idCampus === idCampus);
+    const facultadesSeleccionadasBoolean: boolean[] = facultadesSeleccionadas.map((facultad: any) => facultad.seleccionado);
+    const todasLasFacultadesSeleccionadas: boolean = facultadesSeleccionadasBoolean.every((seleccionado: boolean) => seleccionado);
+
+    // Si todas las facultades del campus están seleccionadas, seleccionar el campus
     const campusSeleccionado: any = this.campus.find((campus: { idCampus: any }) => campus.idCampus === idCampus);
-    if (bandera == false) {
-      campusSeleccionado.seleccionado = false;
-    } else {
-      const facultadesFiltradas: any[] = this.facultades.filter((facultad: { idCampus: any }) => facultad.idCampus === idCampus);
-      const tienenMismoSeleccionado: boolean = facultadesFiltradas.every((facultad) => facultad.seleccionado === true);
-      if (tienenMismoSeleccionado) {
-        campusSeleccionado.seleccionado = true;
-      }
-    }
+    campusSeleccionado.seleccionado = todasLasFacultadesSeleccionadas;
+
     this.filtrarPublicaciones();
   }
 
@@ -101,5 +105,4 @@ export class InicioComponent {
       }
     );
   }
-
 }

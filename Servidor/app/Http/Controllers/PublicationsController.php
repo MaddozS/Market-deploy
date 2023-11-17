@@ -119,9 +119,17 @@ class PublicationsController extends Controller
 
         $sellerData = User::where('matricula', $matricula)
             ->select('matricula', 'nombres', 'apellidos', 'idFacultad', 'nombreImagenPerfil', 'numeroContacto')->first();
+
+        // Getting the faculty of the seller
+        $faculty = Facultad::where('idFacultad', $sellerData['idFacultad'])
+          ->select('nombre')
+          ->first();
+
         $sellerProfileImg = Storage::disk('profile')->url($sellerData['nombreImagenPerfil']);
         $sellerData['imagen'] = $sellerProfileImg;
         unset($sellerData['nombreImagenPerfil']);
+
+        $sellerData['facultad'] = $faculty;
 
         $data = [
             "publicaciones" => $sellerPublications,

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { GeneralService } from 'src/app/servicios/general.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SharedService } from 'src/app/servicios/updateUser';
 
 export class Perfil {
   nombres: string;
@@ -10,7 +11,7 @@ export class Perfil {
   idFacultad: string;
   matricula: string;
   numeroContacto: string;
-  imagenPerfil: File | string;
+  imagenPerfil: File | string | null;
   imagen: string | undefined;
 
   constructor() {
@@ -30,31 +31,29 @@ export class Perfil {
   styleUrls: ['./formulario-usuario.component.css'],
 })
 export class FormularioUsuarioComponent implements OnInit {
-  perfil: Perfil;
-  formulario: FormGroup;
+  perfil = new Perfil();
+  formulario!: FormGroup;
   modoEdicion = false;
   facultades: any = [];
   correoFormateado = '';
   file!: File;
 
   constructor(
-    private fb: FormBuilder,
     private servicio: GeneralService,
     private router: Router,
-    private _snackBar: MatSnackBar
-  ) {
-    this.perfil = new Perfil();
-    this.formulario = fb.group({
-      nombres: [this.perfil.nombres],
-      apellidos: [this.perfil.apellidos],
-      idFacultad: [this.perfil.idFacultad, Validators.required],
-      matricula: [this.perfil.matricula],
-      numeroContacto: [this.perfil.numeroContacto, Validators.required],
-      imagenPerfil: [this.perfil.imagenPerfil],
-    });
-  }
+    private _snackBar: MatSnackBar,
+    private sharedService: SharedService
+  ) {}
 
   ngOnInit() {
+    this.formulario = new FormGroup({
+      nombres: new FormControl(this.perfil.nombres),
+      apellidos: new FormControl(this.perfil.apellidos),
+      idFacultad: new FormControl(this.perfil.idFacultad, Validators.required),
+      matricula: new FormControl(this.perfil.matricula),
+      numeroContacto: new FormControl(this.perfil.numeroContacto, Validators.required),
+      imagenPerfil: new FormControl(this.perfil.imagenPerfil),
+    });
     this.servicio.obtenerFacultades().subscribe(
       (response) => {
         this.facultades = response;
@@ -106,7 +105,7 @@ export class FormularioUsuarioComponent implements OnInit {
 
   mostrarAlerta(mensaje: string) {
     this._snackBar.open(mensaje, '', {
-      duration: 500,
+      duration: 750,
       horizontalPosition: 'center',
       verticalPosition: 'bottom',
     });
@@ -122,19 +121,17 @@ export class FormularioUsuarioComponent implements OnInit {
     const formData = new FormData();
     formData.append('idFacultad', this.perfil.idFacultad);
     formData.append('numeroContacto', this.perfil.numeroContacto);
-    formData.append('imagenPerfil', this.file, this.file.name);
-
-    console.log(formData);
-    console.log(this.perfil);
+    if (this.file) {
+      formData.append('imagenPerfil', this.file, this.file.name);
+    }
 
     this.servicio.actualizarDatosPerfil(formData).subscribe(
       (response) => {
         this.mostrarAlerta('Usuario actualizado');
+        this.sharedService.updateUser();
         setTimeout(() => {
-          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.router.navigate(['dashboard/usuario/perfil-usuario/' + this.perfil.matricula]);
-          });
-        }, 2000); // 2000 milisegundos (2 segundos) de espera
+          this.router.navigate(['dashboard/usuario/perfil-usuario/' + this.perfil.matricula]);
+        }, 1500);
       },
       (error) => {
         this.mostrarAlerta('Error al crear el usuario');

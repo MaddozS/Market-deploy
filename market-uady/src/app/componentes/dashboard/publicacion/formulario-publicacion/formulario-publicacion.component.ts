@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { GeneralService } from 'src/app/servicios/general.service';
 import { Publicacion, PublicacionEdit, PublicacionResponse } from 'src/app/types';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MAX_FILE_SIZE, MAX_IMAGES_PER_PUBLICATION } from 'src/app/constants/const';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { of, switchMap } from 'rxjs';
@@ -33,10 +33,11 @@ export class FormularioPublicacionComponent {
   constructor(
     private servicio: GeneralService,
     private route: ActivatedRoute,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private router: Router
   ) {}
 
-  mostrarMensaje(mensaje: string, action?: string) {
+  mostrarMensaje(mensaje: string) {
     this._snackBar.open(mensaje, '', {
       duration: 500,
       horizontalPosition: 'center',
@@ -78,7 +79,9 @@ export class FormularioPublicacionComponent {
         switchMap((params: ParamMap) => {
           const id = params.get('id');
           if (id) {
+            this.titulo = 'Editar producto o servicio';
             return this.servicio.obtenerPublicacion(parseInt(id));
+             
           }
           return of(null);
         }),
@@ -163,7 +166,18 @@ export class FormularioPublicacionComponent {
     this.servicio.editarPublicacion(this.currentId, this.publicacion as PublicacionEdit, this.files).subscribe({
       next: (response) => {
         console.log(response);
-        this.mostrarMensaje('Publicación editada!');
+        this.mostrarMensaje('Publicación editada');
+
+        const matriculaString = sessionStorage.getItem('matricula');
+        if (matriculaString != null) {
+          const cleanedMatriculaString = matriculaString.replace(/[^0-9]/g, ''); // Eliminar caracteres no numéricos
+          const matricula: number = parseInt(cleanedMatriculaString, 10);
+          setTimeout(() => {
+            this.router.navigate(['dashboard/usuario/perfil-usuario', matricula]);
+  
+          }, 1500);
+        }
+       
       },
       error: (error) => {
         console.log(error);
