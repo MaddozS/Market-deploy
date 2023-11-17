@@ -3,19 +3,18 @@ import { GeneralService } from 'src/app/servicios/general.service';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SharedService } from 'src/app/servicios/updateUser';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
-
+  styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
   nombreDeLaPersona: string = 'Nombre de la Persona'; // Reemplaza con el nombre real
   idVendedor: any;
   perfil: any;
   isMenuVisible: boolean = false;
- 
 
   toggleMenu(event: Event) {
     event.stopPropagation(); // Detener la propagación del evento para que no cierre el menú
@@ -40,59 +39,35 @@ export class HeaderComponent {
     sessionStorage.removeItem('token_type');
 
     this.router.navigate(['/login']); // Ajusta la ruta según tu página de inicio de sesión
-
   }
-
-
-
-
 
   constructor(
     private servicio: GeneralService,
     private router: Router,
-    private route: ActivatedRoute,
-    private _snackBar: MatSnackBar
+    private sharedService: SharedService
   ) {}
 
-
-
-
-
   ngOnInit() {
+    this.sharedService.triggerObservable$.subscribe(() => {
+      console.log('Observable triggered');
+      this.obtenerPublicacionesVendedor(this.idVendedor);
+    });
 
     const matriculaString = sessionStorage.getItem('matricula');
-      if (matriculaString != null) {
-        const cleanedMatriculaString = matriculaString.replace(/[^0-9]/g, ''); // Eliminar caracteres no numéricos
-        const matricula: number = parseInt(cleanedMatriculaString, 10);
-        this.idVendedor = matricula;
-      
-       this.obtenerPublicacionesVendedor(this.idVendedor);
-       
-      }
+    if (matriculaString != null) {
+      const cleanedMatriculaString = matriculaString.replace(/[^0-9]/g, ''); // Eliminar caracteres no numéricos
+      const matricula: number = parseInt(cleanedMatriculaString, 10);
+      this.idVendedor = matricula;
 
+      this.obtenerPublicacionesVendedor(this.idVendedor);
+    }
   }
 
-
-  obtenerPublicacionesVendedor(id:any){
-
+  obtenerPublicacionesVendedor(id: any) {
     this.servicio.obtenerPublicacionesDelVendedor(id).subscribe((response) => {
-      
+      console.log(response.vendedor);
       this.perfil = response.vendedor;
       console.log(response);
     });
-
   }
-
-  
-
-  
-
-
-
-
-
-
 }
-
-
-

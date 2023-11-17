@@ -29,6 +29,8 @@ export type PublicacionEdit = Omit<Publicacion, 'imagenes' | 'precio'> & {
 //
 export type PublicationGet = Omit<Publicacion, 'imagenes'> & {
   imagenes: string[];
+} & {
+  idPublicacion: number;
 };
 
 export type PublicacionResponse = {

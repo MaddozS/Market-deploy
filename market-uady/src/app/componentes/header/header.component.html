@@ -7,11 +7,11 @@
       </a>
     </div>
     <div class="profile">
-      <p>{{ perfil.nombres }} {{ perfil.apellidos }}</p>
+      <p class="name">{{ perfil?.nombres }} {{ perfil?.apellidos }}</p>
       <div id="user-profile">
         <div class="dropdown">
           <div class="profile-image-container" id="menuBtn" onclick="toggleMenu(event)">
-            <img src="{{ perfil.imagen }}" alt="Imagen de perfil" class="rounded" id="profile-image" />
+            <img src="{{ perfil?.imagen ?? '' }}" alt="Imagen de perfil" class="rounded" id="profile-image" />
           </div>
           <div class="dropdown-content" id="myDropdown">
             <a [routerLink]="['/dashboard/usuario/perfil-usuario/', idVendedor]">Ver perfil</a>

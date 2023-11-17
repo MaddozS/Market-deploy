@@ -15,7 +15,7 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'matricula' => 'required|string|max:255',
+            'matricula' => 'required|string|max:255|unique:users',
             'nombres' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
             'correo' => 'required|email|max:255|unique:users',
@@ -26,7 +26,28 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            for ($i = 0; $i < count($validator->errors()); $i++) {
+                $error = $validator->errors()->all()[$i];
+                if ($error == 'The matricula has already been taken.') {
+                    return response()->json(['message' => 'Matricula ya esta registrada en el sistema'], 400);
+                }
+                if ($error == 'The correo has already been taken.') {
+                    return response()->json(['message' => 'El correo ya está registrado en el sistema'], 400);
+                }
+                if ($error == 'The imagen perfil must be a file of type: jpg, jpeg, png.') {
+                    return response()->json(['message' => 'La imagen de perfil debe ser un archivo de tipo: jpg, jpeg, png.'], 400);
+                }
+                if ($error == 'The numero contacto must be at least 10 characters.') {
+                    return response()->json(['message' => 'El número de contacto debe tener al menos 10 digitos.'], 400);
+                }
+                if ($error == 'The numero contacto may not be greater than 10 characters.') {
+                    return response()->json(['message' => 'El número de contacto no puede tener más de 10 digitos.'], 400);
+                }
+                if ($error == 'The password must be at least 8 characters.') {
+                    return response()->json(['message' => 'La contraseña debe tener al menos 8 caracteres.'], 400);
+                }
+            }
+            // return response()->json($validator->errors(), 400);
         }
 
         $profileImage = $request->file('imagenPerfil');
@@ -66,7 +87,7 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'idFacultad' => 'required|integer|min_digits:1|max_digits:2',
-            'imagenPerfil' => 'required|file|mimes:jpg,jpeg,png',
+            'imagenPerfil' => 'nullable|file|mimes:jpg,jpeg,png',
             'numeroContacto' => 'required|string|min:10|max:10',
         ]);
 
@@ -76,10 +97,15 @@ class AuthController extends Controller
         $user = User::find(auth()->user()->id);
 
         $oldImageName = $user->nombreImagenPerfil;
-        Storage::disk('profile')->delete($oldImageName);
+        
         $newProfileImage = $request->file('imagenPerfil');
-        $newProfilefilename = uniqid() . '.' . File::extension($newProfileImage->getClientOriginalName());
-        Storage::disk('profile')->put($newProfilefilename, file_get_contents($newProfileImage));
+        if ($newProfileImage == null) {
+            $newProfilefilename = $oldImageName;
+        } else {
+            Storage::disk('profile')->delete($oldImageName);
+            $newProfilefilename = uniqid() . '.' . File::extension($newProfileImage->getClientOriginalName());
+            Storage::disk('profile')->put($newProfilefilename, file_get_contents($newProfileImage));
+        }
         
         $user->idFacultad = $request->idFacultad;
         $user->nombreImagenPerfil = $newProfilefilename;

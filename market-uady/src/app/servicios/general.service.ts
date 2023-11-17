@@ -3,12 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Publicacion, PublicacionResponse, PublicacionEdit } from '../types';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GeneralService {
-  private baseURL = 'http://localhost:8000/api';
+  private baseURL = environment.backendURL;
   private loggedIn = false;
 
   constructor(private http: HttpClient) {}
@@ -35,6 +36,20 @@ export class GeneralService {
       })
     );
   }
+
+  async setToken(response: any) {
+    try {
+      sessionStorage.setItem('token', response.token);
+      sessionStorage.setItem('token', response.token);
+      sessionStorage.setItem('token_type', response.token_type);
+      sessionStorage.setItem('matricula', response.matricula);
+      sessionStorage.setItem('isLoggedIn', 'true');
+      return true;
+    } catch (error) {
+      return error;
+    }
+  }
+
   isLoggedIn(): boolean {
     const isLoggedIn = sessionStorage.getItem('isLoggedIn');
     this.loggedIn = isLoggedIn === 'true';
