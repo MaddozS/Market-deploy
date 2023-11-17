@@ -53,8 +53,10 @@ class AuthController extends Controller
         $profileImage = $request->file('imagenPerfil');
 
         $filename = uniqid() . '.' . File::extension($profileImage->getClientOriginalName());
-        Storage::disk('profile')->put($filename, file_get_contents($profileImage));
-
+        
+        Storage::disk('profile')->put($filename, file_get_contents($profileImage), 'public');
+        
+        
         $user = User::create([
             'matricula' => $request->matricula,
             'nombres' => $request->nombres,
