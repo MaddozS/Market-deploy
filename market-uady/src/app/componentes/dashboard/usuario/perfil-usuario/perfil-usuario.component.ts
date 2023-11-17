@@ -10,7 +10,17 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./perfil-usuario.component.css'],
 })
 export class PerfilUsuarioComponent implements OnInit {
-  perfil: any;
+  perfil = {
+    nombres: '',
+    apellidos: '',
+    correo: '',
+    numeroContacto: '',
+    matricula: '',
+    facultad: {
+      nombre: '',
+    },
+    imagen: '',
+  };
   nombreFacultad = '';
   facultades: any[] = [];
   publicaciones: any[] = [];

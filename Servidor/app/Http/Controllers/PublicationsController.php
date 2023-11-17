@@ -37,8 +37,9 @@ class PublicationsController extends Controller
         ]);
 
         foreach ($request->file('imagenes') as $imageFile) {
-            $filename = uniqid() . '.' . File::extension($imageFile->getClientOriginalName());
-            Storage::disk('publications')->put($filename, file_get_contents($imageFile));
+            $filename = 'public/images/publications/' . uniqid() . '.' . File::extension($imageFile->getClientOriginalName());
+            Storage::disk('s3')->put($filename, file_get_contents($imageFile));
+
             publications_image::create([
                 'nombreArchivo' => $filename,
                 'idPublicacion' => $publication->idPublicacion
@@ -70,10 +71,9 @@ class PublicationsController extends Controller
         $faculty = Facultad::where('idFacultad', $sellerData['idFacultad'])
           ->select('nombre')
           ->first();
-          
-        $imageData = base64_encode(Storage::disk('profile')->get($sellerData['nombreImagenPerfil']));
-        // obtener la extension de la imagen y concatenarla a la base64
-        $sellerData['imagen'] = 'data:image/' . File::extension($sellerData['nombreImagenPerfil']) . ';base64,' . $imageData;
+
+        $imageData = Storage::disk('s3')->temporaryUrl($sellerData['nombreImagenPerfil'], now()->addDays(5));
+        $sellerData['imagen'] = $imageData;
         unset($sellerData['nombreImagenPerfil'], $publication['matriculaPublicador']);
 
         $sellerData['facultad'] = $faculty;
@@ -82,11 +82,9 @@ class PublicationsController extends Controller
 
         $imagesURL = [];
         foreach ($publicationImages as $imageData) {
-          $imageDataFile = Storage::disk('publications')->get($imageData['nombreArchivo']);
-          $imageDataEncoded = base64_encode($imageDataFile);
-          // obtener la extension de la imagen y concatenarla a la base64
-          $imageURL = 'data:image/' . File::extension($imageData['nombreArchivo']) . ';base64,' . $imageDataEncoded;
-          array_push($imagesURL, $imageURL);
+          $imageDataFile = Storage::disk('s3')->temporaryUrl($imageData['nombreArchivo'], now()->addDays(5));
+
+          array_push($imagesURL, $imageDataFile);
         }
         $publication['imagenes'] = $imagesURL;
         $publicationInfo = [
@@ -115,10 +113,9 @@ class PublicationsController extends Controller
                                 ->select('publications.idPublicacion', 'titulo', 'precio', 'nombreArchivo')
                                 ->get();
         foreach ($sellerPublications as $publicationData) {
-          $imageData = Storage::disk('publications')->get($publicationData['nombreArchivo']);
-          $imageData = base64_encode($imageData);
+          $imageData = Storage::disk('s3')->temporaryUrl($publicationData['nombreArchivo'], now()->addDays(5));
           // obtener la extension de la imagen y concatenarla a la base64
-          $publicationData['image'] = 'data:image/' . File::extension($publicationData['nombreArchivo']) . ';base64,' . $imageData;
+          $publicationData['image'] = $imageData;
           unset($publicationData['nombreArchivo']);
         }
 
@@ -130,11 +127,8 @@ class PublicationsController extends Controller
           ->select('nombre')
           ->first();
 
-        $sellerProfileImg = Storage::disk('profile')->get($sellerData['nombreImagenPerfil']);
-        // transformar sellerProfileImg a base64
-        $sellerProfileImg = base64_encode($sellerProfileImg);
-        // obtener la extension de la imagen y concatenarla a la base64
-        $sellerData['imagen'] = 'data:image/' . File::extension($sellerData['nombreImagenPerfil']) . ';base64,' . $sellerProfileImg;
+        $sellerProfileImg = Storage::disk('s3')->temporaryUrl($sellerData['nombreImagenPerfil'], now()->addDays(5));
+        $sellerData['imagen'] = $sellerProfileImg;
         unset($sellerData['nombreImagenPerfil']);
 
         $sellerData['facultad'] = $faculty;
@@ -159,10 +153,7 @@ class PublicationsController extends Controller
                             ->select('publications.idPublicacion', 'titulo', 'precio', 'nombreArchivo')
                             ->get();
         foreach ($publications as $publicationData) {
-            $imageURL = Storage::disk('publications')->get($publicationData['nombreArchivo']);
-            $imageURL = base64_encode($imageURL);
-            // obtener la extension de la imagen y concatenarla a la base64
-            $imageURL = 'data:image/' . File::extension($publicationData['nombreArchivo']) . ';base64,' . $imageURL;
+            $imageURL = Storage::disk('s3')->temporaryUrl($publicationData['nombreArchivo'], now()->addDays(5));
             $publicationData['image'] = $imageURL;
             unset($publicationData['nombreArchivo']);
         }
@@ -209,10 +200,7 @@ class PublicationsController extends Controller
         $publications = $query->get();
 
         foreach ($publications as $publicationData) {
-            $imageURL = Storage::disk('publications')->get($publicationData['nombreArchivo']);
-            $imageURL = base64_encode($imageURL);
-            // obtener la extension de la imagen y concatenarla a la base64
-            $imageURL = 'data:image/' . File::extension($publicationData['nombreArchivo']) . ';base64,' . $imageURL;
+            $imageURL = Storage::disk('s3')->temporaryUrl($publicationData['nombreArchivo'], now()->addDays(5));
             $publicationData['image'] = $imageURL;
             unset($publicationData['nombreArchivo']);
         }
@@ -245,13 +233,14 @@ class PublicationsController extends Controller
           
           $oldPublicationImages = publications_image::where('idPublicacion', $request->idPublication)->pluck('nombreArchivo');
           foreach ($oldPublicationImages as $oldImage) {
-              Storage::disk('publications')->delete($oldImage);
+              Storage::disk('s3')->delete($oldImage);
           }
           publications_image::where('idPublicacion', $request->idPublication)->delete();
 
           foreach ($request->file('imagenes') as $imageFile) {
-              $filename = uniqid() . '.' . File::extension($imageFile->getClientOriginalName());
-              Storage::disk('publications')->put($filename, file_get_contents($imageFile));
+              $filename = 'public/images/publications/' . uniqid() . '.' . File::extension($imageFile->getClientOriginalName());
+              Storage::disk('s3')->put($filename, file_get_contents($imageFile));
+
               publications_image::create([
                   'nombreArchivo' => $filename,
                   'idPublicacion' => $request->idPublication
@@ -273,7 +262,7 @@ class PublicationsController extends Controller
 
         $publicationImages = publications_image::where('idPublicacion', $idPublication)->pluck('nombreArchivo');
         foreach ($publicationImages as $image) {
-            Storage::disk('publications')->delete($image);
+            Storage::disk('s3')->delete($image);
         }
         publications_image::where('idPublicacion', $idPublication)->delete();
 
