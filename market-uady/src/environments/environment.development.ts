@@ -1,3 +1,3 @@
 export const environment = {
-  backendURL: 'https://f749-187-147-133-245.ngrok-free.app/api',
+  backendURL: 'http://localhost:8000/api',
 };
