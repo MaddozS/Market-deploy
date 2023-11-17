@@ -16,7 +16,7 @@ export class PerfilUsuarioComponent implements OnInit {
   publicaciones: any[] = [];
   perfilUsuario = false;
   idToDelete = null;
-  idVendedor:any;
+  idVendedor: any;
   // Declaración de las siguientes variables para la información de la publicación
 
   currentImage!: string;
@@ -50,24 +50,8 @@ export class PerfilUsuarioComponent implements OnInit {
         if (!isNaN(matricula) && matricula == params['id']) {
           this.perfilUsuario = true;
         }
-    
-       this.obtenerPublicacionesVendedor(this.idVendedor);
-        this.servicio.obtenerFacultades().subscribe(
-          (facultadesResponse) => {
-            this.facultades = facultadesResponse;
-            const idFacultad = parseInt(this.perfil.idFacultad, 10);
-            const facultad = this.facultades.find((f) => f.idFacultad === idFacultad);
 
-            if (facultad) {
-              this.nombreFacultad = facultad.nombre;
-            } else {
-              this.nombreFacultad = 'Facultad Desconocida';
-            }
-          },
-          (error) => {
-            console.error('Error al obtener la lista de facultades:', error);
-          }
-        );
+        this.obtenerPublicacionesVendedor(this.idVendedor);
       }
     });
   }
@@ -90,23 +74,19 @@ export class PerfilUsuarioComponent implements OnInit {
     this.idToDelete = $id;
   }
 
-  eliminarPublicacion(){
-    this.servicio.eliminarPublicacion(this.idToDelete).subscribe(
-      (response)=>{
-        this.obtenerPublicacionesVendedor(this.idVendedor);
+  eliminarPublicacion() {
+    this.servicio.eliminarPublicacion(this.idToDelete).subscribe((response) => {
+      this.obtenerPublicacionesVendedor(this.idVendedor);
 
-        this.mostrarMensaje("Publicación eliminada");
-      }
-    )
+      this.mostrarMensaje('Publicación eliminada');
+    });
   }
 
-  obtenerPublicacionesVendedor(id:any){
-
+  obtenerPublicacionesVendedor(id: any) {
     this.servicio.obtenerPublicacionesDelVendedor(id).subscribe((response) => {
       this.publicaciones = response.publicaciones;
       this.perfil = response.vendedor;
       console.log(response);
     });
-
   }
 }

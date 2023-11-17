@@ -1,77 +1,84 @@
 .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #ffffff;
-    color: rgb(0, 0, 0);
-    padding: 10px;
-    height: 15vh;
-    border: 5px solid var(--amarillo);
-  }
-  
-  .social-icons .mdi {
-    color: black;
-    padding: 5px;
-  }
-  
-  .logo img {
-    width: 17vw;
-    height: 9vh;
-    margin-left: 30px;
-  }
-  
-  .profile {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding-right: 7rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  padding: 10px;
+  height: 15vh;
+  border: 5px solid var(--amarillo);
+}
 
-  }
-  
-  .rounded {
-    border-radius: 50%;
-  }
-  
-  .FondoN {
-    background-color:  var(--amarillo);
-    
-    color: rgb(0, 0, 0);
-  }
-  
-  .titulo-superior {
-    text-align: center; /* Centra el texto horizontalmente */
-    font-weight: normal; /* Quita la negrita */
-    font-family: "Arial, Helvetica, sans-serif"; /* Establece la fuente a Arial y fuentes alternativas si es necesario */
-  }
-  
-  
-  
-  .footer {
-    background-color: #e9b776;
-    color: white;
-    padding: 20px;
-    position: absolute;
-    width: 100%;
-  }
-  
-  
+.social-icons .mdi {
+  color: black;
+  padding: 5px;
+}
 
-  .rounded {
-    height: 8vh;
-    width: 8vw;
-    border-radius: 50%; /* Hace que la imagen sea circular */
-    object-fit: cover; /* Ajusta la imagen al círculo manteniendo su relación de aspecto */
+.logo img {
+  width: 250px;
+  height: auto;
+  margin-left: 30px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  padding-right: 15px;
+  gap: 15px;
+}
+
+.rounded {
+  object-fit: fill;
+}
+
+.FondoN {
+  background-color: var(--amarillo);
+  color: rgb(0, 0, 0);
+}
+
+.titulo-superior {
+  text-align: center; /* Centra el texto horizontalmente */
+  font-weight: normal; /* Quita la negrita */
+  padding: 5px;
+  margin: 0;
+  /* font-family: "Arial, Helvetica, sans-serif"; Establece la fuente a Arial y fuentes alternativas si es necesario */
+}
+.name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+}
+.footer {
+  background-color: #e9b776;
+  color: white;
+  padding: 20px;
+  position: absolute;
+  width: 100%;
+}
+
+.rounded {
+  height: 8vh;
+  width: 8vw;
+  border-radius: 50%; /* Hace que la imagen sea circular */
+  object-fit: cover; /* Ajusta la imagen al círculo manteniendo su relación de aspecto */
 }
 
 .profile-image-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 8vh;
-    width: 8vh;
-    border-radius: 50%; /* Hace que el contenedor sea circular */
-    overflow: hidden; /* Oculta cualquier contenido que se salga del círculo */
-    background-color: #f0f0f0; /* Puedes ajustar el color de fondo del contenedor según tu diseño */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  width: 100px;
+  border-radius: 50%; /* Hace que el contenedor sea circular */
+  overflow: hidden; /* Oculta cualquier contenido que se salga del círculo */
+  background-color: #f0f0f0; /* Puedes ajustar el color de fondo del contenedor según tu diseño */
+}
+
+.profile-image-container img {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%; /* Hace que el contenedor sea circular */
 }
 
 /* Estilo para el botón y el contenedor del menú desplegable */
@@ -95,8 +102,9 @@
   position: absolute;
   background-color: #f9f9f9;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
+  left: -100px;
 }
 
 /* Estilo de las opciones del menú */
@@ -113,35 +121,42 @@
   color: white;
 }
 
-/* Mostrar el menú desplegable al pasar el ratón por encima del botón */
-.dropdown:hover .dropdown-content {
-  display: block;
+.dropdown-content {
+  /* Efecto de transición para mostrar y ocultar el menú desplegable */
+  transition: transform 0.3s ease-in-out;
+  transform-origin: top;
+  transform: scale(0);
 }
 
+/* Mostrar el menú desplegable al pasar el ratón por encima del botón */
+.profile:hover .dropdown-content {
+  display: block;
+  transform: scale(1);
+}
 
 /* Estilo para la lista desplegable */
 #myDropdown {
-    position: absolute;
-    background-color: #f9f9f9; /* Color de fondo de la lista */
-    min-width: 160px; /* Ancho mínimo de la lista */
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Sombra */
-    z-index: 1;
+  position: absolute;
+  background-color: #f9f9f9; /* Color de fondo de la lista */
+  min-width: 200px; /* Ancho mínimo de la lista */
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2); /* Sombra */
+  z-index: 1;
 }
 
 /* Estilo para los elementos de la lista desplegable (enlaces) */
 #myDropdown a {
-    display: block; /* Hace que los enlaces se muestren en bloques para ocupar todo el ancho */
-    padding: 12px 16px; /* Espaciado interior */
-    text-decoration: none; /* Elimina el subrayado predeterminado */
-    color: #333; /* Color del texto */
+  display: block; /* Hace que los enlaces se muestren en bloques para ocupar todo el ancho */
+  padding: 12px 16px; /* Espaciado interior */
+  text-decoration: none; /* Elimina el subrayado predeterminado */
+  color: #333; /* Color del texto */
 }
 
 /* Cambio de estilo al pasar el cursor sobre los enlaces */
 #myDropdown a:hover {
-    background-color: #e9b776; /* Cambia el color de fondo al pasar el cursor */
-    color: #fff; /* Cambia el color del texto al pasar el cursor */
+  background-color: #e9b776; /* Cambia el color de fondo al pasar el cursor */
+  color: #fff; /* Cambia el color del texto al pasar el cursor */
 }
 
-#profile-image-container{
+#profile-image-container {
   margin-right: 15px;
 }

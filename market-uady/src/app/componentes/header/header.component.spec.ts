@@ -8,7 +8,7 @@ describe('HeaderComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [HeaderComponent]
+      declarations: [HeaderComponent],
     });
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
@@ -19,7 +19,3 @@ describe('HeaderComponent', () => {
     expect(component).toBeTruthy();
   });
 });
-
-
-
-
