@@ -49,8 +49,13 @@ export class InicioComponent {
           const facultadSeleccionada: any = this.facultades.find(
             (facultad: { idFacultad: any }) => facultad.idFacultad === response.idFacultadUsuario
           );
-          facultadSeleccionada.seleccionado = true;
-          this.actualizarValoresCampus(facultadSeleccionada.idCampus, true);
+          this.facultades = this.facultades.map((facultad: any) => {
+            if (facultad.idFacultad === response.idFacultadUsuario) {
+              return { ...facultad, seleccionado: true };
+            }
+            return facultad;
+          });
+          this.actualizarValoresCampus(facultadSeleccionada.idCampus);
         },
         (error) => {
           console.log(error);
@@ -59,7 +64,6 @@ export class InicioComponent {
   }
 
   actualizarValoresFacultades(campus: any, bandera: boolean) {
-    console.log('actualizarValoresFacultades', campus, bandera);
     const facultadesSeleccionadas: any[] = this.facultades.filter((facultad: { idCampus: any }) => facultad.idCampus === campus.idCampus);
     console.log('facultadesSeleccionadas', facultadesSeleccionadas);
     facultadesSeleccionadas.forEach((facultad: any) => {
@@ -68,18 +72,16 @@ export class InicioComponent {
     this.filtrarPublicaciones();
   }
 
-  actualizarValoresCampus(idCampus: any, bandera: boolean) {
-    console.log('actualizarValoresCampus ' + idCampus + ' ' + bandera);
-    const campusSeleccionado: any = this.campus.find((campus: { idCampus: any }) => campus.idCampus === idCampus);
-    // Validar si el campus tiene todas sus facultades deseleccionadas, si es asi, se deselecciona el campus
+  actualizarValoresCampus(idCampus: any) {
+    // Verificar si todas las facultades del campus están seleccionadas, si es así, seleccionar el campus
     const facultadesSeleccionadas: any[] = this.facultades.filter((facultad: { idCampus: any }) => facultad.idCampus === idCampus);
     const facultadesSeleccionadasBoolean: boolean[] = facultadesSeleccionadas.map((facultad: any) => facultad.seleccionado);
-    const facultadesSeleccionadasBooleanAllFalse: boolean = facultadesSeleccionadasBoolean.every((facultad: any) => facultad === false);
-    if (facultadesSeleccionadasBooleanAllFalse) {
-      campusSeleccionado.seleccionado = false;
-    } else {
-      campusSeleccionado.seleccionado = true;
-    }
+    const todasLasFacultadesSeleccionadas: boolean = facultadesSeleccionadasBoolean.every((seleccionado: boolean) => seleccionado);
+
+    // Si todas las facultades del campus están seleccionadas, seleccionar el campus
+    const campusSeleccionado: any = this.campus.find((campus: { idCampus: any }) => campus.idCampus === idCampus);
+    campusSeleccionado.seleccionado = todasLasFacultadesSeleccionadas;
+
     this.filtrarPublicaciones();
   }
 
