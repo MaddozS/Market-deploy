@@ -69,7 +69,10 @@ export class LoginComponent {
           this.mostrarAlerta('Usuario creado');
           await this.servicio.setToken(response);
           this.form.reset();
-          this.router.navigate(['dashboard/inicio']);
+          setTimeout(() => {
+            this.router.navigate(['dashboard/inicio']);
+          }, 1500); // 
+  
         },
         (error) => {
           const { message } = error.error;
@@ -103,7 +106,10 @@ export class LoginComponent {
 
         this.crearItemsSessionStorage(response);
 
-        this.router.navigate(['dashboard/inicio']);
+        setTimeout(() => {
+          this.router.navigate(['dashboard/inicio']);
+        }, 1500); // 
+
       },
       (error) => {
         this.mostrarAlerta('Usuario y/o contraseña incorrectos');
