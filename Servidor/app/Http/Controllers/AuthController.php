@@ -52,11 +52,10 @@ class AuthController extends Controller
 
         $profileImage = $request->file('imagenPerfil');
 
-        $filename = uniqid() . '.' . File::extension($profileImage->getClientOriginalName());
+        $filename = 'public/images/profile/' . uniqid() . '.' . File::extension($profileImage->getClientOriginalName());
         
-        Storage::disk('profile')->put($filename, file_get_contents($profileImage), 'public');
-        
-        
+        Storage::disk('s3')->put($filename, file_get_contents($profileImage));
+                
         $user = User::create([
             'matricula' => $request->matricula,
             'nombres' => $request->nombres,
@@ -103,10 +102,12 @@ class AuthController extends Controller
         $newProfileImage = $request->file('imagenPerfil');
         if ($newProfileImage == null) {
             $newProfilefilename = $oldImageName;
-        } else {
-            Storage::disk('profile')->delete($oldImageName);
-            $newProfilefilename = uniqid() . '.' . File::extension($newProfileImage->getClientOriginalName());
-            Storage::disk('profile')->put($newProfilefilename, file_get_contents($newProfileImage));
+        } 
+        else {
+            Storage::disk('s3')->delete($oldImageName);
+
+            $newProfilefilename = 'public/images/profile/' . uniqid() . '.' . File::extension($newProfileImage->getClientOriginalName());
+            Storage::disk('s3')->put($newProfilefilename, file_get_contents($newProfileImage));
         }
         
         $user->idFacultad = $request->idFacultad;
