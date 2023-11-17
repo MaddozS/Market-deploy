@@ -82,10 +82,10 @@ class PublicationsController extends Controller
 
         $imagesURL = [];
         foreach ($publicationImages as $imageData) {
-          $imageData = Storage::disk('publications')->get($imageData['nombreArchivo']);
-          $imageData = base64_encode($imageData);
+          $imageDataFile = Storage::disk('publications')->get($imageData['nombreArchivo']);
+          $imageDataEncoded = base64_encode($imageDataFile);
           // obtener la extension de la imagen y concatenarla a la base64
-          $imageURL = 'data:image/' . File::extension($imageData['nombreArchivo']) . ';base64,' . $imageData;
+          $imageURL = 'data:image/' . File::extension($imageData['nombreArchivo']) . ';base64,' . $imageDataEncoded;
           array_push($imagesURL, $imageURL);
         }
         $publication['imagenes'] = $imagesURL;
