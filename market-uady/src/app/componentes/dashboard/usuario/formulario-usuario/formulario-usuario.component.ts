@@ -33,9 +33,9 @@ export class Perfil {
 export class FormularioUsuarioComponent implements OnInit {
   perfil = new Perfil();
   formulario!: FormGroup;
-  modoEdicion: boolean = false;
+  modoEdicion = false;
   facultades: any = [];
-  correoFormateado: string = '';
+  correoFormateado = '';
   file!: File;
 
   constructor(
@@ -103,6 +103,14 @@ export class FormularioUsuarioComponent implements OnInit {
     this.modoEdicion = true;
   }
 
+  mostrarAlerta(mensaje: string) {
+    this._snackBar.open(mensaje, '', {
+      duration: 750,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+    });
+  }
+
   mostrarMensajeError(mensaje: string) {
     // Aquí puedes agregar lógica para mostrar un mensaje de error en tu interfaz de usuario.
     // Esto podría ser un mensaje emergente, un cuadro de diálogo, una notificación, etc.
@@ -119,12 +127,14 @@ export class FormularioUsuarioComponent implements OnInit {
 
     this.servicio.actualizarDatosPerfil(formData).subscribe(
       (response) => {
-        this.mostrarMensaje('Usuario actualizado');
+        this.mostrarAlerta('Usuario actualizado');
         this.sharedService.updateUser();
-        this.router.navigate(['dashboard/usuario/perfil-usuario/' + this.perfil.matricula]);
+        setTimeout(() => {
+          this.router.navigate(['dashboard/usuario/perfil-usuario/' + this.perfil.matricula]);
+        }, 1500);
       },
       (error) => {
-        this.mostrarMensaje('Error al crear el usuario');
+        this.mostrarAlerta('Error al crear el usuario');
       }
     );
   }
@@ -132,13 +142,5 @@ export class FormularioUsuarioComponent implements OnInit {
   getCorreoFormateado(matricula: string) {
     // Agregar un espacio entre 'a' y la matrícula
     return 'a' + matricula + '@alumnos.uady.mx';
-  }
-
-  mostrarMensaje(mensaje: string, action?: string) {
-    this._snackBar.open(mensaje, action || 'Cerrar', {
-      duration: 5000,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
-    });
   }
 }
