@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { GeneralService } from 'src/app/servicios/general.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SharedService } from 'src/app/servicios/updateUser';
 
 export class Perfil {
   nombres: string;
@@ -40,7 +41,8 @@ export class FormularioUsuarioComponent implements OnInit {
   constructor(
     private servicio: GeneralService,
     private router: Router,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private sharedService: SharedService
   ) {}
 
   ngOnInit() {
@@ -118,6 +120,7 @@ export class FormularioUsuarioComponent implements OnInit {
     this.servicio.actualizarDatosPerfil(formData).subscribe(
       (response) => {
         this.mostrarMensaje('Usuario actualizado');
+        this.sharedService.updateUser();
         this.router.navigate(['dashboard/usuario/perfil-usuario/' + this.perfil.matricula]);
       },
       (error) => {
