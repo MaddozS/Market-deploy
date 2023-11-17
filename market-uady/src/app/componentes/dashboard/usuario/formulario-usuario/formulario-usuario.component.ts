@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { GeneralService } from 'src/app/servicios/general.service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export class Perfil {
   nombres: string;
@@ -9,7 +10,7 @@ export class Perfil {
   idFacultad: string;
   matricula: string;
   numeroContacto: string;
-  imagenPerfil: File | string;
+  imagenPerfil: File | string | null;
   imagen: string | undefined;
 
   constructor() {
@@ -26,29 +27,31 @@ export class Perfil {
 @Component({
   selector: 'app-formulario-usuario',
   templateUrl: './formulario-usuario.component.html',
-  styleUrls: ['./formulario-usuario.component.css']
+  styleUrls: ['./formulario-usuario.component.css'],
 })
 export class FormularioUsuarioComponent implements OnInit {
-  perfil: Perfil;
-  formulario: FormGroup;
+  perfil = new Perfil();
+  formulario!: FormGroup;
   modoEdicion: boolean = false;
   facultades: any = [];
   correoFormateado: string = '';
   file!: File;
 
-  constructor(private fb: FormBuilder, private servicio: GeneralService, private router: Router) {
-    this.perfil = new Perfil();
-    this.formulario = fb.group({
-      nombres: [this.perfil.nombres], 
-      apellidos: [this.perfil.apellidos],
-      idFacultad: [this.perfil.idFacultad, Validators.required],
-      matricula: [this.perfil.matricula],
-      numeroContacto: [this.perfil.numeroContacto, Validators.required],
-      imagenPerfil: [this.perfil.imagenPerfil],
-    });
-  }
+  constructor(
+    private servicio: GeneralService,
+    private router: Router,
+    private _snackBar: MatSnackBar
+  ) {}
 
   ngOnInit() {
+    this.formulario = new FormGroup({
+      nombres: new FormControl(this.perfil.nombres),
+      apellidos: new FormControl(this.perfil.apellidos),
+      idFacultad: new FormControl(this.perfil.idFacultad, Validators.required),
+      matricula: new FormControl(this.perfil.matricula),
+      numeroContacto: new FormControl(this.perfil.numeroContacto, Validators.required),
+      imagenPerfil: new FormControl(this.perfil.imagenPerfil),
+    });
     this.servicio.obtenerFacultades().subscribe(
       (response) => {
         this.facultades = response;
@@ -60,7 +63,6 @@ export class FormularioUsuarioComponent implements OnInit {
   }
 
   obtenerDatosUsuario() {
-
     const matriculaString = sessionStorage.getItem('matricula');
     if (matriculaString != null) {
       const cleanedMatriculaString = matriculaString.replace(/[^0-9]/g, ''); // Eliminar caracteres no numéricos
@@ -77,35 +79,28 @@ export class FormularioUsuarioComponent implements OnInit {
         }
       );
     }
-    
   }
 
   onFileSelected(event: any) {
     const file = event.target.files[0]; // Obtiene el archivo seleccionado
-  
+
     if (file) {
       this.file = file; // Asigna el archivo seleccionado a this.file
       const reader = new FileReader();
-  
+
       reader.onload = (e: any) => {
         // Cuando se carga el archivo, actualiza la propiedad "imagen" del perfil
         this.perfil.imagen = e.target.result;
       };
-  
+
       reader.readAsDataURL(file);
     }
   }
-  
+
   editarPerfil() {
     this.modoEdicion = true;
   }
 
-  mostrarAlerta(mensaje: string) {
-    // Aquí puedes agregar lógica para mostrar un mensaje de éxito en tu interfaz de usuario.
-    // Esto podría ser un mensaje emergente, un cuadro de diálogo, una notificación, etc.
-    console.log('Mensaje: ' + mensaje);
-  }
-  
   mostrarMensajeError(mensaje: string) {
     // Aquí puedes agregar lógica para mostrar un mensaje de error en tu interfaz de usuario.
     // Esto podría ser un mensaje emergente, un cuadro de diálogo, una notificación, etc.
@@ -116,18 +111,17 @@ export class FormularioUsuarioComponent implements OnInit {
     const formData = new FormData();
     formData.append('idFacultad', this.perfil.idFacultad);
     formData.append('numeroContacto', this.perfil.numeroContacto);
-    formData.append('imagenPerfil', this.file, this.file.name);
-  
-    console.log(formData);
-    console.log(this.perfil);
-  
+    if (this.file) {
+      formData.append('imagenPerfil', this.file, this.file.name);
+    }
+
     this.servicio.actualizarDatosPerfil(formData).subscribe(
       (response) => {
-        this.mostrarAlerta('Usuario actualizado');
-        this.router.navigate(['dashboard/usuario/perfil-usuario/'+this.perfil.matricula]);
+        this.mostrarMensaje('Usuario actualizado');
+        this.router.navigate(['dashboard/usuario/perfil-usuario/' + this.perfil.matricula]);
       },
       (error) => {
-        this.mostrarAlerta('Error al crear el usuario');
+        this.mostrarMensaje('Error al crear el usuario');
       }
     );
   }
@@ -135,5 +129,13 @@ export class FormularioUsuarioComponent implements OnInit {
   getCorreoFormateado(matricula: string) {
     // Agregar un espacio entre 'a' y la matrícula
     return 'a' + matricula + '@alumnos.uady.mx';
+  }
+
+  mostrarMensaje(mensaje: string, action?: string) {
+    this._snackBar.open(mensaje, action || 'Cerrar', {
+      duration: 5000,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+    });
   }
 }
